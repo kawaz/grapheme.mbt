@@ -94,3 +94,17 @@ test "graphemes: InCB Conjunct" {
   let g = graphemes("\u{0915}\u{094D}\u{0915}")
   inspect(g.length(), content="1")
 }
+
+///|
+// RI 3個: 🇯🇵 + 孤立 RI → 2 clusters ([RI RI] [RI])
+test "graphemes: RI x3" {
+  let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}")
+  inspect(g.length(), content="2")
+}
+
+///|
+// RI 5個: 🇯🇵🇺🇸 + 孤立 RI → 3 clusters ([RI RI] [RI RI] [RI])
+test "graphemes: RI x5" {
+  let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}\u{1F1F8}\u{1F1E6}")
+  inspect(g.length(), content="3")
+}
