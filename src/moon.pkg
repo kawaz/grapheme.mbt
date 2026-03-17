@@ -1,3 +1,7 @@
+import {
+  "moonbitlang/core/bench",
+}
+
 options(
   "is-main": false,
 )
