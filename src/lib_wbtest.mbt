@@ -1621,3 +1621,76 @@ test "graphemes: length equals rev_iter count on sliced" {
   }
   assert_eq(g.length(), count)
 }
+
+// ============================================================
+// AN. Multi-script real-world text tests (linguist review)
+// ============================================================
+
+///|
+// Subdivision flag: Wales 🏴󠁧󠁢󠁷󠁬󠁳󠁿 = EP + tag characters (Extend) = 1 cluster
+test "graphemes: subdivision flag Wales" {
+  // U+1F3F4 U+E0067 U+E0062 U+E0077 U+E006C U+E0073 U+E007F
+  let g = graphemes("\u{1F3F4}\u{E0067}\u{E0062}\u{E0077}\u{E006C}\u{E0073}\u{E007F}")
+  inspect(g.length(), content="1")
+}
+
+///|
+// Thai text: สวัสดี (sawatdee) — base + combining marks
+// ส=Other, ว=Other, ั(U+0E31)=Extend, ส=Other, ด=Other, ี(U+0E35)=Extend
+// GB9 (× Extend): ส | วั | ส | ดี = 4 clusters
+test "graphemes: Thai sawatdee" {
+  let g = graphemes("สวัสดี")
+  inspect(g.length(), content="4")
+}
+
+///|
+// Arabic text with combining marks: بِسْمِ (bismillah start)
+// U+0628(ba)=Other, U+0650(kasra)=Extend, U+0633(sin)=Other,
+// U+0652(sukun)=Extend, U+0645(mim)=Other, U+0650(kasra)=Extend
+// GB9 (× Extend): بِ(1) سْ(1) مِ(1) = 3 clusters
+test "graphemes: Arabic with diacritics" {
+  let g = graphemes("\u{0628}\u{0650}\u{0633}\u{0652}\u{0645}\u{0650}")
+  inspect(g.length(), content="3")
+}
+
+///|
+// Tibetan: ༄༅ (head mark)
+// U+0F04=Other, U+0F05=Other → 2 clusters
+test "graphemes: Tibetan head mark" {
+  let g = graphemes("\u{0F04}\u{0F05}")
+  inspect(g.length(), content="2")
+}
+
+///|
+// Myanmar: က + ္ + က (kinzi-like conjunct)
+// U+1000(ka)=Other, U+1039(virama)=Extend, U+1000(ka)=Other
+// Myanmar is NOT in InCB, so virama is just Extend.
+// GB9 (× Extend): ka + virama = 1 cluster, then ka = new cluster = 2 clusters
+test "graphemes: Myanmar conjunct" {
+  let g = graphemes("\u{1000}\u{1039}\u{1000}")
+  inspect(g.length(), content="2")
+}
+
+///|
+// Concatenation invariant for multi-script text (Thai)
+test "graphemes: concatenation invariant Thai" {
+  let input = "สวัสดี"
+  let g = graphemes(input)
+  let buf = StringBuilder::new()
+  for cluster in g {
+    buf.write_string(cluster.to_string())
+  }
+  inspect(buf.to_string() == input, content="true")
+}
+
+///|
+// Concatenation invariant for multi-script text (Arabic)
+test "graphemes: concatenation invariant Arabic" {
+  let input = "\u{0628}\u{0650}\u{0633}\u{0652}\u{0645}\u{0650}"
+  let g = graphemes(input)
+  let buf = StringBuilder::new()
+  for cluster in g {
+    buf.write_string(cluster.to_string())
+  }
+  inspect(buf.to_string() == input, content="true")
+}
