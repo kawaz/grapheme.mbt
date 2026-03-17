@@ -73,9 +73,17 @@ Reverse iteration over grapheme clusters.
 
 Returns the original source string.
 
+### `GraphemeView::grapheme_indices() -> Iter[(Int, Int, StringView)]`
+
+Iterates over grapheme clusters with their UTF-16 byte offsets. Yields `(start_offset, end_offset, cluster)`.
+
 ### `impl Eq for GraphemeView`
 
 Equality comparison. Two `GraphemeView`s are equal if they have the same number of clusters and each corresponding cluster has the same string content. Supports `==` operator.
+
+### `impl Hash for GraphemeView`
+
+Hash support. Equal `GraphemeView`s produce equal hashes. Can be used as `HashMap` keys via `to_string()`.
 
 ## Roadmap
 

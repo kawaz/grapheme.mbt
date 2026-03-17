@@ -73,9 +73,17 @@ grapheme cluster を逆順にイテレートする。
 
 元のソース文字列をそのまま返す。
 
+### `GraphemeView::grapheme_indices() -> Iter[(Int, Int, StringView)]`
+
+UTF-16 オフセット付きで grapheme cluster をイテレートする。`(start_offset, end_offset, cluster)` を返す。
+
 ### `impl Eq for GraphemeView`
 
 等値比較。2つの `GraphemeView` が同じクラスタ数で、各クラスタの文字列内容が一致する場合に `true` を返す。`==` 演算子をサポート。
+
+### `impl Hash for GraphemeView`
+
+ハッシュ対応。等しい `GraphemeView` は同じハッシュ値を返す。
 
 ## Roadmap
 
