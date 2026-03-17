@@ -1,0 +1,20 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "kawaz/unicodegrapheme/src"
+
+// Values
+pub fn graphemes(String) -> GraphemeView
+
+// Errors
+
+// Types and methods
+pub struct GraphemeView {
+  // private fields
+}
+pub fn GraphemeView::iter(Self) -> Iter[StringView]
+pub fn GraphemeView::length(Self) -> Int
+pub fn GraphemeView::op_get(Self, Int) -> StringView
+
+// Type aliases
+
+// Traits
+
