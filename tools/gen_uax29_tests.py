@@ -19,7 +19,7 @@ TEST_DATA_URL = f"https://www.unicode.org/Public/{UNICODE_VERSION}/ucd/auxiliary
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
-DATA_DIR = SCRIPT_DIR / "data"
+DATA_DIR = SCRIPT_DIR / "data" / UNICODE_VERSION
 OUTPUT_FILE = PROJECT_ROOT / "src" / "uax29_test.mbt"
 
 

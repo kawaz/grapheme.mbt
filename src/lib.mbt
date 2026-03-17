@@ -56,6 +56,7 @@ pub fn GraphemeView::length(self : GraphemeView) -> Int {
 
 ///|
 /// i 番目の grapheme cluster を StringView として返す。
+/// i が 0 以上 length() 未満でない場合はパニックする。
 pub fn GraphemeView::op_get(
   self : GraphemeView,
   i : Int

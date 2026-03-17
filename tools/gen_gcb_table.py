@@ -46,7 +46,7 @@ GCB_MAP = {
 }
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DATA_DIR = SCRIPT_DIR / "data"
+DATA_DIR = SCRIPT_DIR / "data" / UNICODE_VERSION
 PROJECT_ROOT = SCRIPT_DIR.parent
 OUTPUT_FILE = PROJECT_ROOT / "src" / "gcb_table.mbt"
 
