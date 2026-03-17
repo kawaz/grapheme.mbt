@@ -45,17 +45,31 @@ Returns the number of grapheme clusters.
 
 Returns the i-th grapheme cluster as a `StringView`. Zero-copy.
 
+### `GraphemeView::get(i: Int) -> StringView?`
+
+Safe access to the i-th grapheme cluster. Returns `None` if out of range.
+
 ### `GraphemeView::iter() -> Iter[StringView]`
 
-Iterates over grapheme clusters in order.
+Iterates over grapheme clusters in order. Supports `for cluster in view { ... }`.
+
+### `GraphemeView::is_empty() -> Bool`
+
+Returns `true` if there are no grapheme clusters.
+
+### `GraphemeView::to_string() -> String`
+
+Returns the original source string.
 
 ## Roadmap
 
 - [x] UAX #29 Grapheme Cluster Break state machine implementation
 - [x] `Extended_Pictographic` property support
 - [x] Composite emoji support (ZWJ sequences, flags, skin tone modifiers)
+- [x] Publish to mooncakes.io
+- [x] ASCII fast path optimization
+- [x] Safe access (`get`), `Show` trait, `is_empty`, `to_string`
 - [ ] Slice operations (`view[1:3]`)
-- [ ] Publish to mooncakes.io
 
 ## Unicode Version
 

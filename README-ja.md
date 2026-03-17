@@ -45,17 +45,31 @@ grapheme cluster の数を返す。
 
 i 番目の grapheme cluster を `StringView` として返す。ゼロコピー。
 
+### `GraphemeView::get(i: Int) -> StringView?`
+
+i 番目の grapheme cluster を安全に取得する。範囲外なら `None` を返す。
+
 ### `GraphemeView::iter() -> Iter[StringView]`
 
-grapheme cluster を順にイテレートする。
+grapheme cluster を順にイテレートする。`for cluster in view { ... }` でも使用可能。
+
+### `GraphemeView::is_empty() -> Bool`
+
+grapheme cluster が0個かどうかを返す。
+
+### `GraphemeView::to_string() -> String`
+
+元のソース文字列をそのまま返す。
 
 ## Roadmap
 
 - [x] UAX #29 Grapheme Cluster Break ステートマシン実装
 - [x] `Extended_Pictographic` プロパティ対応
 - [x] 合成絵文字（ZWJ シーケンス、国旗、肌色修飾子）対応
+- [x] mooncakes.io 公開
+- [x] ASCII fast path 最適化
+- [x] 安全アクセス (`get`)、`Show` trait、`is_empty`、`to_string`
 - [ ] スライス操作（`view[1:3]`）
-- [ ] mooncakes.io 公開
 
 ## Unicode Version
 

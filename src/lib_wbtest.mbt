@@ -345,3 +345,126 @@ test "graphemes: length equals iter count" {
     assert_eq(g.length(), count)
   }
 }
+
+// ============================================================
+// G. Show trait tests
+// ============================================================
+
+///|
+test "GraphemeView: Show trait" {
+  let g = graphemes("AB")
+  let expected =
+    #|GraphemeView(["A", "B"])
+  inspect(g, content=expected)
+}
+
+///|
+test "GraphemeView: Show empty" {
+  let g = graphemes("")
+  let expected =
+    #|GraphemeView([])
+  inspect(g, content=expected)
+}
+
+///|
+test "GraphemeView: Show emoji" {
+  let g = graphemes("A\u{1F600}B")
+  let expected =
+    #|GraphemeView(["A", "😀", "B"])
+  inspect(g, content=expected)
+}
+
+// ============================================================
+// H. get() safe access tests
+// ============================================================
+
+///|
+test "GraphemeView: get valid index" {
+  let g = graphemes("ABC")
+  let v = g.get(0)
+  inspect(not(v is None), content="true")
+}
+
+///|
+test "GraphemeView: get out of range returns None" {
+  let g = graphemes("ABC")
+  inspect(g.get(3), content="None")
+}
+
+///|
+test "GraphemeView: get negative returns None" {
+  let g = graphemes("ABC")
+  inspect(g.get(-1), content="None")
+}
+
+///|
+test "GraphemeView: get on empty returns None" {
+  let g = graphemes("")
+  inspect(g.get(0), content="None")
+}
+
+// ============================================================
+// I. for-in direct iteration tests
+// ============================================================
+
+///|
+test "GraphemeView: for-in direct iteration" {
+  let g = graphemes("AB")
+  let mut count = 0
+  for _cluster in g {
+    count += 1
+  }
+  inspect(count, content="2")
+}
+
+///|
+test "GraphemeView: for-in empty" {
+  let g = graphemes("")
+  let mut count = 0
+  for _cluster in g {
+    count += 1
+  }
+  inspect(count, content="0")
+}
+
+// ============================================================
+// J. is_empty() tests
+// ============================================================
+
+///|
+test "GraphemeView: is_empty on empty string" {
+  inspect(graphemes("").is_empty(), content="true")
+}
+
+///|
+test "GraphemeView: is_empty on non-empty string" {
+  inspect(graphemes("A").is_empty(), content="false")
+}
+
+///|
+test "GraphemeView: is_empty on emoji" {
+  inspect(graphemes("\u{1F600}").is_empty(), content="false")
+}
+
+// ============================================================
+// K. to_string() tests
+// ============================================================
+
+///|
+test "GraphemeView: to_string returns original string" {
+  let input = "Hello\u{1F600}World"
+  let g = graphemes(input)
+  inspect(g.to_string() == input, content="true")
+}
+
+///|
+test "GraphemeView: to_string empty" {
+  inspect(graphemes("").to_string(), content="")
+}
+
+///|
+test "GraphemeView: to_string preserves combining marks" {
+  let input = "a\u{0301}\u{0300}"
+  inspect(graphemes(input).to_string() == input, content="true")
+}
+

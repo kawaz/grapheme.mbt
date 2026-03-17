@@ -67,6 +67,45 @@ pub fn GraphemeView::op_get(
 }
 
 ///|
+/// Returns the i-th grapheme cluster as an Option, or None if out of range.
+pub fn GraphemeView::get(self : GraphemeView, i : Int) -> StringView? {
+  if i < 0 || i >= self.length() {
+    None
+  } else {
+    Some(self[i])
+  }
+}
+
+///|
+/// Returns true if there are no grapheme clusters.
+pub fn GraphemeView::is_empty(self : GraphemeView) -> Bool {
+  self.length() == 0
+}
+
+///|
+/// Returns the original source string.
+pub fn GraphemeView::to_string(self : GraphemeView) -> String {
+  self.source
+}
+
+///|
+/// Implements Show trait for GraphemeView.
+/// Output format: GraphemeView(["cluster1", "cluster2", ...])
+pub impl Show for GraphemeView with output(self, logger) {
+  logger.write_string("GraphemeView([")
+  let len = self.length()
+  for i = 0; i < len; i = i + 1 {
+    if i > 0 {
+      logger.write_string(", ")
+    }
+    logger.write_string("\"")
+    logger.write_string(self[i].to_string())
+    logger.write_string("\"")
+  }
+  logger.write_string("])")
+}
+
+///|
 /// Iterates over grapheme clusters in order.
 pub fn GraphemeView::iter(self : GraphemeView) -> Iter[StringView] {
   let len = self.length()

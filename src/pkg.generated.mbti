@@ -10,9 +10,13 @@ pub fn graphemes(String) -> GraphemeView
 pub struct GraphemeView {
   // private fields
 }
+pub fn GraphemeView::get(Self, Int) -> StringView?
+pub fn GraphemeView::is_empty(Self) -> Bool
 pub fn GraphemeView::iter(Self) -> Iter[StringView]
 pub fn GraphemeView::length(Self) -> Int
 pub fn GraphemeView::op_get(Self, Int) -> StringView
+pub fn GraphemeView::to_string(Self) -> String
+pub impl Show for GraphemeView
 
 // Type aliases
 

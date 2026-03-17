@@ -23,6 +23,11 @@ priv enum GCBCategory {
 ///|
 /// Returns the GCB category for a code point (returns Other if not in the table).
 fn gcb_category(cp : Int) -> GCBCategory {
+  // ASCII fast path: 0x20..0x7E are all Other (printable ASCII range).
+  // This avoids binary search for the most common code points in typical text.
+  if cp >= 0x20 && cp <= 0x7E {
+    return Other
+  }
   let mut lo = 0
   let mut hi = gcb_table.length() - 1
   while lo <= hi {

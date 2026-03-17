@@ -97,3 +97,19 @@ test "is_incb_extend: Devanagari extending mark" {
 test "is_incb_extend: non-extend" {
   inspect(is_incb_extend(0x0041), content="false")
 }
+
+// ============================================================
+// ASCII fast path tests
+// ============================================================
+
+test "gcb_category: ASCII fast path space" {
+  inspect(gcb_category(0x20), content="Other")
+}
+
+test "gcb_category: ASCII fast path tilde" {
+  inspect(gcb_category(0x7E), content="Other")
+}
+
+test "gcb_category: ASCII fast path 0x7F is Control" {
+  inspect(gcb_category(0x7F), content="Control")
+}
