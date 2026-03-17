@@ -1,0 +1,98 @@
+name: Unicode バージョンチェック
+
+on:
+  schedule:
+    # 毎週月曜 09:00 UTC (日本時間 18:00)
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 現在サポートしているバージョンを取得
+        id: current
+        run: |
+          version=$(cat .unicode-version | tr -d '[:space:]')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "現在のサポートバージョン: $version"
+
+      - name: Unicode 最新バージョンを取得
+        id: latest
+        run: |
+          # https://www.unicode.org/versions/latest/ のリダイレクト先URLからバージョンを抽出
+          # 例: http://www.unicode.org/versions/Unicode17.0.0/ → 17.0.0
+          redirect_url=$(curl -s -o /dev/null -w '%{redirect_url}' 'https://www.unicode.org/versions/latest/')
+          version_from_url=$(echo "$redirect_url" | grep -oP 'Unicode\K[0-9]+\.[0-9]+\.[0-9]+')
+
+          # GraphemeBreakProperty.txt のヘッダからもバージョンを確認
+          # 例: # GraphemeBreakProperty-17.0.0.txt → 17.0.0
+          gbp_header=$(curl -s 'https://www.unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakProperty.txt' | head -1)
+          version_from_gbp=$(echo "$gbp_header" | grep -oP 'GraphemeBreakProperty-\K[0-9]+\.[0-9]+\.[0-9]+')
+
+          echo "リダイレクト先URL: $redirect_url"
+          echo "URL由来のバージョン: $version_from_url"
+          echo "GBP由来のバージョン: $version_from_gbp"
+
+          # 両方取得できた場合は一致を確認
+          if [[ -n "$version_from_url" && -n "$version_from_gbp" ]]; then
+            if [[ "$version_from_url" != "$version_from_gbp" ]]; then
+              echo "::warning::バージョン不一致 — URL: $version_from_url, GBP: $version_from_gbp"
+            fi
+          fi
+
+          # URL由来を優先、取得できなければGBP由来を使用
+          latest="${version_from_url:-$version_from_gbp}"
+          if [[ -z "$latest" ]]; then
+            echo "::error::最新バージョンを取得できませんでした"
+            exit 1
+          fi
+
+          echo "version=$latest" >> "$GITHUB_OUTPUT"
+          echo "最新バージョン: $latest"
+
+      # バージョン情報は steps output 由来（外部ユーザー入力ではない）なので
+      # インジェクションリスクはないが、念のため env 経由で使用
+      - name: バージョン比較と Issue 作成
+        if: steps.current.outputs.version != steps.latest.outputs.version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_VERSION: ${{ steps.current.outputs.version }}
+          LATEST_VERSION: ${{ steps.latest.outputs.version }}
+        run: |
+          title="Unicode ${LATEST_VERSION} がリリースされました — テーブル更新が必要です"
+
+          # 同じタイトルの Issue が既に存在するかチェック（open/closed 両方）
+          existing=$(gh issue list --search "\"${title}\" in:title" --state all --json number --jq '.[].number')
+          if [[ -n "$existing" ]]; then
+            echo "既存の Issue が見つかりました: #$existing — スキップします"
+            exit 0
+          fi
+
+          body=$(cat <<END
+          ## 概要
+
+          Unicode の新バージョン **${LATEST_VERSION}** がリリースされました。
+          現在サポートしているバージョンは **${CURRENT_VERSION}** です。
+
+          ## 必要な対応
+
+          - [ ] [GraphemeBreakProperty.txt](https://www.unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakProperty.txt) の変更点を確認
+          - [ ] grapheme break テーブルを更新
+          - [ ] テストを更新・実行
+          - [ ] \`.unicode-version\` を \`${LATEST_VERSION}\` に更新
+
+          ## 参考リンク
+
+          - [Unicode ${LATEST_VERSION}](https://www.unicode.org/versions/Unicode${LATEST_VERSION}/)
+          - [UAX #29: Unicode Text Segmentation](https://www.unicode.org/reports/tr29/)
+          END
+          )
+
+          gh issue create --title "$title" --body "$body" --label "unicode-update"
+          echo "Issue を作成しました"
