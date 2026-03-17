@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "kawaz/unicodegrapheme/src"
+package "kawaz/unicodegrapheme"
 
 // Values
 pub fn graphemes(String) -> GraphemeView

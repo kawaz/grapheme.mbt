@@ -1,22 +1,22 @@
 ///|
-/// 絵文字 ZWJ シーケンス（GB11）の状態追跡。
+/// State tracking for emoji ZWJ sequences (GB11).
 priv enum EmojiState {
   ES_None
-  ES_EP_Seen // Extended_Pictographic を見た
-  ES_EP_Extend_ZWJ // EP の後に Extend* ZWJ を見た
+  ES_EP_Seen // Seen Extended_Pictographic
+  ES_EP_Extend_ZWJ // Seen Extend* ZWJ after EP
 } derive(Eq, Show)
 
 ///|
-/// InCB Conjunct（GB9c）の状態追跡。
+/// State tracking for InCB Conjunct (GB9c).
 priv enum InCBState {
   IC_None
-  IC_Consonant_Seen // InCB_Consonant を見た
-  IC_Consonant_Linker_Seen // Consonant の後に [Extend|Linker]* Linker を見た
+  IC_Consonant_Seen // Seen InCB_Consonant
+  IC_Consonant_Linker_Seen // Seen [Extend|Linker]* Linker after Consonant
 } derive(Eq, Show)
 
 ///|
-/// prev と cur のペアで grapheme cluster 境界を判定する。
-/// true = 境界あり（÷）、false = 境界なし（×）
+/// Determines grapheme cluster boundary from prev and cur pair.
+/// true = boundary (÷), false = no boundary (×)
 fn check_boundary(
   prev : GCBCategory,
   cur : GCBCategory,
@@ -80,7 +80,7 @@ fn check_boundary(
 }
 
 ///|
-/// 絵文字 ZWJ シーケンスの状態遷移
+/// State transition for emoji ZWJ sequences.
 fn next_emoji_state(state : EmojiState, cur_gcb : GCBCategory) -> EmojiState {
   if cur_gcb == Extended_Pictographic {
     ES_EP_Seen
@@ -94,7 +94,7 @@ fn next_emoji_state(state : EmojiState, cur_gcb : GCBCategory) -> EmojiState {
 }
 
 ///|
-/// InCB Conjunct の状態遷移
+/// State transition for InCB Conjunct.
 fn next_incb_state(state : InCBState, cur_gcb : GCBCategory, cp : Int) -> InCBState {
   if cur_gcb == InCB_Consonant {
     IC_Consonant_Seen

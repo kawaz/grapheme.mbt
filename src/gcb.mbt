@@ -1,6 +1,6 @@
 ///|
-/// Unicode UAX #29 Grapheme Cluster Break (GCB) カテゴリ。
-/// コードポイントごとに割り当てられ、grapheme cluster 境界判定に使用する。
+/// Unicode UAX #29 Grapheme Cluster Break (GCB) category.
+/// Assigned to each code point and used for grapheme cluster boundary determination.
 priv enum GCBCategory {
   Other
   CR
@@ -21,7 +21,7 @@ priv enum GCBCategory {
 } derive(Eq, Show)
 
 ///|
-/// コードポイントの GCB カテゴリを返す（テーブルにない場合は Other）
+/// Returns the GCB category for a code point (returns Other if not in the table).
 fn gcb_category(cp : Int) -> GCBCategory {
   let mut lo = 0
   let mut hi = gcb_table.length() - 1
@@ -40,7 +40,7 @@ fn gcb_category(cp : Int) -> GCBCategory {
 }
 
 ///|
-/// InCB=Linker かどうか
+/// Returns whether the code point is InCB=Linker.
 fn is_incb_linker(cp : Int) -> Bool {
   let mut lo = 0
   let mut hi = incb_linker_table.length() - 1
@@ -59,7 +59,7 @@ fn is_incb_linker(cp : Int) -> Bool {
 }
 
 ///|
-/// InCB=Extend かどうか
+/// Returns whether the code point is InCB=Extend.
 fn is_incb_extend(cp : Int) -> Bool {
   let mut lo = 0
   let mut hi = incb_extend_table.length() - 1

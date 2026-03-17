@@ -1,1 +1,11 @@
-{"name": "kawaz/unicodegrapheme", "version": "0.1.0"}
+{
+  "name": "kawaz/unicodegrapheme",
+  "version": "0.1.0",
+  "source": "src",
+  "readme": "README.md",
+  "repository": "https://github.com/kawaz/unicodegrapheme",
+  "license": "MIT",
+  "keywords": ["unicode", "grapheme", "segmentation", "text", "uax29", "cluster"],
+  "description": "Unicode grapheme cluster segmentation library for MoonBit (UAX #29)",
+  "exclude": ["docs", "tools", ".claude", ".github", ".unicode-version"]
+}

@@ -1,68 +1,68 @@
-test "gcb_category: ASCII letter → Other" {
+test "gcb_category: ASCII letter -> Other" {
   inspect(gcb_category(0x41), content="Other")  // 'A'
 }
 
-test "gcb_category: LF → LF" {
+test "gcb_category: LF -> LF" {
   inspect(gcb_category(0x0A), content="LF")
 }
 
-test "gcb_category: CR → CR" {
+test "gcb_category: CR -> CR" {
   inspect(gcb_category(0x0D), content="CR")
 }
 
-test "gcb_category: Control (NUL) → Control" {
+test "gcb_category: Control (NUL) -> Control" {
   inspect(gcb_category(0x00), content="Control")
 }
 
-test "gcb_category: Combining Grave Accent → Extend" {
+test "gcb_category: Combining Grave Accent -> Extend" {
   inspect(gcb_category(0x0300), content="Extend")
 }
 
-test "gcb_category: ZWJ → ZWJ" {
+test "gcb_category: ZWJ -> ZWJ" {
   inspect(gcb_category(0x200D), content="ZWJ")
 }
 
-test "gcb_category: Regional Indicator A → Regional_Indicator" {
+test "gcb_category: Regional Indicator A -> Regional_Indicator" {
   inspect(gcb_category(0x1F1E6), content="Regional_Indicator")
 }
 
-test "gcb_category: Grinning Face → Extended_Pictographic" {
+test "gcb_category: Grinning Face -> Extended_Pictographic" {
   inspect(gcb_category(0x1F600), content="Extended_Pictographic")
 }
 
-test "gcb_category: Hangul L → L" {
+test "gcb_category: Hangul L -> L" {
   inspect(gcb_category(0x1100), content="L")
 }
 
-test "gcb_category: Hangul V → V" {
+test "gcb_category: Hangul V -> V" {
   inspect(gcb_category(0x1161), content="V")
 }
 
-test "gcb_category: Hangul T → T" {
+test "gcb_category: Hangul T -> T" {
   inspect(gcb_category(0x11A8), content="T")
 }
 
-test "gcb_category: Hangul LV syllable → LV" {
+test "gcb_category: Hangul LV syllable -> LV" {
   inspect(gcb_category(0xAC00), content="LV")
 }
 
-test "gcb_category: Hangul LVT syllable → LVT" {
+test "gcb_category: Hangul LVT syllable -> LVT" {
   inspect(gcb_category(0xAC01), content="LVT")
 }
 
-test "gcb_category: Prepend (Arabic Number Sign) → Prepend" {
+test "gcb_category: Prepend (Arabic Number Sign) -> Prepend" {
   inspect(gcb_category(0x0600), content="Prepend")
 }
 
-test "gcb_category: SpacingMark (Devanagari AA) → SpacingMark" {
+test "gcb_category: SpacingMark (Devanagari AA) -> SpacingMark" {
   inspect(gcb_category(0x093E), content="SpacingMark")
 }
 
-test "gcb_category: InCB_Consonant (Devanagari Ka) → InCB_Consonant" {
+test "gcb_category: InCB_Consonant (Devanagari Ka) -> InCB_Consonant" {
   inspect(gcb_category(0x0915), content="InCB_Consonant")
 }
 
-// エッジケース
+// Edge cases
 test "gcb_category: range boundary start (first Control range)" {
   inspect(gcb_category(0x00), content="Control")
 }
@@ -80,7 +80,7 @@ test "gcb_category: max codepoint" {
   inspect(gcb_category(0x10FFFF), content="Other")
 }
 
-// InCB 補助テーブルのテスト
+// InCB auxiliary table tests
 test "is_incb_linker: Devanagari Virama" {
   inspect(is_incb_linker(0x094D), content="true")
 }

@@ -1,17 +1,17 @@
 ///|
-test "graphemes: ASCII 文字列" {
+test "graphemes: ASCII string" {
   let g = graphemes("hello")
   inspect(g.length(), content="5")
 }
 
 ///|
-test "graphemes: BMP 文字" {
+test "graphemes: BMP characters" {
   let g = graphemes("あいう")
   inspect(g.length(), content="3")
 }
 
 ///|
-test "graphemes: サロゲートペア文字" {
+test "graphemes: surrogate pair characters" {
   let g = graphemes("A\u{1F600}B")
   inspect(g.length(), content="3")
   inspect(g[1].to_string(), content="\u{1F600}")
@@ -29,58 +29,58 @@ test "graphemes: iter" {
 }
 
 ///|
-test "graphemes: 空文字列" {
+test "graphemes: empty string" {
   let g = graphemes("")
   inspect(g.length(), content="0")
 }
 
 ///|
-// 結合文字: 「か」(U+304B) + 結合濁点(U+3099) → 1 cluster
-test "graphemes: 結合文字 が" {
+// Combining character: "ka" (U+304B) + combining dakuten (U+3099) -> 1 cluster
+test "graphemes: combining character ga" {
   let g = graphemes("\u{304B}\u{3099}")
   inspect(g.length(), content="1")
   inspect(g[0].to_string(), content="\u{304B}\u{3099}")
 }
 
 ///|
-// CRLF: \r\n → 1 cluster
+// CRLF: \r\n -> 1 cluster
 test "graphemes: CRLF" {
   let g = graphemes("\r\n")
   inspect(g.length(), content="1")
 }
 
 ///|
-// Control 前後: NUL + A → 2 clusters
-test "graphemes: Control 前後" {
+// Around Control: NUL + A -> 2 clusters
+test "graphemes: around Control" {
   let g = graphemes("\u{0000}A")
   inspect(g.length(), content="2")
 }
 
 ///|
-// SpacingMark: デーヴァナーガリー "का" (U+0915 U+093E) → 1 cluster
-test "graphemes: SpacingMark デーヴァナーガリー" {
+// SpacingMark: Devanagari "ka" (U+0915 U+093E) -> 1 cluster
+test "graphemes: SpacingMark Devanagari" {
   let g = graphemes("\u{0915}\u{093E}")
   inspect(g.length(), content="1")
 }
 
 ///|
-// 国旗: 🇯🇵 (RI+RI) → 1 cluster
-test "graphemes: 国旗 🇯🇵" {
+// Flag: JP flag (RI+RI) -> 1 cluster
+test "graphemes: flag JP" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}")
   inspect(g.length(), content="1")
 }
 
 ///|
-// 国旗2つ: 🇯🇵🇺🇸 (RI RI RI RI) → 2 clusters
-test "graphemes: 国旗2つ 🇯🇵🇺🇸" {
+// Two flags: JP+US (RI RI RI RI) -> 2 clusters
+test "graphemes: two flags JP+US" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}\u{1F1F8}")
   inspect(g.length(), content="2")
 }
 
 ///|
-// 絵文字 ZWJ シーケンス: 👨‍👩‍👧‍👦 → 1 cluster
-test "graphemes: 家族絵文字 ZWJ" {
-  // 👨 U+1F468, ZWJ U+200D, 👩 U+1F469, ZWJ, 👧 U+1F467, ZWJ, 👦 U+1F466
+// Emoji ZWJ sequence: family emoji -> 1 cluster
+test "graphemes: family emoji ZWJ" {
+  // Man U+1F468, ZWJ U+200D, Woman U+1F469, ZWJ, Girl U+1F467, ZWJ, Boy U+1F466
   let g = graphemes(
     "\u{1F468}\u{200D}\u{1F469}\u{200D}\u{1F467}\u{200D}\u{1F466}",
   )
@@ -88,29 +88,29 @@ test "graphemes: 家族絵文字 ZWJ" {
 }
 
 ///|
-// InCB Conjunct: デーヴァナーガリー क + ् + क (Consonant + Virama + Consonant) → 1 cluster
+// InCB Conjunct: Devanagari ka + virama + ka (Consonant + Virama + Consonant) -> 1 cluster
 test "graphemes: InCB Conjunct" {
-  // क U+0915 (InCB_Consonant), ् U+094D (Virama = InCB Linker + Extend), क U+0915
+  // ka U+0915 (InCB_Consonant), virama U+094D (Virama = InCB Linker + Extend), ka U+0915
   let g = graphemes("\u{0915}\u{094D}\u{0915}")
   inspect(g.length(), content="1")
 }
 
 ///|
-// RI 3個: 🇯🇵 + 孤立 RI → 2 clusters ([RI RI] [RI])
+// RI x3: JP flag + isolated RI -> 2 clusters ([RI RI] [RI])
 test "graphemes: RI x3" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}")
   inspect(g.length(), content="2")
 }
 
 ///|
-// RI 5個: 🇯🇵🇺🇸 + 孤立 RI → 3 clusters ([RI RI] [RI RI] [RI])
+// RI x5: JP+US flags + isolated RI -> 3 clusters ([RI RI] [RI RI] [RI])
 test "graphemes: RI x5" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}\u{1F1F8}\u{1F1E6}")
   inspect(g.length(), content="3")
 }
 
 // ============================================================
-// A. op_get 境界値テスト
+// A. op_get boundary value tests
 // ============================================================
 
 ///|
@@ -126,11 +126,11 @@ test "graphemes: op_get last index" {
 }
 
 // ============================================================
-// B. パニックテスト — op_get の範囲外アクセス
+// B. Panic tests -- op_get out-of-range access
 // ============================================================
 
 ///|
-// 負のインデックスでパニック
+// Panic on negative index
 test "panic op_get negative index" {
   let g = graphemes("ABC")
   let _ = g[-1]
@@ -138,7 +138,7 @@ test "panic op_get negative index" {
 }
 
 ///|
-// length() 以上のインデックスでパニック
+// Panic on index >= length()
 test "panic op_get out of range" {
   let g = graphemes("ABC")
   let _ = g[3]
@@ -146,7 +146,7 @@ test "panic op_get out of range" {
 }
 
 ///|
-// 空文字列に対する op_get でパニック
+// Panic on op_get for empty string
 test "panic op_get on empty" {
   let g = graphemes("")
   let _ = g[0]
@@ -154,7 +154,7 @@ test "panic op_get on empty" {
 }
 
 // ============================================================
-// C. length() の各種ケーステスト
+// C. length() various case tests
 // ============================================================
 
 ///|
@@ -181,7 +181,7 @@ test "graphemes: length of family emoji" {
 }
 
 // ============================================================
-// D. iter() の各種ケーステスト
+// D. iter() various case tests
 // ============================================================
 
 ///|
@@ -208,17 +208,17 @@ test "graphemes: iter collects all clusters" {
 }
 
 // ============================================================
-// E. 特殊文字列テスト
+// E. Special string tests
 // ============================================================
 
 ///|
-// ZWJ 単体は 1 クラスタ
+// Lone ZWJ is 1 cluster
 test "graphemes: lone ZWJ" {
   inspect(graphemes("\u{200D}").length(), content="1")
 }
 
 ///|
-// 非常に長い ASCII 文字列
+// Very long ASCII string
 test "graphemes: long ASCII string" {
   let buf = StringBuilder::new()
   for _i = 0; _i < 1000; _i = _i + 1 {
@@ -229,7 +229,7 @@ test "graphemes: long ASCII string" {
 }
 
 ///|
-// 結合文字の連鎖: 'a' + 10個の combining acute accent (U+0301) = 1 cluster
+// Chain of combining marks: 'a' + 10 combining acute accents (U+0301) = 1 cluster
 test "graphemes: many combining marks" {
   let buf = StringBuilder::new()
   buf.write_char('a')
@@ -241,46 +241,46 @@ test "graphemes: many combining marks" {
 }
 
 ///|
-// CRLF 混在: \r\n(1) + \n(1) + \r(1) = 3 clusters
+// Mixed newlines: \r\n(1) + \n(1) + \r(1) = 3 clusters
 test "graphemes: mixed newlines" {
   let g = graphemes("\r\n\n\r")
   inspect(g.length(), content="3")
 }
 
 ///|
-// 単独 CR は 1 cluster
+// Lone CR is 1 cluster
 test "graphemes: lone CR" {
   inspect(graphemes("\r").length(), content="1")
 }
 
 ///|
-// 単独 LF は 1 cluster
+// Lone LF is 1 cluster
 test "graphemes: lone LF" {
   inspect(graphemes("\n").length(), content="1")
 }
 
 ///|
-// Extend のみ（base 文字なし）は 1 cluster
+// Extend only (no base character) is 1 cluster
 test "graphemes: lone combining mark" {
   inspect(graphemes("\u{0301}").length(), content="1")
 }
 
 ///|
-// keycap sequence: digit + U+FE0F + U+20E3 = 1 cluster
+// Keycap sequence: digit + U+FE0F + U+20E3 = 1 cluster
 test "graphemes: keycap sequence" {
   let g = graphemes("1\u{FE0F}\u{20E3}")
   inspect(g.length(), content="1")
 }
 
 ///|
-// emoji modifier sequence: 👋 + skin tone modifier = 1 cluster
+// Emoji modifier sequence: waving hand + skin tone modifier = 1 cluster
 test "graphemes: emoji modifier sequence" {
   let g = graphemes("\u{1F44B}\u{1F3FD}")
   inspect(g.length(), content="1")
 }
 
 // ============================================================
-// F. graphemes() の不変条件テスト — 全クラスタ連結 == 元文字列
+// F. graphemes() invariant tests -- all clusters concatenated == original string
 // ============================================================
 
 ///|
@@ -329,7 +329,7 @@ test "graphemes: concatenation invariant combining marks" {
 }
 
 ///|
-// length() と iter() のカウントは一致するべき
+// length() and iter() count should match
 test "graphemes: length equals iter count" {
   let inputs = [
     "", "A", "ABC", "\u{1F600}", "\r\n",
