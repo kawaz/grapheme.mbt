@@ -197,6 +197,28 @@ pub impl Hash for GraphemeView with hash_combine(self, hasher) {
 }
 
 ///|
+/// Iterates over grapheme clusters with their UTF-16 byte offsets.
+/// Yields (start_offset, end_offset, cluster) for each grapheme cluster.
+/// Note: For sliced GraphemeViews, offsets refer to positions in the original source string.
+pub fn GraphemeView::grapheme_indices(
+  self : GraphemeView,
+) -> Iter[(Int, Int, StringView)] {
+  let len = self.length()
+  let mut i = 0
+  Iter::new(fn() {
+    if i >= len {
+      None
+    } else {
+      let start = self.boundaries[self.cluster_start + i]
+      let end = self.boundaries[self.cluster_start + i + 1]
+      let cluster = self.source.view(start_offset=start, end_offset=end)
+      i += 1
+      Some((start, end, cluster))
+    }
+  })
+}
+
+///|
 /// Iterates over grapheme clusters in reverse order.
 pub fn GraphemeView::rev_iter(self : GraphemeView) -> Iter[StringView] {
   let mut i = self.length() - 1

@@ -7,5 +7,5 @@
   "license": "MIT",
   "keywords": ["unicode", "grapheme", "segmentation", "text", "uax29", "cluster"],
   "description": "Unicode grapheme cluster segmentation library for MoonBit (UAX #29)",
-  "exclude": ["docs", "tools", ".claude", ".github", ".unicode-version"]
+  "exclude": ["docs", "tools", ".claude", ".github", ".unicode-version", "**/*_test.mbt", "**/*_wbtest.mbt", "**/*_wbbench.mbt"]
 }

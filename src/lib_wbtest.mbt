@@ -649,3 +649,123 @@ test "GraphemeView: slice then rev_iter" {
     #|["D", "C", "B"]
   inspect(result, content=expected)
 }
+
+// ============================================================
+// R. op_as_view() open-ended slice tests (coverage for None branches)
+// ============================================================
+
+///|
+test "GraphemeView: slice open end (g[1:])" {
+  let g = graphemes("ABCDE")
+  let sliced = g[1:]
+  inspect(sliced.length(), content="4")
+  inspect(sliced[0].to_string(), content="B")
+}
+
+///|
+test "GraphemeView: slice open start (g[:3])" {
+  let g = graphemes("ABCDE")
+  let sliced = g[:3]
+  inspect(sliced.length(), content="3")
+  inspect(sliced[0].to_string(), content="A")
+}
+
+///|
+test "GraphemeView: slice both open (g[:])" {
+  let g = graphemes("ABCDE")
+  let sliced = g[:]
+  inspect(sliced.length(), content="5")
+}
+
+///|
+test "GraphemeView: slice negative start clamped to 0" {
+  let g = graphemes("ABCDE")
+  let sliced = g[-2:3]
+  inspect(sliced.length(), content="3")
+  inspect(sliced[0].to_string(), content="A")
+}
+
+///|
+test "GraphemeView: slice start beyond length clamped" {
+  let g = graphemes("ABCDE")
+  let sliced = g[10:20]
+  inspect(sliced.length(), content="0")
+}
+
+///|
+test "GraphemeView: slice end beyond length clamped" {
+  let g = graphemes("ABCDE")
+  let sliced = g[2:100]
+  inspect(sliced.length(), content="3")
+  inspect(sliced[0].to_string(), content="C")
+}
+
+///|
+test "GraphemeView: slice end less than start clamped" {
+  let g = graphemes("ABCDE")
+  let sliced = g[3:1]
+  inspect(sliced.length(), content="0")
+}
+
+// ============================================================
+// S. grapheme_indices() tests
+// ============================================================
+
+///|
+test "GraphemeView: grapheme_indices ASCII" {
+  let g = graphemes("ABC")
+  let offsets : Array[(Int, Int)] = []
+  for entry in g.grapheme_indices() {
+    offsets.push((entry.0, entry.1))
+  }
+  // ASCII: 各文字は1コードユニット
+  inspect(offsets, content="[(0, 1), (1, 2), (2, 3)]")
+}
+
+///|
+test "GraphemeView: grapheme_indices emoji" {
+  let g = graphemes("A\u{1F600}B")
+  let offsets : Array[(Int, Int)] = []
+  for entry in g.grapheme_indices() {
+    offsets.push((entry.0, entry.1))
+  }
+  // 😀 はサロゲートペアで2コードユニット
+  inspect(offsets, content="[(0, 1), (1, 3), (3, 4)]")
+}
+
+///|
+test "GraphemeView: grapheme_indices empty" {
+  let g = graphemes("")
+  let offsets : Array[(Int, Int)] = []
+  for entry in g.grapheme_indices() {
+    offsets.push((entry.0, entry.1))
+  }
+  inspect(offsets, content="[]")
+}
+
+///|
+test "GraphemeView: grapheme_indices sliced" {
+  let g = graphemes("ABCDE")
+  let sliced = g[1:3]
+  let offsets : Array[(Int, Int)] = []
+  for entry in sliced.grapheme_indices() {
+    offsets.push((entry.0, entry.1))
+  }
+  // スライスされた場合、オフセットは元の文字列内の位置
+  inspect(offsets, content="[(1, 2), (2, 3)]")
+}
+
+///|
+test "GraphemeView: grapheme_indices cluster content" {
+  let g = graphemes("A\u{1F600}B")
+  let clusters : Array[String] = []
+  for entry in g.grapheme_indices() {
+    clusters.push(entry.2.to_string())
+  }
+  inspect(
+    clusters,
+    content=(
+      #|["A", "😀", "B"]
+    ),
+  )
+}
