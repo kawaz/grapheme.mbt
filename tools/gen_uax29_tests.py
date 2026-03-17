@@ -14,7 +14,7 @@ import sys
 import urllib.request
 from pathlib import Path
 
-UNICODE_VERSION = "16.0.0"
+UNICODE_VERSION = (Path(__file__).resolve().parent.parent / ".unicode-version").read_text().strip()
 TEST_DATA_URL = f"https://www.unicode.org/Public/{UNICODE_VERSION}/ucd/auxiliary/GraphemeBreakTest.txt"
 
 SCRIPT_DIR = Path(__file__).resolve().parent

@@ -78,3 +78,31 @@ fn check_boundary(
   // GB999: Any ÷ Any
   true
 }
+
+///|
+/// 絵文字 ZWJ シーケンスの状態遷移
+fn next_emoji_state(state : EmojiState, cur_gcb : GCBCategory) -> EmojiState {
+  if cur_gcb == Extended_Pictographic {
+    ES_EP_Seen
+  } else if state == ES_EP_Seen && cur_gcb == Extend {
+    ES_EP_Seen
+  } else if state == ES_EP_Seen && cur_gcb == ZWJ {
+    ES_EP_Extend_ZWJ
+  } else {
+    ES_None
+  }
+}
+
+///|
+/// InCB Conjunct の状態遷移
+fn next_incb_state(state : InCBState, cur_gcb : GCBCategory, cp : Int) -> InCBState {
+  if cur_gcb == InCB_Consonant {
+    IC_Consonant_Seen
+  } else if state != IC_None && is_incb_linker(cp) {
+    IC_Consonant_Linker_Seen
+  } else if state != IC_None && is_incb_extend(cp) {
+    state
+  } else {
+    IC_None
+  }
+}

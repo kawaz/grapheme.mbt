@@ -19,7 +19,7 @@ import sys
 import urllib.request
 from pathlib import Path
 
-UNICODE_VERSION = "16.0.0"
+UNICODE_VERSION = (Path(__file__).resolve().parent.parent / ".unicode-version").read_text().strip()
 BASE_URL = f"https://www.unicode.org/Public/{UNICODE_VERSION}/ucd"
 
 DATA_FILES = {

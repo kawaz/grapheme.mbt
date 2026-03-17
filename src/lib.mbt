@@ -28,33 +28,13 @@ pub fn graphemes(s : String) -> GraphemeView {
       boundaries.push(offset)
     }
     // 状態更新
-    // ri_count
     ri_count = if cur_gcb == Regional_Indicator { ri_count + 1 } else { 0 }
-    // emoji_state
-    emoji_state = if cur_gcb == Extended_Pictographic {
-      // GB11 が成立した場合（ES_EP_Extend_ZWJ && cur == EP）も新しいEP列の開始
-      ES_EP_Seen
-    } else if emoji_state == ES_EP_Seen && cur_gcb == Extend {
-      ES_EP_Seen // Extend を跨いで維持
-    } else if emoji_state == ES_EP_Seen && cur_gcb == ZWJ {
-      ES_EP_Extend_ZWJ
-    } else {
-      ES_None
-    }
-    // incb_state
-    incb_state = if cur_gcb == InCB_Consonant {
-      // GB9c が成立した場合も新しい Consonant 列の開始
-      IC_Consonant_Seen
-    } else if incb_state != IC_None && is_incb_linker(cp) {
-      IC_Consonant_Linker_Seen
-    } else if incb_state != IC_None && is_incb_extend(cp) {
-      incb_state // 維持
-    } else {
-      IC_None
-    }
+    emoji_state = next_emoji_state(emoji_state, cur_gcb)
+    incb_state = next_incb_state(incb_state, cur_gcb, cp)
     // prev_gcb 更新
     prev_gcb = Some(cur_gcb)
-    // UTF-16 オフセットを進める
+    // Design rationale: MoonBit の String は内部的に UTF-16 エンコーディング。
+    // BMP (U+0000..U+FFFF) は 1 コードユニット、それ以上はサロゲートペアで 2 コードユニット。
     offset = offset + (if cp >= 0x10000 { 2 } else { 1 })
   }
   // GB2: Any ÷ eot — 文字列末尾
