@@ -2,16 +2,24 @@ English | [日本語](README-ja.md)
 
 # unicodegrapheme
 
-Unicode grapheme cluster segmentation library for MoonBit.
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Unicode 16.0.0](https://img.shields.io/badge/Unicode-16.0.0-blue.svg)](https://unicode.org/versions/Unicode16.0.0/)
+[![UAX #29 compliant](https://img.shields.io/badge/UAX%20%2329-compliant-brightgreen.svg)](https://unicode.org/reports/tr29/)
+
+`"👨‍👩‍👧‍👦".length()` returns 11 in MoonBit — this library makes it return 1.
 
 ## Overview
 
 MoonBit's String uses UTF-16 internal representation, so `length()` and `str[i]` operate at the UTF-16 code unit level.
 This library provides APIs for safely manipulating strings at the grapheme cluster level, based on UAX #29 (Unicode Text Segmentation).
 
-## Status
+| Layer | Problem | Solution |
+|-------|---------|----------|
+| L1: UTF-16 encoding | `str[i]` operates at code unit level | MoonBit core `iter()` |
+| **L2: Grapheme cluster** | Composite emoji span multiple code points | **This library** |
+| L3: Display width | Full-width / half-width display widths | `rami3l/unicodewidth` |
 
-**UAX #29 compliant grapheme cluster segmentation is fully implemented**. All GB rules (GB3-GB13, GB999) from Unicode 16.0.0 are implemented as a state machine, passing all 1,093 official test cases.
+All GB rules (GB3-GB13, GB999) from Unicode 16.0.0 are implemented as a state machine, passing all 1,093 official test cases.
 
 ## Install
 

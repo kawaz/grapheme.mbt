@@ -2,16 +2,24 @@
 
 # unicodegrapheme
 
-Unicode grapheme cluster segmentation library for MoonBit.
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Unicode 16.0.0](https://img.shields.io/badge/Unicode-16.0.0-blue.svg)](https://unicode.org/versions/Unicode16.0.0/)
+[![UAX #29 compliant](https://img.shields.io/badge/UAX%20%2329-compliant-brightgreen.svg)](https://unicode.org/reports/tr29/)
+
+MoonBit で `"👨‍👩‍👧‍👦".length()` は 11 を返す — 本ライブラリを使えば正しく 1 を返す。
 
 ## Overview
 
 MoonBit の String は UTF-16 内部表現のため、`length()` や `str[i]` は UTF-16 コードユニット単位で動作する。
 本ライブラリは UAX #29 (Unicode Text Segmentation) に基づき、文字列を grapheme cluster 単位で安全に操作する API を提供する。
 
-## Status
+| レイヤー | 問題 | 解決 |
+|----------|------|------|
+| L1: UTF-16 encoding | `str[i]` がコードユニット単位 | MoonBit core の `iter()` |
+| **L2: Grapheme cluster** | 合成絵文字が複数コードポイント | **本ライブラリ** |
+| L3: Display width | 全角/半角の表示幅 | `rami3l/unicodewidth` |
 
-**UAX #29 準拠の grapheme cluster 分割を実装済み**。Unicode 16.0.0 の全 GB ルール（GB3〜GB13, GB999）をステートマシンで実装し、公式テストデータ全 1,093 件をパスしている。
+Unicode 16.0.0 の全 GB ルール（GB3〜GB13, GB999）をステートマシンで実装し、公式テストデータ全 1,093 件をパス済み。
 
 ## Install
 
