@@ -30,9 +30,13 @@ moon add kawaz/unicodegrapheme
 ## Usage
 
 ```moonbit
-// Basic: split and access by grapheme cluster
+// Correct grapheme cluster counting
+let family = @unicodegrapheme.graphemes("👨‍👩‍👧‍👦")
+println(family.length())  // 1
+
+// Split, access, and slice
 let view = @unicodegrapheme.graphemes("Hello🇯🇵World")
-println(view.length())  // 11 (number of grapheme clusters)
+println(view.length())  // 11 (H,e,l,l,o,🇯🇵,W,o,r,l,d)
 println(view[5].to_string())  // "🇯🇵"
 println(view[1:3].to_string())  // "el" (slice)
 
@@ -48,6 +52,8 @@ let first = @unicodegrapheme.grapheme_iter("very long text...").head()
 ## API
 
 [API Documentation](https://mooncakes.io/docs/kawaz/unicodegrapheme)
+
+> **Note:** `==` comparison is based on code point sequences. Unicode normalization (NFC/NFD) is not considered, so precomposed and decomposed forms of the same character are treated as different GraphemeViews.
 
 ## Roadmap
 

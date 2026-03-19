@@ -30,9 +30,13 @@ moon add kawaz/unicodegrapheme
 ## Usage
 
 ```moonbit
-// 基本: grapheme cluster 単位で分割・アクセス
+// grapheme cluster 単位で正しくカウント
+let family = @unicodegrapheme.graphemes("👨‍👩‍👧‍👦")
+println(family.length())  // 1
+
+// 分割・アクセス・スライス
 let view = @unicodegrapheme.graphemes("Hello🇯🇵World")
-println(view.length())  // 11 (grapheme cluster 数)
+println(view.length())  // 11 (H,e,l,l,o,🇯🇵,W,o,r,l,d)
 println(view[5].to_string())  // "🇯🇵"
 println(view[1:3].to_string())  // "el" (スライス)
 
@@ -48,6 +52,8 @@ let first = @unicodegrapheme.grapheme_iter("very long text...").head()
 ## API
 
 [API ドキュメント](https://mooncakes.io/docs/kawaz/unicodegrapheme)
+
+> **Note:** `==` 比較はコードポイント列で行います。Unicode 正規化（NFC/NFD）は考慮しないため、`"が"` (U+304C) と `"か" + "゙"` (U+304B U+3099) は異なる GraphemeView として扱われます。
 
 ## Roadmap
 

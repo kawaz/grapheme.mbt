@@ -275,19 +275,13 @@ test "next_incb_state: IC_Consonant_Linker_Seen + InCB_Consonant -> IC_Consonant
 ///|
 // GB5: Any ÷ LF (explicit test for LF, not just Control)
 test "check_boundary: GB5 Any÷LF" {
-  inspect(
-    check_boundary(Other, LF, 0, ES_None, IC_None),
-    content="true",
-  )
+  inspect(check_boundary(Other, LF, 0, ES_None, IC_None), content="true")
 }
 
 ///|
 // GB5: Any ÷ CR
 test "check_boundary: GB5 Any÷CR" {
-  inspect(
-    check_boundary(Other, CR, 0, ES_None, IC_None),
-    content="true",
-  )
+  inspect(check_boundary(Other, CR, 0, ES_None, IC_None), content="true")
 }
 
 ///|
