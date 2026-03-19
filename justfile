@@ -47,5 +47,18 @@ coverage:
 coverage-html:
     moon coverage analyze -- -f html
 
+# Regenerate GCB tables from Unicode data
+gen-tables:
+    python3 tools/gen_gcb_table.py
+    moon fmt
+
+# Regenerate UAX #29 official tests
+gen-tests:
+    python3 tools/gen_uax29_tests.py
+    moon fmt
+
+# Regenerate all generated files
+gen: gen-tables gen-tests
+
 # Pre-release check
 release-check: fmt-check check info test
