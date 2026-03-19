@@ -33,61 +33,7 @@ for cluster in view.iter() {
 
 ## API
 
-### `graphemes(s: String) -> GraphemeView`
-
-文字列を grapheme cluster 単位で分割した `GraphemeView` を返す。文字列全体を事前走査する（O(n) 前処理）。遅延評価には `grapheme_iter()` を使用。
-
-### `grapheme_iter(s: String) -> Iter[StringView]`
-
-遅延 grapheme cluster イテレータ。文字列全体を前処理せず、1クラスタずつ返す。長い文字列の先頭数クラスタだけ必要な場合に最適。ランダムアクセスや繰り返しイテレーションには `graphemes()` を使用。
-
-### `GraphemeView::length() -> Int`
-
-grapheme cluster の数を返す。
-
-### `GraphemeView::op_get(i: Int) -> StringView`
-
-i 番目の grapheme cluster を `StringView` として返す。ゼロコピー。
-
-### `GraphemeView::get(i: Int) -> StringView?`
-
-i 番目の grapheme cluster を安全に取得する。範囲外なら `None` を返す。
-
-### `GraphemeView::iter() -> Iter[StringView]`
-
-grapheme cluster を順にイテレートする。`for cluster in view { ... }` でも使用可能。
-
-### `GraphemeView::is_empty() -> Bool`
-
-grapheme cluster が0個かどうかを返す。
-
-### `GraphemeView::op_as_view(start?: Int, end?: Int) -> GraphemeView`
-
-スライス操作。`view[1:3]` 構文をサポート。指定範囲の新しい `GraphemeView` を返す。
-
-### `GraphemeView::iter2() -> Iter2[Int, StringView]`
-
-インデックス付きイテレーション。`for (i, cluster) in view { ... }` をサポート。
-
-### `GraphemeView::rev_iter() -> Iter[StringView]`
-
-grapheme cluster を逆順にイテレートする。
-
-### `GraphemeView::to_string() -> String`
-
-このビューの文字列内容を返す。スライスされている場合は部分文字列を返す。
-
-### `GraphemeView::grapheme_indices() -> Iter[(Int, Int, StringView)]`
-
-UTF-16 オフセット付きで grapheme cluster をイテレートする。`(start_offset, end_offset, cluster)` を返す。
-
-### `impl Eq for GraphemeView`
-
-等値比較。2つの `GraphemeView` が同じクラスタ数で、各クラスタの文字列内容が一致する場合に `true` を返す。`==` 演算子をサポート。
-
-### `impl Hash for GraphemeView`
-
-ハッシュ対応。等しい `GraphemeView` は同じハッシュ値を返す。
+[API ドキュメント](https://mooncakes.io/docs/kawaz/unicodegrapheme)
 
 ## Roadmap
 
@@ -96,8 +42,10 @@ UTF-16 オフセット付きで grapheme cluster をイテレートする。`(st
 - [x] 合成絵文字（ZWJ シーケンス、国旗、肌色修飾子）対応
 - [x] mooncakes.io 公開
 - [x] ASCII fast path 最適化
-- [x] 安全アクセス (`get`)、`Show` trait、`is_empty`、`to_string`
+- [x] 安全アクセス (`get`)、`Show`/`Eq`/`Hash` trait、`is_empty`、`to_string`
 - [x] スライス操作（`view[1:3]`）
+- [x] イテレーション拡充（`rev_iter`、`iter2`、`grapheme_indices`）
+- [x] 遅延評価イテレータ `grapheme_iter()` — early-break 時に最大 64x 高速
 
 ## Unicode Version
 

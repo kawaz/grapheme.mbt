@@ -33,61 +33,7 @@ for cluster in view.iter() {
 
 ## API
 
-### `graphemes(s: String) -> GraphemeView`
-
-Returns a `GraphemeView` that splits the string into grapheme cluster units. Scans the entire string upfront (O(n) preprocessing). For lazy evaluation, use `grapheme_iter()` instead.
-
-### `grapheme_iter(s: String) -> Iter[StringView]`
-
-Lazy grapheme cluster iterator. Yields clusters one at a time without preprocessing the entire string. Ideal when you only need the first few clusters of a long string. For random access or repeated iteration, use `graphemes()` instead.
-
-### `GraphemeView::length() -> Int`
-
-Returns the number of grapheme clusters.
-
-### `GraphemeView::op_get(i: Int) -> StringView`
-
-Returns the i-th grapheme cluster as a `StringView`. Zero-copy.
-
-### `GraphemeView::get(i: Int) -> StringView?`
-
-Safe access to the i-th grapheme cluster. Returns `None` if out of range.
-
-### `GraphemeView::iter() -> Iter[StringView]`
-
-Iterates over grapheme clusters in order. Supports `for cluster in view { ... }`.
-
-### `GraphemeView::is_empty() -> Bool`
-
-Returns `true` if there are no grapheme clusters.
-
-### `GraphemeView::op_as_view(start?: Int, end?: Int) -> GraphemeView`
-
-Slice operation. Supports `view[1:3]` syntax. Returns a new `GraphemeView` for the specified range.
-
-### `GraphemeView::iter2() -> Iter2[Int, StringView]`
-
-Indexed iteration. Supports `for (i, cluster) in view { ... }`.
-
-### `GraphemeView::rev_iter() -> Iter[StringView]`
-
-Reverse iteration over grapheme clusters.
-
-### `GraphemeView::to_string() -> String`
-
-Returns the string content of this view. Returns a substring if the view has been sliced.
-
-### `GraphemeView::grapheme_indices() -> Iter[(Int, Int, StringView)]`
-
-Iterates over grapheme clusters with their UTF-16 byte offsets. Yields `(start_offset, end_offset, cluster)`.
-
-### `impl Eq for GraphemeView`
-
-Equality comparison. Two `GraphemeView`s are equal if they have the same number of clusters and each corresponding cluster has the same string content. Supports `==` operator.
-
-### `impl Hash for GraphemeView`
-
-Hash support. Equal `GraphemeView`s produce equal hashes. Can be used as `HashMap` keys.
+[API Documentation](https://mooncakes.io/docs/kawaz/unicodegrapheme)
 
 ## Roadmap
 
@@ -96,8 +42,10 @@ Hash support. Equal `GraphemeView`s produce equal hashes. Can be used as `HashMa
 - [x] Composite emoji support (ZWJ sequences, flags, skin tone modifiers)
 - [x] Publish to mooncakes.io
 - [x] ASCII fast path optimization
-- [x] Safe access (`get`), `Show` trait, `is_empty`, `to_string`
+- [x] Safe access (`get`), `Show`/`Eq`/`Hash` traits, `is_empty`, `to_string`
 - [x] Slice operations (`view[1:3]`)
+- [x] Extended iteration (`rev_iter`, `iter2`, `grapheme_indices`)
+- [x] Lazy iterator `grapheme_iter()` — up to 64x faster for early-break use cases
 
 ## Unicode Version
 
