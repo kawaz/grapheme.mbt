@@ -3,7 +3,7 @@ English | [日本語](README-ja.md)
 # unicodegrapheme
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Unicode 16.0.0](https://img.shields.io/badge/Unicode-16.0.0-blue.svg)](https://unicode.org/versions/Unicode16.0.0/)
+[![Unicode 17.0.0](https://img.shields.io/badge/Unicode-17.0.0-blue.svg)](https://unicode.org/versions/Unicode17.0.0/)
 [![UAX #29 compliant](https://img.shields.io/badge/UAX%20%2329-compliant-brightgreen.svg)](https://unicode.org/reports/tr29/)
 
 `"👨‍👩‍👧‍👦".length()` returns 11 in MoonBit — this library makes it return 1.
@@ -11,7 +11,7 @@ English | [日本語](README-ja.md)
 ## Overview
 
 MoonBit's String uses UTF-16 internal representation, so `length()` and `str[i]` operate at the UTF-16 code unit level.
-This library provides APIs for safely manipulating strings at the grapheme cluster level, based on UAX #29 (Unicode Text Segmentation).
+This library provides APIs for safely manipulating strings at the grapheme cluster level (the unit humans perceive as a single "character"), based on [UAX #29](https://unicode.org/reports/tr29/) (Unicode Text Segmentation).
 
 | Layer | Problem | Solution |
 |-------|---------|----------|
@@ -19,7 +19,7 @@ This library provides APIs for safely manipulating strings at the grapheme clust
 | **L2: Grapheme cluster** | Composite emoji span multiple code points | **This library** |
 | L3: Display width | Full-width / half-width display widths | `rami3l/unicodewidth` |
 
-All GB rules (GB3-GB13, GB999) from Unicode 16.0.0 are implemented as a state machine, passing all 1,093 official test cases.
+All GB rules (GB3-GB13, GB999) from Unicode 17.0.0 are implemented as a state machine, passing all 766 official test cases.
 
 ## Install
 
@@ -63,7 +63,7 @@ let first = @unicodegrapheme.grapheme_iter("very long text...").head()
 
 ## Unicode Version
 
-Target: Unicode 16.0.0
+Target: Unicode 17.0.0
 
 ## License
 

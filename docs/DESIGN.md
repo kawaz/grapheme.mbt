@@ -30,7 +30,7 @@ GraphemeView {
 
 ### UAX #29 Implementation Strategy
 
-1. `Grapheme_Cluster_Break` property table -- generated from Unicode 16.0.0 `GraphemeBreakProperty.txt`
+1. `Grapheme_Cluster_Break` property table -- generated from Unicode 17.0.0 `GraphemeBreakProperty.txt`
 2. `Extended_Pictographic` property -- generated from `emoji-data.txt`
 3. Table generation -- Python or Rust script auto-generates `.mbt` files
 4. State machine -- implements UAX #29 GB rules as a state transition table
@@ -46,7 +46,7 @@ GraphemeView {
 ### Phased Implementation
 
 1. **Phase 0 (complete)**: Provisional code point-level implementation. Surrogate pairs handled correctly.
-2. **Phase 1 (complete)**: Full UAX #29 GB rule implementation -- table generation, state machine, all 1,093 official test cases passing.
+2. **Phase 1 (complete)**: Full UAX #29 GB rule implementation -- table generation, state machine, all 766 official test cases passing.
 3. **Phase 2 (partial)**: Performance optimization -- ASCII fast path implemented. Two-level lookup table and compressed bitset deferred (current binary search is sufficiently fast).
 4. **Phase 3 (complete)**: Additional APIs -- slice (`op_as_view`), reverse iteration (`rev_iter`), `iter2`, `grapheme_indices`, `Show`/`Eq`/`Hash` traits, `get`/`is_empty`/`to_string`.
 
@@ -54,7 +54,7 @@ GraphemeView {
 
 ## Phase 1 Detailed Design
 
-> **Status: Phase 1 is complete.** All UAX #29 GB rules are implemented, tables are generated from Unicode 16.0.0 data, and all 1,093 official test cases pass.
+> **Status: Phase 1 is complete.** All UAX #29 GB rules are implemented, tables are generated from Unicode 17.0.0 data, and all 766 official test cases pass.
 
 ### 1. Architecture
 
@@ -69,7 +69,7 @@ src/
   lib_wbtest.mbt       # White-box tests (existing + additions)
   gcb_wbtest.mbt       # White-box tests: gcb_category() tests
   segmenter_wbtest.mbt # White-box tests: check_boundary() individual GB rule tests
-  uax29_test.mbt       # Black-box tests: all 1,093 official test cases
+  uax29_test.mbt       # Black-box tests: all 766 official test cases
 tools/
   gen_gcb_table.py     # Table generation script
   gen_uax29_tests.py   # Test code generation from official test data
@@ -175,9 +175,9 @@ Invariants:
 #### Generation Script `tools/gen_gcb_table.py`
 
 **Input data:**
-- `GraphemeBreakProperty.txt` (Unicode 16.0.0) -- GCB properties
-- `emoji-data.txt` (Unicode 16.0.0) -- Extended_Pictographic property
-- `DerivedCoreProperties.txt` (Unicode 16.0.0) -- InCB properties
+- `GraphemeBreakProperty.txt` (Unicode 17.0.0) -- GCB properties
+- `emoji-data.txt` (Unicode 17.0.0) -- Extended_Pictographic property
+- `DerivedCoreProperties.txt` (Unicode 17.0.0) -- InCB properties
 
 **Processing:**
 1. Parse each data file and build code point -> property mappings
@@ -186,7 +186,7 @@ Invariants:
    - No GCB (= Other equivalent) + Extended_Pictographic=Yes -> `Extended_Pictographic`
    - No GCB (= Other equivalent) + InCB=Consonant -> `InCB_Consonant`
    - **Safety check:** If a code point with GCB != Other is also assigned InCB=Consonant, the generation script outputs a warning and prioritizes the GCB category. This prevents breaking GB4/5/9a/9b evaluation.
-   - **Note:** In Unicode 16.0.0, there are 0 overlaps between InCB=Consonant and GCB!=Other (Rust unicode-segmentation uses the same approach). If collisions occur in future Unicode versions, moving InCB_Consonant to an auxiliary table will be considered.
+   - **Note:** In Unicode 17.0.0, there are 0 overlaps between InCB=Consonant and GCB!=Other (Rust unicode-segmentation uses the same approach). If collisions occur in future Unicode versions, moving InCB_Consonant to an auxiliary table will be considered.
 3. Merge adjacent ranges with the same category
 4. Sort by code point ascending
 
@@ -201,8 +201,8 @@ The script auto-downloads to the `tools/data/` directory (if not present).
 
 #### Generation Script `tools/gen_uax29_tests.py`
 
-**Input:** `GraphemeBreakTest.txt` (Unicode 16.0.0)
-**Output:** `src/uax29_test.mbt` -- 1,093 test functions
+**Input:** `GraphemeBreakTest.txt` (Unicode 17.0.0)
+**Output:** `src/uax29_test.mbt` -- 766 test functions
 
 Parses the `÷` (boundary) / `×` (no boundary) notation from the test data,
 outputting each line as a `test "UAX29/NNN: ..."` format.
@@ -325,7 +325,7 @@ Public API (GraphemeView, length, op_get, iter) remains unchanged.
 
 #### 5.1 All Official Test Data (auto-generated)
 
-`tools/gen_uax29_tests.py` outputs all 1,093 cases from `GraphemeBreakTest.txt`
+`tools/gen_uax29_tests.py` outputs all 766 cases from `GraphemeBreakTest.txt`
 to `src/uax29_test.mbt`. Each test verifies grapheme cluster boundary positions.
 
 ```moonbit
@@ -461,7 +461,7 @@ Test-first approach is followed throughout all steps.
 
 1. Implement `tools/gen_uax29_tests.py`
 2. Generate `src/uax29_test.mbt`
-3. Run all 1,093 cases with `moon test`
+3. Run all 766 cases with `moon test`
 4. Investigate and fix any failing tests
 
 #### Step 10: Final Review and Cleanup

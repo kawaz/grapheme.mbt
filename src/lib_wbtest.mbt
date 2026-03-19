@@ -1657,12 +1657,12 @@ test "graphemes: Tibetan head mark" {
 
 ///|
 // Myanmar: က + ္ + က (kinzi-like conjunct)
-// U+1000(ka)=Other, U+1039(virama)=Extend, U+1000(ka)=Other
-// Myanmar is NOT in InCB, so virama is just Extend.
-// GB9 (× Extend): ka + virama = 1 cluster, then ka = new cluster = 2 clusters
+// U+1000(ka)=InCB_Consonant, U+1039(virama)=InCB Linker, U+1000(ka)=InCB_Consonant
+// Since Unicode 17.0.0, Myanmar is in InCB.
+// GB9c: Consonant + Linker + Consonant = 1 cluster
 test "graphemes: Myanmar conjunct" {
   let g = graphemes("\u{1000}\u{1039}\u{1000}")
-  inspect(g.length(), content="2")
+  inspect(g.length(), content="1")
 }
 
 ///|
