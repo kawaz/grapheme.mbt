@@ -17,12 +17,15 @@ MoonBit で Unicode grapheme cluster 単位の文字列操作を提供する。
 GraphemeView {
   source: String              // 元の文字列（所有）
   boundaries: Array[Int]      // grapheme cluster 境界の UTF-16 オフセット
+  cluster_start: Int          // boundaries 内の最初のクラスタインデックス（inclusive）
+  cluster_end: Int            // boundaries 内の末尾クラスタインデックス（exclusive）
 }
 // 不変条件:
-//   空文字列: boundaries == [], length() == 0
+//   空文字列: boundaries == [], cluster_start == 0, cluster_end == 0
 //   非空文字列: boundaries[0] == 0, boundaries[last] == source.length()
-//   length() == max(0, boundaries.length() - 1)
-//   op_get(i) は boundaries[i]..boundaries[i+1] でスライス
+//   length() == cluster_end - cluster_start
+//   op_get(i) は boundaries[cluster_start + i]..boundaries[cluster_start + i + 1] でスライス
+//   op_as_view によるスライスは cluster_start/cluster_end を調整するだけで boundaries はコピーしない
 ```
 
 ### UAX #29 実装方針
@@ -59,10 +62,10 @@ GraphemeView {
 
 ```
 src/
-  lib.mbt              # GraphemeView 構造体、graphemes()、公開 API（既存）
+  lib.mbt              # GraphemeView 構造体、graphemes()、grapheme_iter()、公開 API
   gcb.mbt              # GCBCategory enum 定義、gcb_category() ルックアップ関数
   gcb_table.mbt        # 自動生成: GCBレンジテーブル（GCB_TABLE）
-  segmenter.mbt        # check_boundary(): ペアルール + 状態追跡によるセグメンテーション
+  segmenter.mbt        # SegmenterState, check_boundary(): ペアルール + 状態追跡
   lib_wbtest.mbt       # ホワイトボックステスト（既存 + 追加）
   gcb_wbtest.mbt       # ホワイトボックステスト: gcb_category() のテスト
   segmenter_wbtest.mbt # ホワイトボックステスト: check_boundary() の個別GBルールテスト

@@ -242,6 +242,17 @@ def main():
     print(
         f"  InCB_Consonant applied: {incb_consonant_applied}, warned: {incb_consonant_warned}"
     )
+    if incb_consonant_warned > 0:
+        print(
+            f"\nERROR: {incb_consonant_warned} InCB=Consonant code point(s) overlap with GCB != Other."
+        )
+        print(
+            "  This means InCB_Consonant cannot be merged into the main GCB table."
+        )
+        print(
+            "  Consider moving InCB_Consonant to an auxiliary table (see DESIGN.md)."
+        )
+        sys.exit(1)
 
     # 5. レンジに変換してマージ
     print("\nBuilding ranges...")

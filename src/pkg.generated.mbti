@@ -2,6 +2,7 @@
 package "kawaz/unicodegrapheme"
 
 // Values
+pub fn grapheme_iter(String) -> Iter[StringView]
 pub fn graphemes(String) -> GraphemeView
 
 // Errors

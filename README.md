@@ -87,7 +87,7 @@ Equality comparison. Two `GraphemeView`s are equal if they have the same number 
 
 ### `impl Hash for GraphemeView`
 
-Hash support. Equal `GraphemeView`s produce equal hashes. Can be used as `HashMap` keys via `to_string()`.
+Hash support. Equal `GraphemeView`s produce equal hashes. Can be used as `HashMap` keys.
 
 ## Roadmap
 

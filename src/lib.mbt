@@ -16,34 +16,17 @@ pub struct GraphemeView {
 /// For lazy evaluation, use grapheme_iter() instead.
 pub fn graphemes(s : String) -> GraphemeView {
   let boundaries : Array[Int] = []
+  let state = SegmenterState::new()
   let mut offset = 0
-  let mut prev_gcb : GCBCategory? = None
-  let mut ri_count = 0
-  let mut emoji_state : EmojiState = ES_None
-  let mut incb_state : InCBState = IC_None
   for ch in s {
     let cp = ch.to_int()
-    let cur_gcb = gcb_category(cp)
-    // GB1: sot ÷ Any -- first code point is unconditionally a boundary
-    let is_boundary = match prev_gcb {
-      None => true
-      Some(prev) =>
-        check_boundary(prev, cur_gcb, ri_count, emoji_state, incb_state)
-    }
-    if is_boundary {
+    if state.next(cp) {
       boundaries.push(offset)
     }
-    // State updates
-    ri_count = if cur_gcb == Regional_Indicator { ri_count + 1 } else { 0 }
-    emoji_state = next_emoji_state(emoji_state, cur_gcb)
-    incb_state = next_incb_state(incb_state, cur_gcb, cp)
-    // Update prev_gcb
-    prev_gcb = Some(cur_gcb)
-    // Design rationale: MoonBit's String uses UTF-16 encoding internally.
-    // BMP (U+0000..U+FFFF) uses 1 code unit, above that uses surrogate pairs (2 code units).
+    // MoonBit's String uses UTF-16: BMP = 1 code unit, non-BMP = 2 (surrogate pair)
     offset = offset + (if cp >= 0x10000 { 2 } else { 1 })
   }
-  // GB2: Any ÷ eot -- end of string
+  // GB2: Any ÷ eot
   if boundaries.length() > 0 {
     boundaries.push(offset)
   }
@@ -61,14 +44,9 @@ pub fn graphemes(s : String) -> GraphemeView {
 /// Use this when you only need the first few clusters of a long string.
 /// For random access or repeated iteration, use graphemes() instead.
 pub fn grapheme_iter(s : String) -> Iter[StringView] {
-  // Mutable state for the state machine, captured by the closure.
-  // Each call to the closure advances to the next cluster boundary.
   let len = s.length() // UTF-16 code unit count
   let mut offset = 0
-  let mut prev_gcb : GCBCategory? = None
-  let mut ri_count = 0
-  let mut emoji_state : EmojiState = ES_None
-  let mut incb_state : InCBState = IC_None
+  let state = SegmenterState::new()
   let mut cluster_start = 0
   let mut started = false
   let mut done = false
@@ -76,33 +54,20 @@ pub fn grapheme_iter(s : String) -> Iter[StringView] {
     if done {
       return None
     }
-    // Advance through code points until we find the next boundary
     while offset < len {
       // Decode one code point from UTF-16
       let unit = s.at(offset).to_int()
       let (cp, cp_len) = if unit >= 0xD800 && unit <= 0xDBFF && offset + 1 < len {
-        // High surrogate: decode surrogate pair
         let lo = s.at(offset + 1).to_int()
         let decoded = ((unit - 0xD800) * 0x400) + (lo - 0xDC00) + 0x10000
         (decoded, 2)
       } else {
         (unit, 1)
       }
-      let cur_gcb = gcb_category(cp)
-      let is_boundary = match prev_gcb {
-        None => true
-        Some(prev) =>
-          check_boundary(prev, cur_gcb, ri_count, emoji_state, incb_state)
-      }
+      let is_boundary = state.next(cp)
       if is_boundary && started {
-        // Found next boundary: yield the cluster from cluster_start to offset
         let view = s.view(start_offset=cluster_start, end_offset=offset)
-        // Prepare state for next call
         cluster_start = offset
-        ri_count = if cur_gcb == Regional_Indicator { ri_count + 1 } else { 0 }
-        emoji_state = next_emoji_state(emoji_state, cur_gcb)
-        incb_state = next_incb_state(incb_state, cur_gcb, cp)
-        prev_gcb = Some(cur_gcb)
         offset = offset + cp_len
         return Some(view)
       }
@@ -110,14 +75,8 @@ pub fn grapheme_iter(s : String) -> Iter[StringView] {
         cluster_start = offset
         started = true
       }
-      // State updates
-      ri_count = if cur_gcb == Regional_Indicator { ri_count + 1 } else { 0 }
-      emoji_state = next_emoji_state(emoji_state, cur_gcb)
-      incb_state = next_incb_state(incb_state, cur_gcb, cp)
-      prev_gcb = Some(cur_gcb)
       offset = offset + cp_len
     }
-    // End of string: yield the last cluster
     if started {
       done = true
       Some(s.view(start_offset=cluster_start, end_offset=offset))
@@ -258,8 +217,7 @@ pub impl Eq for GraphemeView with equal(self, other) {
     return false
   }
   for i = 0; i < len; i = i + 1 {
-    // Compare StringViews directly (avoids String allocation)
-    if not(self[i] == other[i]) {
+    if self[i] != other[i] {
       return false
     }
   }
@@ -268,9 +226,17 @@ pub impl Eq for GraphemeView with equal(self, other) {
 
 ///|
 /// Implements Hash trait for GraphemeView.
-/// Uses the string content of the view as the hash source, consistent with Eq.
+/// Hashes character content directly without String allocation, consistent with Eq.
 pub impl Hash for GraphemeView with hash_combine(self, hasher) {
-  hasher.combine_string(self.to_string())
+  if self.length() > 0 {
+    let view = self.source.view(
+      start_offset=self.boundaries[self.cluster_start],
+      end_offset=self.boundaries[self.cluster_end],
+    )
+    for ch in view {
+      hasher.combine_int(ch.to_int())
+    }
+  }
 }
 
 ///|
@@ -298,14 +264,14 @@ pub fn GraphemeView::grapheme_indices(
 ///|
 /// Iterates over grapheme clusters in reverse order.
 pub fn GraphemeView::rev_iter(self : GraphemeView) -> Iter[StringView] {
-  let mut i = self.length() - 1
+  let len = self.length()
+  let mut i = len
   Iter::new(fn() {
-    if i < 0 {
+    if i <= 0 {
       None
     } else {
-      let result = self[i]
       i -= 1
-      Some(result)
+      Some(self[i])
     }
   })
 }

@@ -110,3 +110,36 @@ fn next_incb_state(
     IC_None
   }
 }
+
+///|
+/// Encapsulates the UAX #29 grapheme segmentation state machine.
+/// Both graphemes() and grapheme_iter() share this single implementation
+/// to avoid state machine logic duplication.
+priv struct SegmenterState {
+  mut prev_gcb : GCBCategory?
+  mut ri_count : Int
+  mut emoji_state : EmojiState
+  mut incb_state : InCBState
+}
+
+///|
+fn SegmenterState::new() -> SegmenterState {
+  { prev_gcb: None, ri_count: 0, emoji_state: ES_None, incb_state: IC_None }
+}
+
+///|
+/// Feed a code point to the state machine.
+/// Returns true if this code point starts a new grapheme cluster boundary.
+fn SegmenterState::next(self : SegmenterState, cp : Int) -> Bool {
+  let cur_gcb = gcb_category(cp)
+  let is_boundary = match self.prev_gcb {
+    None => true
+    Some(prev) =>
+      check_boundary(prev, cur_gcb, self.ri_count, self.emoji_state, self.incb_state)
+  }
+  self.ri_count = if cur_gcb == Regional_Indicator { self.ri_count + 1 } else { 0 }
+  self.emoji_state = next_emoji_state(self.emoji_state, cur_gcb)
+  self.incb_state = next_incb_state(self.incb_state, cur_gcb, cp)
+  self.prev_gcb = Some(cur_gcb)
+  is_boundary
+}

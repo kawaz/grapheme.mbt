@@ -17,12 +17,15 @@ Access to each cluster is returned as a StringView (zero-copy slice).
 GraphemeView {
   source: String              // original string (owned)
   boundaries: Array[Int]      // UTF-16 offsets of grapheme cluster boundaries
+  cluster_start: Int          // index into boundaries for the first cluster (inclusive)
+  cluster_end: Int            // index into boundaries for the end cluster (exclusive)
 }
 // Invariants:
-//   Empty string: boundaries == [], length() == 0
+//   Empty string: boundaries == [], cluster_start == 0, cluster_end == 0
 //   Non-empty string: boundaries[0] == 0, boundaries[last] == source.length()
-//   length() == max(0, boundaries.length() - 1)
-//   op_get(i) slices from boundaries[i]..boundaries[i+1]
+//   length() == cluster_end - cluster_start
+//   op_get(i) slices from boundaries[cluster_start + i]..boundaries[cluster_start + i + 1]
+//   Slicing via op_as_view adjusts cluster_start/cluster_end without copying boundaries
 ```
 
 ### UAX #29 Implementation Strategy
@@ -59,10 +62,10 @@ GraphemeView {
 
 ```
 src/
-  lib.mbt              # GraphemeView struct, graphemes(), public API (existing)
+  lib.mbt              # GraphemeView struct, graphemes(), grapheme_iter(), public API
   gcb.mbt              # GCBCategory enum definition, gcb_category() lookup function
   gcb_table.mbt        # Auto-generated: GCB range table (GCB_TABLE)
-  segmenter.mbt        # check_boundary(): pair rules + state tracking segmentation
+  segmenter.mbt        # SegmenterState, check_boundary(): pair rules + state tracking
   lib_wbtest.mbt       # White-box tests (existing + additions)
   gcb_wbtest.mbt       # White-box tests: gcb_category() tests
   segmenter_wbtest.mbt # White-box tests: check_boundary() individual GB rule tests
