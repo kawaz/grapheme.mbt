@@ -22,13 +22,19 @@ moon add kawaz/unicodegrapheme
 ## Usage
 
 ```moonbit
+// Basic: split and access by grapheme cluster
 let view = @unicodegrapheme.graphemes("Hello🇯🇵World")
-println(view.length())  // number of grapheme clusters
+println(view.length())  // 7 (number of grapheme clusters)
 println(view[5].to_string())  // "🇯🇵"
+println(view[1:3].to_string())  // "el" (slice)
 
-for cluster in view.iter() {
+// Iteration
+for cluster in view {
   println(cluster)
 }
+
+// Lazy evaluation: fast when you only need the first few clusters
+let first = @unicodegrapheme.grapheme_iter("very long text...").head()
 ```
 
 ## API
