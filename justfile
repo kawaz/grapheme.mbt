@@ -7,6 +7,10 @@ default: check test
 fmt:
     moon fmt
 
+# Check formatting (no changes applied)
+fmt-check:
+    moon fmt --check
+
 # Type check
 check:
     moon check --deny-warn
@@ -35,13 +39,13 @@ test-all:
 bench:
     moon bench
 
-# Coverage summary (terminal output)
+# Coverage summary (runs tests with instrumentation internally)
 coverage:
     moon coverage analyze -- -f summary
 
-# Coverage HTML report
+# Coverage HTML report (runs tests with instrumentation internally)
 coverage-html:
     moon coverage analyze -- -f html
 
 # Pre-release check
-release-check: fmt info check test
+release-check: fmt-check check info test
