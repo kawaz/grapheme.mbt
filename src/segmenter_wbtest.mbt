@@ -271,3 +271,37 @@ test "next_incb_state: IC_Consonant_Linker_Seen + InCB_Consonant -> IC_Consonant
     content="IC_Consonant_Seen",
   )
 }
+
+///|
+// GB5: Any ÷ LF (explicit test for LF, not just Control)
+test "check_boundary: GB5 Any÷LF" {
+  inspect(
+    check_boundary(Other, LF, 0, ES_None, IC_None),
+    content="true",
+  )
+}
+
+///|
+// GB5: Any ÷ CR
+test "check_boundary: GB5 Any÷CR" {
+  inspect(
+    check_boundary(Other, CR, 0, ES_None, IC_None),
+    content="true",
+  )
+}
+
+///|
+// ES_EP_Extend_ZWJ + non-EP → ES_None (reset)
+test "next_emoji_state: ES_EP_Extend_ZWJ + Other -> ES_None" {
+  inspect(next_emoji_state(ES_EP_Extend_ZWJ, Other), content="ES_None")
+}
+
+///|
+// IC_Consonant_Linker_Seen + Extend → state maintained
+test "next_incb_state: IC_Consonant_Linker_Seen + Extend (InCB Extend) -> IC_Consonant_Linker_Seen" {
+  // U+0900 = InCB Extend (Devanagari sign inverted candrabindu)
+  inspect(
+    next_incb_state(IC_Consonant_Linker_Seen, Extend, 0x0900),
+    content="IC_Consonant_Linker_Seen",
+  )
+}

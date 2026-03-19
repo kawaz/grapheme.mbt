@@ -1737,10 +1737,22 @@ test "grapheme_iter: family emoji is 1 cluster" {
 }
 
 ///|
-test "grapheme_iter: matches graphemes()" {
-  // grapheme_iter と graphemes() の結果が一致することを確認
+test "grapheme_iter: matches graphemes() count and content" {
+  // grapheme_iter と graphemes() の結果が要素数・内容ともに一致することを確認
   let inputs = [
-    "Hello", "A\u{1F600}B", "\r\n", "\u{1F1EF}\u{1F1F5}\u{1F1FA}", "",
+    "", "Hello", "A\u{1F600}B", "\r\n", "\u{1F1EF}\u{1F1F5}\u{1F1FA}",
+    // Devanagari conjunct (InCB)
+    "\u{0915}\u{094D}\u{0915}",
+    // Hangul syllable sequence (L+V+T)
+    "\u{1100}\u{1161}\u{11A8}",
+    // Thai with combining marks
+    "\u{0E2A}\u{0E27}\u{0E31}\u{0E2A}\u{0E14}\u{0E35}",
+    // Family emoji ZWJ
+    "\u{1F468}\u{200D}\u{1F469}\u{200D}\u{1F467}\u{200D}\u{1F466}",
+    // Long combining mark sequence
+    "A\u{0300}\u{0301}\u{0302}\u{0303}\u{0304}",
+    // Mixed: ASCII + emoji + flag + Devanagari
+    "Hi\u{1F600}\u{1F1EF}\u{1F1F5}\u{0915}\u{094D}\u{0915}",
   ]
   for input in inputs {
     let g = graphemes(input)
@@ -1749,5 +1761,8 @@ test "grapheme_iter: matches graphemes()" {
       iter_result.push(cluster.to_string())
     }
     assert_eq(g.length(), iter_result.length())
+    for i in 0..<g.length() {
+      assert_eq(g[i].to_string(), iter_result[i])
+    }
   }
 }
