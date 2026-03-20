@@ -77,7 +77,7 @@ let first = @grapheme.grapheme_iter("very long text...").head()
 - `Extended_Pictographic` プロパティ対応
 - 合成絵文字（ZWJ シーケンス、国旗、肌色修飾子）対応
 - mooncakes.io 公開
-- ASCII fast path 最適化
+- 二段ルックアップテーブルによる O(1) プロパティ判定
 - 安全アクセス (`get`)、`Show`/`Eq`/`Hash` trait、`is_empty`、`to_string`
 - スライス操作（`view[1:3]`）
 - イテレーション拡充（`rev_iter`、`iter2`、`grapheme_indices`）

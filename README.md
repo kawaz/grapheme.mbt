@@ -77,7 +77,7 @@ let first = @grapheme.grapheme_iter("very long text...").head()
 - `Extended_Pictographic` property support
 - Composite emoji support (ZWJ sequences, flags, skin tone modifiers)
 - Published on mooncakes.io
-- ASCII fast path optimization
+- Two-level lookup table for O(1) property determination
 - Safe access (`get`), `Show`/`Eq`/`Hash` traits, `is_empty`, `to_string`
 - Slice operations (`view[1:3]`)
 - Extended iteration (`rev_iter`, `iter2`, `grapheme_indices`)

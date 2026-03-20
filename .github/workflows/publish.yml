@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -23,8 +26,8 @@ jobs:
         run: moon test --target all
       - name: Publish
         run: |
+          trap 'rm -f ~/.moon/credentials.json' EXIT
           echo "$MOONCAKES_TOKEN" > ~/.moon/credentials.json
           moon publish
-          rm ~/.moon/credentials.json
         env:
           MOONCAKES_TOKEN: ${{ secrets.MOONCAKES_TOKEN }}

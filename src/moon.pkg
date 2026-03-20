@@ -1,3 +1,7 @@
+// Design rationale: moonbitlang/core/bench is only used in _wbbench.mbt files
+// which are excluded from publish via moon.mod.json "exclude".
+// MoonBit does not yet support a "wbbench" import category in moon.pkg,
+// so bench must remain in the regular import section.
 import {
   "moonbitlang/core/bench",
 }
