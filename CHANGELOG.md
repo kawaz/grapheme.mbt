@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.10.1] - 2026-03-20
+
+### Changed
+- InCB tables (linker/extend) packed to Bytes — JS bundle -41%
+- Bundle size: wasm-gc ~29 KB / js ~67 KB / native ~56 KB
+
 ## [0.10.0] - 2026-03-20
 
 ### Changed
@@ -82,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `rev_iter`, `iter2`
 - 1,093 official UAX #29 test cases passing
 
-[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.1...HEAD
+[0.10.1]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.7.1...v0.8.0
