@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-03-20
+
+### Changed
+- GCB table migrated to two-stage lookup table: O(log n) → O(1) constant time
+- Bundle size reduced 48-72% (wasm-gc ~38 KB, js ~114 KB, native ~139 KB)
+- ASCII fast path removed (unnecessary with O(1) table lookup)
+- README: import instructions, Features section, bundle size, complexity info
+- DESIGN: Phase terminology removed, two-stage table documentation
+
+### Fixed
+- Lone surrogate guard in `grapheme_iter()` UTF-16 decoding
+- GitHub Actions: `permissions` declarations, credentials cleanup with `trap`
+
 ## [0.9.0] - 2026-03-20
 
 ### Changed
@@ -69,7 +82,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `rev_iter`, `iter2`
 - 1,093 official UAX #29 test cases passing
 
-[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/kawaz/grapheme.mbt/compare/v0.7.0...v0.7.1

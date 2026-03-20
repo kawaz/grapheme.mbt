@@ -57,9 +57,7 @@ pub fn grapheme_iter(s : String) -> Iter[StringView] {
     while offset < len {
       // Decode one code point from UTF-16
       let unit = s.at(offset).to_int()
-      let (cp, cp_len) = if unit >= 0xD800 &&
-        unit <= 0xDBFF &&
-        offset + 1 < len {
+      let (cp, cp_len) = if unit >= 0xD800 && unit <= 0xDBFF && offset + 1 < len {
         let lo = s.at(offset + 1).to_int()
         if lo >= 0xDC00 && lo <= 0xDFFF {
           ((unit - 0xD800) * 0x400 + (lo - 0xDC00) + 0x10000, 2)
