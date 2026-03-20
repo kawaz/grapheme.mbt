@@ -46,7 +46,7 @@ GraphemeView {
 ### Implementation Status
 
 - **All UAX #29 GB rules implemented** -- table generation, state machine, all 766 official test cases passing.
-- **Performance optimization** -- ASCII fast path implemented. Two-level lookup table and compressed bitset deferred (current binary search is sufficiently fast).
+- **Performance optimization** -- Two-stage lookup table implemented (O(1) constant time). ASCII fast path removed as it became unnecessary with O(1) table lookup.
 - **API** -- `graphemes()`, `grapheme_iter()` (lazy), slice (`op_as_view`), reverse iteration (`rev_iter`), `iter2`, `grapheme_indices`, `Show`/`Eq`/`Hash` traits, `get`/`is_empty`/`to_string`.
 
 ---
@@ -61,7 +61,7 @@ GraphemeView {
 src/
   lib.mbt              # GraphemeView struct, graphemes(), grapheme_iter(), public API
   gcb.mbt              # GCBCategory enum definition, gcb_category() lookup function
-  gcb_table.mbt        # Auto-generated: GCB range table (GCB_TABLE)
+  gcb_table.mbt        # Auto-generated: GCB two-stage lookup table (gcb_stage1, gcb_stage2)
   segmenter.mbt        # SegmenterState, check_boundary(): pair rules + state tracking
   lib_wbtest.mbt       # White-box tests (existing + additions)
   gcb_wbtest.mbt       # White-box tests: gcb_category() tests
@@ -103,22 +103,28 @@ Design rationale: Extended_Pictographic and InCB_Consonant are merged as indepen
 This allows a single gcb_category() lookup to obtain the information needed for GB11/GB9c,
 eliminating the need for a second lookup into a separate table. Rust unicode-segmentation uses the same approach.
 
-#### Table Encoding
+#### Table Design
 
-The current implementation prioritizes simplicity, using a sorted range array + binary search.
+A two-stage lookup table (4-bit packed) is used, providing O(1) constant time category lookup.
+
+- **Stage1:** 4,352 bytes (`cp >> 8` yields block index)
+- **Stage2:** 14,208 bytes (111 unique blocks x 128 bytes, 4-bit packed)
+- **Total:** 18,560 bytes (18.1 KB)
+- **Deduplication rate:** 97.4% (111 unique out of 4,352 blocks)
 
 ```moonbit
-// Each entry: (range_start, range_end_inclusive, category)
-// Single code points where range_end is unnecessary: start == end
-let gcb_table : FixedArray[(Int, Int, GCBCategory)] = [
-  (0x000A, 0x000A, LF),
-  (0x000D, 0x000D, CR),
-  (0x0000, 0x0009, Control),
-  // ... sorted, approximately 1,200 entries
-]
+// Two-stage table lookup
+// Stage1: cp >> 8 -> block index
+// Stage2: block_idx * 128 + (cp & 0xFF) >> 1 -> 4-bit nibble extraction
+let gcb_stage1 : Bytes = b"..."  // 4,352 bytes
+let gcb_stage2 : Bytes = b"..."  // 14,208 bytes (4-bit packed)
 ```
 
-Code points not present in the table return `Other`.
+Code points not present in the table (nibble value 0) return `Other`.
+
+Design rationale: The initial implementation used sorted range arrays + binary search (O(log n), ~1,200 entries).
+Migration to a two-stage table achieved O(1) constant time lookup. The table size is a compact 18.5 KB,
+with 97.4% block deduplication providing good space efficiency.
 
 #### InCB Auxiliary Tables
 
@@ -189,7 +195,7 @@ Invariants:
 4. Sort by code point ascending
 
 **Output:** `src/gcb_table.mbt`
-- `gcb_table`: main GCB range table
+- `gcb_stage1` / `gcb_stage2`: two-stage lookup table (4-bit packed)
 - `incb_linker_table`: InCB=Linker code point table
 - `incb_extend_table`: InCB=Extend range table
 
@@ -211,9 +217,10 @@ outputting each line as a `test "UAX29/NNN: ..."` format.
 /// Returns the GCB category for a code point.
 /// Returns Other for code points not in the table.
 fn gcb_category(cp : Int) -> GCBCategory {
-  // Binary search on gcb_table
-  // Find entry where cp falls within [range_start, range_end]
-  // Return Other if not found
+  // Two-stage table lookup (O(1) constant time)
+  // stage1[cp >> 8] -> block index
+  // stage2[block_idx * 128 + (cp & 0xFF) >> 1] -> 4-bit nibble extraction
+  // Nibble value 0 is Other
 }
 
 /// Returns whether a code point is InCB=Linker.
@@ -382,20 +389,12 @@ does not provide all 13 `Grapheme_Cluster_Break` categories.
 It also lacks segmentation-specific properties like Extended_Pictographic and InCB.
 This library requires custom merged categories (16 types), so we generate our own tables.
 
-#### Why Not Use Two-Level Lookup Tables (Trie)
-
-For Unicode property lookup, a two-level approach using upper bits for the first table
-and lower bits for the second table is space-efficient.
-The current implementation prioritizes simplicity and correctness, using sorted range arrays + binary search.
-The table has approximately 1,200 entries (~14KB), and binary search completes in O(log 1200) ~ 11 comparisons.
-A future optimization if performance issues arise is migration to a two-level table.
-
 #### Why Not Use Compressed Bitsets
 
 Bitsets are suitable for boolean "has property or not" checks, but
 this library needs to return values from 16 categories.
-While one could use a bitset per category, range tables + binary search are
-simpler to implement and debug. This aligns with the current approach.
+While one could use a bitset per category, a two-stage lookup table is
+simpler to implement and debug.
 
 ### 7. Development History
 
@@ -411,6 +410,7 @@ Implemented in the following order using TDD (test-first):
 8. GB9c (InCB Conjunct) incb_state + auxiliary tables
 9. All 766 official test cases passing (`gen_uax29_tests.py`)
 10. Additional APIs (slice, reverse iteration, lazy iterator, etc.)
+11. GCB table migrated to two-stage lookup table (O(log n) -> O(1), ASCII fast path eliminated)
 
 ## References
 

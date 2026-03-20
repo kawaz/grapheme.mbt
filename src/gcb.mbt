@@ -21,27 +21,35 @@ priv enum GCBCategory {
 } derive(Eq)
 
 ///|
-/// Returns the GCB category for a code point (returns Other if not in the table).
+/// Returns the GCB category for a code point using two-stage table lookup.
+/// O(1) constant time — two array accesses + bit operations.
 fn gcb_category(cp : Int) -> GCBCategory {
-  // ASCII fast path: 0x20..0x7E are all Other (printable ASCII range).
-  // This avoids binary search for the most common code points in typical text.
-  if cp >= 0x20 && cp <= 0x7E {
-    return Other
+  let block_idx = gcb_stage1[cp >> 8]
+  let offset = cp & 0xFF
+  let byte_val = gcb_stage2[block_idx.to_int() * 128 + (offset >> 1)]
+  let nibble = if (offset & 1) == 0 {
+    byte_val.to_int() >> 4
+  } else {
+    byte_val.to_int() & 0xF
   }
-  let mut lo = 0
-  let mut hi = gcb_table.length() - 1
-  while lo <= hi {
-    let mid = (lo + hi) / 2
-    let (start, end, cat) = gcb_table[mid]
-    if cp < start {
-      hi = mid - 1
-    } else if cp > end {
-      lo = mid + 1
-    } else {
-      return cat
-    }
+  match nibble {
+    1 => CR
+    2 => LF
+    3 => Control
+    4 => Extend
+    5 => ZWJ
+    6 => Regional_Indicator
+    7 => Prepend
+    8 => SpacingMark
+    9 => L
+    10 => V
+    11 => T
+    12 => LV
+    13 => LVT
+    14 => Extended_Pictographic
+    15 => InCB_Consonant
+    _ => Other
   }
-  Other
 }
 
 ///|

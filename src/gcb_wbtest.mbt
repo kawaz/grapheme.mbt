@@ -151,21 +151,21 @@ test "is_incb_extend: non-extend" {
 }
 
 // ============================================================
-// ASCII fast path tests
+// ASCII range tests
 // ============================================================
 
 ///|
-test "gcb_category: ASCII fast path space" {
+test "gcb_category: ASCII space" {
   inspect(gcb_category(0x20), content="Other")
 }
 
 ///|
-test "gcb_category: ASCII fast path tilde" {
+test "gcb_category: ASCII tilde" {
   inspect(gcb_category(0x7E), content="Other")
 }
 
 ///|
-test "gcb_category: ASCII fast path 0x7F is Control" {
+test "gcb_category: 0x7F is Control" {
   inspect(gcb_category(0x7F), content="Control")
 }
 
