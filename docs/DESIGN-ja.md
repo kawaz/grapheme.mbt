@@ -43,18 +43,15 @@ GraphemeView {
 | **L2: Grapheme cluster** | 合成絵文字が複数コードポイント | **本ライブラリ** |
 | L3: Display width | 全角/半角の表示幅 | `rami3l/unicodewidth` |
 
-### 段階的実装
+### 実装状況
 
-1. **Phase 0（完了）**: コードポイント単位の暫定実装。サロゲートペアは正しく処理。
-2. **Phase 1（完了）**: UAX #29 全GBルール実装 -- テーブル生成、ステートマシン、公式テスト全766件パス。
-3. **Phase 2（一部完了）**: パフォーマンス最適化 -- ASCII fast path 実装済み。二段ルックアップテーブル・Compressed Bitset は未着手（現状のバイナリサーチで十分高速なため保留）。
-4. **Phase 3（完了）**: 追加 API -- スライス（`op_as_view`）、逆イテレーション（`rev_iter`）、`iter2`、`grapheme_indices`、`Show`/`Eq`/`Hash` trait、`get`/`is_empty`/`to_string`、遅延評価イテレータ（`grapheme_iter`）。
+- **UAX #29 全GBルール実装済み** -- テーブル生成、ステートマシン、公式テスト全766件パス。
+- **パフォーマンス最適化** -- ASCII fast path 実装済み。二段ルックアップテーブル・Compressed Bitset は保留（現状のバイナリサーチで十分高速なため）。
+- **API** -- `graphemes()`、`grapheme_iter()`（遅延評価）、スライス（`op_as_view`）、逆イテレーション（`rev_iter`）、`iter2`、`grapheme_indices`、`Show`/`Eq`/`Hash` trait、`get`/`is_empty`/`to_string`。
 
 ---
 
-## Phase 1 詳細設計
-
-> **ステータス: Phase 1 は完了済み。** UAX #29 の全GBルールを実装し、Unicode 17.0.0 データからテーブルを生成、公式テスト全766件がパスしている。
+## 詳細設計
 
 ### 1. アーキテクチャ
 
@@ -108,7 +105,7 @@ Design rationale: Extended_Pictographic と InCB_Consonant を独立カテゴリ
 
 #### テーブルのエンコーディング
 
-Phase 1 ではシンプルさを優先し、ソート済みレンジ配列 + バイナリサーチを採用する。
+現在の実装ではシンプルさを優先し、ソート済みレンジ配列 + バイナリサーチを採用している。
 
 ```moonbit
 // 各エントリ: (range_start, range_end_inclusive, category)
@@ -317,9 +314,9 @@ incb_state:
 Extend/ZWJ を跨いで維持される。これはルールの評価順（GB9 が GB9c/GB11 より前）と
 状態更新の組み合わせで自然に実現される。
 
-#### graphemes() の更新
+#### graphemes() の実装
 
-既存の `graphemes()` を、上記のステートマシンを使った実装に置き換える。
+`graphemes()` は上記のステートマシンで境界を決定する。
 公開 API（GraphemeView, length, op_get, iter）は変更なし。
 
 ### 5. テスト戦略
@@ -389,87 +386,31 @@ test "UAX29/001: ÷ [0.2] SPACE ÷ [999.0] SPACE ÷ [0.3]" {
 
 Unicode プロパティのルックアップには、上位ビットで第一テーブルを引き、
 下位ビットで第二テーブルを引く二段方式が空間効率に優れる。
-しかし Phase 1 ではシンプルさと正確性を優先し、ソート済みレンジ配列 + バイナリサーチを採用する。
+現在の実装ではシンプルさと正確性を優先し、ソート済みレンジ配列 + バイナリサーチを採用している。
 テーブルサイズは約1,200エントリ（約14KB）で、バイナリサーチは O(log 1200) ≈ 11回の比較で完了する。
-Phase 2 で性能問題が判明した場合に二段テーブルへの移行を検討する。
+性能問題が判明した場合に二段テーブルへの移行を検討する。
 
 #### Compressed Bitset を使わない理由
 
 Bitset は「あるプロパティを持つか否か」の bool 判定には適するが、
 本ライブラリでは16種のカテゴリ値を返す必要がある。
 Bitset をカテゴリ数分用意する方法もあるが、レンジテーブル + バイナリサーチの方が
-シンプルで実装・デバッグが容易。Phase 1 の方針に合致する。
+シンプルで実装・デバッグが容易。現在の方針に合致する。
 
-### 7. 実装ステップ（TDD順序）
+### 7. 開発履歴
 
-全ステップでテストファーストを徹底する。
+TDD（テストファースト）で以下の順序で実装した:
 
-#### Step 1: GCBCategory enum 定義
-
-1. `src/gcb.mbt` に `GCBCategory` enum を定義（16種）
-2. `derive(Eq, Show)` で比較・表示可能にする
-3. `moon test` で既存テスト4件が引き続きパスすることを確認
-
-#### Step 2: テーブル生成スクリプト
-
-1. `tools/gen_gcb_table.py` を実装
-   - Unicode データファイルのダウンロード機能
-   - パース・統合・レンジマージ・ソート
-   - `src/gcb_table.mbt` の出力
-2. スクリプトを実行し、`src/gcb_table.mbt` を生成
-3. `moon check` でコンパイルが通ることを確認
-
-#### Step 3: gcb_category() ルックアップ — テストファースト
-
-1. `src/gcb_wbtest.mbt` に代表的コードポイントのテストを書く（RED）
-2. `src/gcb.mbt` に `gcb_category()` をバイナリサーチで実装（GREEN）
-3. エッジケース（テーブル先頭・末尾・レンジ境界）のテスト追加
-4. リファクタリング
-
-#### Step 4: check_boundary() ペアルール — テストファースト
-
-1. `src/segmenter_wbtest.mbt` に GB3（CR×LF）のテストを書く（RED）
-2. `src/segmenter.mbt` に `check_boundary()` の骨格を実装（GREEN）
-3. GB4/5 → GB6-8 → GB9/9a/9b → GB999 の順にテスト追加 → 実装
-4. この段階では状態依存ルール（GB9c/GB11/GB12-13）はスキップ（GB999 にフォールスルー）
-
-#### Step 5: graphemes() をステートマシンに置き換え — テストファースト
-
-1. 既存の `lib_wbtest.mbt` のテスト4件がパスする状態を維持しつつ
-2. `graphemes()` の内部を、gcb_category() + check_boundary() を使う実装に書き換え
-3. 実世界テキストテスト（結合文字「が」等）を追加して通す
-
-#### Step 6: GB12/13（Regional Indicator）— テストファースト
-
-1. 国旗テスト追加（🇯🇵 = 1 cluster、🇯🇵🇺🇸 = 2 clusters）（RED）
-2. ri_count による偶奇判定を実装（GREEN）
-3. RI×3、RI×4 等のエッジケーステスト追加
-
-#### Step 7: GB11（絵文字ZWJシーケンス）— テストファースト
-
-1. 絵文字ZWJテスト追加（👨‍👩‍👧‍👦 等）（RED）
-2. emoji_state による状態追跡を実装（GREEN）
-3. EP+Extend+ZWJ+EP の連鎖テスト追加
-
-#### Step 8: GB9c（InCB Conjunct）— テストファースト
-
-1. InCB 補助テーブル生成を `gen_gcb_table.py` に追加
-2. `is_incb_linker()`, `is_incb_extend()` のテスト・実装
-3. デーヴァナーガリー文字等のインド系文字結合テスト追加（RED）
-4. incb_state による状態追跡を実装（GREEN）
-
-#### Step 9: 公式テストデータ全件
-
-1. `tools/gen_uax29_tests.py` を実装
-2. `src/uax29_test.mbt` を生成
-3. `moon test` で全766件を実行
-4. 失敗するテストがあれば原因調査・修正
-
-#### Step 10: 最終確認・クリーンアップ
-
-1. 全テスト合格を確認
-2. 不要なコメント・TODO の除去
-3. `moon check` で警告なしを確認
+1. GCBCategory enum 定義（16種）
+2. テーブル生成スクリプト（`gen_gcb_table.py`）→ `gcb_table.mbt` 生成
+3. `gcb_category()` バイナリサーチ実装
+4. `check_boundary()` ペアルール実装（GB3 → GB4/5 → GB6-8 → GB9/9a/9b → GB999）
+5. `graphemes()` をステートマシンベースに置き換え
+6. GB12/13（Regional Indicator）ri_count による偶奇判定
+7. GB11（絵文字ZWJシーケンス）emoji_state による状態追跡
+8. GB9c（InCB Conjunct）incb_state + 補助テーブル
+9. 公式テストデータ全766件パス（`gen_uax29_tests.py`）
+10. 追加 API（スライス、逆イテレーション、遅延評価イテレータ等）
 
 ## 参考
 

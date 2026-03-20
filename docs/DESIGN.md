@@ -43,18 +43,15 @@ GraphemeView {
 | **L2: Grapheme cluster** | Composite emoji span multiple code points | **This library** |
 | L3: Display width | Full-width / half-width display widths | `rami3l/unicodewidth` |
 
-### Phased Implementation
+### Implementation Status
 
-1. **Phase 0 (complete)**: Provisional code point-level implementation. Surrogate pairs handled correctly.
-2. **Phase 1 (complete)**: Full UAX #29 GB rule implementation -- table generation, state machine, all 766 official test cases passing.
-3. **Phase 2 (partial)**: Performance optimization -- ASCII fast path implemented. Two-level lookup table and compressed bitset deferred (current binary search is sufficiently fast).
-4. **Phase 3 (complete)**: Additional APIs -- slice (`op_as_view`), reverse iteration (`rev_iter`), `iter2`, `grapheme_indices`, `Show`/`Eq`/`Hash` traits, `get`/`is_empty`/`to_string`, lazy iterator (`grapheme_iter`).
+- **All UAX #29 GB rules implemented** -- table generation, state machine, all 766 official test cases passing.
+- **Performance optimization** -- ASCII fast path implemented. Two-level lookup table and compressed bitset deferred (current binary search is sufficiently fast).
+- **API** -- `graphemes()`, `grapheme_iter()` (lazy), slice (`op_as_view`), reverse iteration (`rev_iter`), `iter2`, `grapheme_indices`, `Show`/`Eq`/`Hash` traits, `get`/`is_empty`/`to_string`.
 
 ---
 
-## Phase 1 Detailed Design
-
-> **Status: Phase 1 is complete.** All UAX #29 GB rules are implemented, tables are generated from Unicode 17.0.0 data, and all 766 official test cases pass.
+## Detailed Design
 
 ### 1. Architecture
 
@@ -108,7 +105,7 @@ eliminating the need for a second lookup into a separate table. Rust unicode-seg
 
 #### Table Encoding
 
-Phase 1 prioritizes simplicity, using a sorted range array + binary search.
+The current implementation prioritizes simplicity, using a sorted range array + binary search.
 
 ```moonbit
 // Each entry: (range_start, range_end_inclusive, category)
@@ -317,9 +314,9 @@ Note: Because GB9 prevents Extend/ZWJ from creating boundaries, emoji_state and 
 are maintained across Extend/ZWJ. This is naturally achieved by the combination of
 rule evaluation order (GB9 precedes GB9c/GB11) and state updates.
 
-#### graphemes() Update
+#### graphemes() Implementation
 
-Replace the existing `graphemes()` with the state machine-based implementation above.
+`graphemes()` determines boundaries using the state machine described above.
 Public API (GraphemeView, length, op_get, iter) remains unchanged.
 
 ### 5. Test Strategy
@@ -389,87 +386,31 @@ This library requires custom merged categories (16 types), so we generate our ow
 
 For Unicode property lookup, a two-level approach using upper bits for the first table
 and lower bits for the second table is space-efficient.
-However, Phase 1 prioritizes simplicity and correctness, using sorted range arrays + binary search.
+The current implementation prioritizes simplicity and correctness, using sorted range arrays + binary search.
 The table has approximately 1,200 entries (~14KB), and binary search completes in O(log 1200) ~ 11 comparisons.
-Migration to a two-level table will be considered in Phase 2 if performance issues arise.
+A future optimization if performance issues arise is migration to a two-level table.
 
 #### Why Not Use Compressed Bitsets
 
 Bitsets are suitable for boolean "has property or not" checks, but
 this library needs to return values from 16 categories.
 While one could use a bitset per category, range tables + binary search are
-simpler to implement and debug. This aligns with the Phase 1 approach.
+simpler to implement and debug. This aligns with the current approach.
 
-### 7. Implementation Steps (TDD Order)
+### 7. Development History
 
-Test-first approach is followed throughout all steps.
+Implemented in the following order using TDD (test-first):
 
-#### Step 1: GCBCategory Enum Definition
-
-1. Define `GCBCategory` enum (16 types) in `src/gcb.mbt`
-2. Make it comparable and displayable with `derive(Eq, Show)`
-3. Confirm existing 4 tests still pass with `moon test`
-
-#### Step 2: Table Generation Script
-
-1. Implement `tools/gen_gcb_table.py`
-   - Unicode data file download functionality
-   - Parse, merge, range-merge, sort
-   - Output `src/gcb_table.mbt`
-2. Run the script and generate `src/gcb_table.mbt`
-3. Confirm compilation passes with `moon check`
-
-#### Step 3: gcb_category() Lookup -- Test First
-
-1. Write representative code point tests in `src/gcb_wbtest.mbt` (RED)
-2. Implement `gcb_category()` with binary search in `src/gcb.mbt` (GREEN)
-3. Add edge case tests (table start/end, range boundaries)
-4. Refactoring
-
-#### Step 4: check_boundary() Pair Rules -- Test First
-
-1. Write GB3 (CR×LF) test in `src/segmenter_wbtest.mbt` (RED)
-2. Implement `check_boundary()` skeleton in `src/segmenter.mbt` (GREEN)
-3. Add tests and implement in order: GB4/5 -> GB6-8 -> GB9/9a/9b -> GB999
-4. State-dependent rules (GB9c/GB11/GB12-13) are skipped at this stage (fall through to GB999)
-
-#### Step 5: Replace graphemes() with State Machine -- Test First
-
-1. Maintain passing of existing 4 tests in `lib_wbtest.mbt`
-2. Rewrite `graphemes()` internals to use gcb_category() + check_boundary()
-3. Add and pass real-world text tests (e.g., combining character "が")
-
-#### Step 6: GB12/13 (Regional Indicator) -- Test First
-
-1. Add flag tests (1 flag = 1 cluster, 2 flags = 2 clusters) (RED)
-2. Implement even/odd counting via ri_count (GREEN)
-3. Add edge case tests for RI×3, RI×4, etc.
-
-#### Step 7: GB11 (Emoji ZWJ Sequence) -- Test First
-
-1. Add emoji ZWJ tests (e.g., family emoji) (RED)
-2. Implement state tracking via emoji_state (GREEN)
-3. Add EP+Extend+ZWJ+EP chain tests
-
-#### Step 8: GB9c (InCB Conjunct) -- Test First
-
-1. Add InCB auxiliary table generation to `gen_gcb_table.py`
-2. Test and implement `is_incb_linker()`, `is_incb_extend()`
-3. Add Indic script consonant conjunct tests (e.g., Devanagari) (RED)
-4. Implement state tracking via incb_state (GREEN)
-
-#### Step 9: All Official Test Data
-
-1. Implement `tools/gen_uax29_tests.py`
-2. Generate `src/uax29_test.mbt`
-3. Run all 766 cases with `moon test`
-4. Investigate and fix any failing tests
-
-#### Step 10: Final Review and Cleanup
-
-1. Confirm all tests pass
-2. Remove unnecessary comments and TODOs
-3. Confirm no warnings with `moon check`
+1. GCBCategory enum definition (16 types)
+2. Table generation script (`gen_gcb_table.py`) -> `gcb_table.mbt` generation
+3. `gcb_category()` binary search implementation
+4. `check_boundary()` pair rule implementation (GB3 -> GB4/5 -> GB6-8 -> GB9/9a/9b -> GB999)
+5. Replaced `graphemes()` with state machine-based implementation
+6. GB12/13 (Regional Indicator) even/odd counting via ri_count
+7. GB11 (Emoji ZWJ Sequence) state tracking via emoji_state
+8. GB9c (InCB Conjunct) incb_state + auxiliary tables
+9. All 766 official test cases passing (`gen_uax29_tests.py`)
+10. Additional APIs (slice, reverse iteration, lazy iterator, etc.)
 
 ## References
 

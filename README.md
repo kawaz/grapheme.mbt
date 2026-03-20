@@ -13,6 +13,10 @@ English | [日本語](README-ja.md)
 MoonBit's String uses UTF-16 internal representation, so `length()` and `str[i]` operate at the UTF-16 code unit level.
 This library provides APIs for safely manipulating strings at the grapheme cluster level (the unit humans perceive as a single "character"), based on the **default extended grapheme cluster** rules in [UAX #29](https://unicode.org/reports/tr29/) (Unicode Text Segmentation). Locale-specific tailored rules are not supported.
 
+- Zero dependencies
+- Backends: wasm-gc, js, native
+- Library size: ~240 KB (.core)
+
 | Layer | Problem | Solution |
 |-------|---------|----------|
 | L1: UTF-16 encoding | `str[i]` operates at code unit level | MoonBit core `iter()` |
@@ -25,6 +29,14 @@ All GB rules (GB3-GB13, GB999) from Unicode 17.0.0 are implemented as a state ma
 
 ```
 moon add kawaz/grapheme
+```
+
+Add the dependency to your package's `moon.pkg.json`:
+
+```json
+{
+  "import": ["kawaz/grapheme"]
+}
 ```
 
 ## Usage
@@ -49,7 +61,9 @@ for cluster in view {
 let first = @grapheme.grapheme_iter("very long text...").head()
 ```
 
-`graphemes()` pre-scans the entire string to provide random access and slicing. Use `grapheme_iter()` when you only need the first N clusters (no full scan required).
+`graphemes()` pre-scans the entire string to provide random access and slicing. O(n) full scan + O(k) memory (k = cluster count).
+
+`grapheme_iter()` starts in O(1) with no pre-scan. Use it when you only need the first N clusters.
 
 ## API
 
@@ -57,17 +71,17 @@ let first = @grapheme.grapheme_iter("very long text...").head()
 
 > **Note:** `==` comparison is based on code point sequences. Unicode normalization (NFC/NFD) is not considered, so precomposed and decomposed forms of the same character are treated as different GraphemeViews.
 
-## Roadmap
+## Features
 
-- [x] UAX #29 Grapheme Cluster Break state machine implementation
-- [x] `Extended_Pictographic` property support
-- [x] Composite emoji support (ZWJ sequences, flags, skin tone modifiers)
-- [x] Publish to mooncakes.io
-- [x] ASCII fast path optimization
-- [x] Safe access (`get`), `Show`/`Eq`/`Hash` traits, `is_empty`, `to_string`
-- [x] Slice operations (`view[1:3]`)
-- [x] Extended iteration (`rev_iter`, `iter2`, `grapheme_indices`)
-- [x] Lazy iterator `grapheme_iter()` — up to 64x faster for early-break use cases
+- UAX #29 Grapheme Cluster Break state machine implementation
+- `Extended_Pictographic` property support
+- Composite emoji support (ZWJ sequences, flags, skin tone modifiers)
+- Published on mooncakes.io
+- ASCII fast path optimization
+- Safe access (`get`), `Show`/`Eq`/`Hash` traits, `is_empty`, `to_string`
+- Slice operations (`view[1:3]`)
+- Extended iteration (`rev_iter`, `iter2`, `grapheme_indices`)
+- Lazy iterator `grapheme_iter()` — up to 64x faster for early-break use cases
 
 ## Unicode Version
 
