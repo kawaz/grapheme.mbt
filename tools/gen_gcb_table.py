@@ -266,18 +266,59 @@ def main():
 
     BLOCK_SIZE = 256
     MAX_CP = 0x10FFFF
+    # Plane 0-2 limit: only U+0000..U+02FFFF goes into the two-stage table.
+    # Plane 14 Tags (E0001, E0020-E007F: Control, E0100-E01EF: Extend) are
+    # handled by branch logic in gcb_category(). Planes 3-13, 15-16 are all Other.
+    TABLE_MAX_CP = 0x02FFFF
 
     print("\nBuilding two-stage lookup table...")
     print(f"  Block size: {BLOCK_SIZE}")
-    print(f"  Range: U+0000..U+{MAX_CP:06X}")
+    print(f"  Table range: U+0000..U+{TABLE_MAX_CP:06X} (Plane 0-2)")
+    print(f"  Plane 14 Tags handled by branch logic in gcb_category()")
 
-    # 全コードポイントの GCB ID テーブルを構築
-    full_table = bytearray(MAX_CP + 1)  # 0 = Other
+    # Verify Plane 14 entries (for branch logic in gcb_category())
+    plane14_entries: dict[int, str] = {}
     for cp_val, cat_name in cp_category.items():
-        full_table[cp_val] = CAT_TO_ID[cat_name]
+        if cp_val >= 0xE0000 and cp_val <= 0xEFFFF:
+            plane14_entries[cp_val] = cat_name
+    if plane14_entries:
+        print(f"\n  Plane 14 entries ({len(plane14_entries)} codepoints):")
+        # Group into ranges for display
+        sorted_cps = sorted(plane14_entries.keys())
+        range_start = sorted_cps[0]
+        range_cat = plane14_entries[range_start]
+        range_end = range_start
+        for cp_val in sorted_cps[1:]:
+            if cp_val == range_end + 1 and plane14_entries[cp_val] == range_cat:
+                range_end = cp_val
+            else:
+                print(f"    U+{range_start:06X}..U+{range_end:06X}: {range_cat}")
+                range_start = cp_val
+                range_cat = plane14_entries[cp_val]
+                range_end = cp_val
+        print(f"    U+{range_start:06X}..U+{range_end:06X}: {range_cat}")
+        print("  These will be handled by branch logic, not included in the table.")
+
+    # Verify no non-Other entries exist in Planes 3-13, 15-16
+    out_of_range_entries = {
+        cp_val: cat_name
+        for cp_val, cat_name in cp_category.items()
+        if cp_val > TABLE_MAX_CP and not (0xE0000 <= cp_val <= 0xEFFFF)
+    }
+    if out_of_range_entries:
+        print(f"\nERROR: Found {len(out_of_range_entries)} non-Other entries outside Plane 0-2 and Plane 14:")
+        for cp_val in sorted(out_of_range_entries.keys())[:10]:
+            print(f"  U+{cp_val:06X}: {out_of_range_entries[cp_val]}")
+        sys.exit(1)
+
+    # 全コードポイントの GCB ID テーブルを構築 (Plane 0-2 only)
+    full_table = bytearray(TABLE_MAX_CP + 1)  # 0 = Other
+    for cp_val, cat_name in cp_category.items():
+        if cp_val <= TABLE_MAX_CP:
+            full_table[cp_val] = CAT_TO_ID[cat_name]
 
     # Stage1/Stage2 構築（重複ブロック排除）
-    num_blocks = (MAX_CP + 1 + BLOCK_SIZE - 1) // BLOCK_SIZE
+    num_blocks = (TABLE_MAX_CP + 1 + BLOCK_SIZE - 1) // BLOCK_SIZE
     block_map: dict[bytes, int] = {}
     unique_blocks: list[bytes] = []
     stage1: list[int] = []
@@ -339,6 +380,12 @@ def main():
     lines.append("// Licensed under the Unicode License V3: https://www.unicode.org/license.txt")
     lines.append("//")
     lines.append(f"// Two-stage lookup table (block size: {BLOCK_SIZE}, 4-bit packed)")
+    lines.append(f"// Covers Plane 0-2 (U+0000..U+02FFFF) only.")
+    lines.append(f"// Plane 14 Tags (E0000-E001F, E0080-E00FF, E01F0-E0FFF: Control;")
+    lines.append(f"//   E0020-E007F, E0100-E01EF: Extend) are handled by branch logic")
+    lines.append(f"// in gcb_category().")
+    lines.append(f"// Planes 3-13, 15-16 are all Other.")
+    lines.append(f"//")
     lines.append(f"// Stage1: {len(stage1)} bytes ({len(stage1)} entries, 1 byte each)")
     lines.append(f"// Stage2: {len(packed_stage2)} bytes ({len(unique_blocks)} unique blocks x {BLOCK_SIZE // 2} bytes)")
     lines.append(f"// Total:  {len(stage1) + len(packed_stage2)} bytes")

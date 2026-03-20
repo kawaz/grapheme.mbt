@@ -23,32 +23,49 @@ priv enum GCBCategory {
 ///|
 /// Returns the GCB category for a code point using two-stage table lookup.
 /// O(1) constant time — two array accesses + bit operations.
+///
+/// The two-stage table covers Plane 0-2 (U+0000..U+02FFFF).
+/// Plane 14 Tags are handled by branch logic:
+///   E0000-E001F, E0080-E00FF, E01F0-E0FFF: Control
+///   E0020-E007F, E0100-E01EF: Extend
+/// Planes 3-13 and 15-16 are all Other.
 fn gcb_category(cp : Int) -> GCBCategory {
-  let block_idx = gcb_stage1[cp >> 8]
-  let offset = cp & 0xFF
-  let byte_val = gcb_stage2[block_idx.to_int() * 128 + (offset >> 1)]
-  let nibble = if (offset & 1) == 0 {
-    byte_val.to_int() >> 4
+  if cp <= 0x02FFFF {
+    // Plane 0-2: two-stage table lookup
+    let block_idx = gcb_stage1[cp >> 8]
+    let offset = cp & 0xFF
+    let byte_val = gcb_stage2[block_idx.to_int() * 128 + (offset >> 1)]
+    let nibble = if (offset & 1) == 0 {
+      byte_val.to_int() >> 4
+    } else {
+      byte_val.to_int() & 0xF
+    }
+    match nibble {
+      1 => CR
+      2 => LF
+      3 => Control
+      4 => Extend
+      5 => ZWJ
+      6 => Regional_Indicator
+      7 => Prepend
+      8 => SpacingMark
+      9 => L
+      10 => V
+      11 => T
+      12 => LV
+      13 => LVT
+      14 => Extended_Pictographic
+      15 => InCB_Consonant
+      _ => Other
+    }
+  } else if cp >= 0xE0020 && cp <= 0xE007F {
+    Extend // Tag characters (emoji tag sequences)
+  } else if cp >= 0xE0100 && cp <= 0xE01EF {
+    Extend // Variation selectors supplement
+  } else if cp >= 0xE0000 && cp <= 0xE0FFF {
+    Control // Other Plane 14 Tags (E0000-E001F, E0080-E00FF, E01F0-E0FFF)
   } else {
-    byte_val.to_int() & 0xF
-  }
-  match nibble {
-    1 => CR
-    2 => LF
-    3 => Control
-    4 => Extend
-    5 => ZWJ
-    6 => Regional_Indicator
-    7 => Prepend
-    8 => SpacingMark
-    9 => L
-    10 => V
-    11 => T
-    12 => LV
-    13 => LVT
-    14 => Extended_Pictographic
-    15 => InCB_Consonant
-    _ => Other
+    Other // Planes 3-13, 15-16
   }
 }
 

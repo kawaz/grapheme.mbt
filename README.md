@@ -15,7 +15,7 @@ This library provides APIs for safely manipulating strings at the grapheme clust
 
 - Zero dependencies
 - Backends: wasm-gc, js, native
-- Bundle size: wasm-gc ~29 KB / js ~67 KB / native ~56 KB
+- Bundle size: wasm-gc ~25 KB / js ~59 KB / native ~56 KB
 
 | Layer | Problem | Solution |
 |-------|---------|----------|

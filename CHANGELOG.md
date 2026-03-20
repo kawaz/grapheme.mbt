@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.10.2] - 2026-03-20
+
+### Changed
+- GCB Stage1 table limited to Plane 0-2 (768 entries, -82%), Plane 14 handled by branch
+- Bundle size: wasm-gc ~25 KB / js ~59 KB / native ~56 KB
+
 ## [0.10.1] - 2026-03-20
 
 ### Changed
@@ -88,7 +94,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `rev_iter`, `iter2`
 - 1,093 official UAX #29 test cases passing
 
-[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.1...HEAD
+[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.2...HEAD
+[0.10.2]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.8.0...v0.9.0
