@@ -15,8 +15,8 @@ MoonBit's String uses UTF-16 internal representation, so `length()` and `str[i]`
 This library provides APIs for safely manipulating strings at the grapheme cluster level (the unit humans perceive as a single "character"), based on the **default extended grapheme cluster** rules in [UAX #29](https://unicode.org/reports/tr29/) (Unicode Text Segmentation). Locale-specific tailored rules are not supported.
 
 - Zero dependencies
-- Backends: wasm-gc, js, native
-- Bundle size: wasm-gc ~25 KB / js ~59 KB / native ~56 KB
+- Backends: wasm-gc, wasm, js, native
+- Bundle size: wasm-gc ~25 KB / wasm ~31 KB / js ~59 KB / native ~56 KB
 - Random access and slicing (unique among grapheme segmentation libraries)
 
 | Layer | Problem | Solution |
