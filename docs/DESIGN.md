@@ -132,11 +132,11 @@ GB9c evaluation additionally requires InCB=Linker and InCB=Extend information.
 These are maintained in separate small tables (tens of entries).
 
 ```moonbit
-// InCB=Linker code points (sorted array, binary search)
-let incb_linker_table : FixedArray[Int] = [0x094D, 0x09CD, ...]
+// InCB=Linker code points (3 bytes/entry, big-endian, binary search)
+let incb_linker_packed : Bytes = b"..."
 
-// InCB=Extend code point/ranges (sorted range array)
-let incb_extend_table : FixedArray[(Int, Int)] = [(0x0900, 0x0902), ...]
+// InCB=Extend code point/ranges (6 bytes/entry: start 3B + end 3B, big-endian)
+let incb_extend_packed : Bytes = b"..."
 ```
 
 Design rationale: InCB_Consonant has high occurrence frequency and is worth merging into the main table.
@@ -196,8 +196,8 @@ Invariants:
 
 **Output:** `src/gcb_table.mbt`
 - `gcb_stage1` / `gcb_stage2`: two-stage lookup table (4-bit packed)
-- `incb_linker_table`: InCB=Linker code point table
-- `incb_extend_table`: InCB=Extend range table
+- `incb_linker_packed`: InCB=Linker code point table (3-byte packed)
+- `incb_extend_packed`: InCB=Extend range table (6-byte packed)
 
 **Data file retrieval:**
 The script auto-downloads to the `tools/data/` directory (if not present).
@@ -225,12 +225,12 @@ fn gcb_category(cp : Int) -> GCBCategory {
 
 /// Returns whether a code point is InCB=Linker.
 fn is_incb_linker(cp : Int) -> Bool {
-  // Binary search on incb_linker_table
+  // Binary search on incb_linker_packed (3-byte packed)
 }
 
 /// Returns whether a code point is InCB=Extend.
 fn is_incb_extend(cp : Int) -> Bool {
-  // Binary search on incb_extend_table
+  // Binary search on incb_extend_packed (6-byte packed)
 }
 ```
 

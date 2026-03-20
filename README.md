@@ -2,6 +2,7 @@ English | [日本語](README-ja.md)
 
 # grapheme
 
+[![CI](https://github.com/kawaz/grapheme.mbt/actions/workflows/ci.yml/badge.svg)](https://github.com/kawaz/grapheme.mbt/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Unicode 17.0.0](https://img.shields.io/badge/Unicode-17.0.0-blue.svg)](https://unicode.org/versions/Unicode17.0.0/)
 [![UAX #29 compliant](https://img.shields.io/badge/UAX%20%2329-compliant-brightgreen.svg)](https://unicode.org/reports/tr29/)
@@ -16,6 +17,7 @@ This library provides APIs for safely manipulating strings at the grapheme clust
 - Zero dependencies
 - Backends: wasm-gc, js, native
 - Bundle size: wasm-gc ~25 KB / js ~59 KB / native ~56 KB
+- Random access and slicing (unique among grapheme segmentation libraries)
 
 | Layer | Problem | Solution |
 |-------|---------|----------|

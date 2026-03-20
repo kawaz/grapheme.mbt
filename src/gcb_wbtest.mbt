@@ -238,3 +238,81 @@ test "gcb_category: U+FFFC (OBJECT REPLACEMENT CHARACTER) -> Other" {
   // U+FFFC is between U+FFFB (Control) and U+FFFD, not in gcb_table
   inspect(gcb_category(0xFFFC), content="Other")
 }
+
+// ============================================================
+// Plane 14 branch boundary tests
+// ============================================================
+
+///|
+test "gcb_category: U+E0000 -> Control (Plane 14 fallback)" {
+  inspect(gcb_category(0xE0000), content="Control")
+}
+
+///|
+test "gcb_category: U+E0001 -> Control" {
+  inspect(gcb_category(0xE0001), content="Control")
+}
+
+///|
+test "gcb_category: U+E001F -> Control (just before tag range)" {
+  inspect(gcb_category(0xE001F), content="Control")
+}
+
+///|
+test "gcb_category: U+E0020 -> Extend (tag range start)" {
+  inspect(gcb_category(0xE0020), content="Extend")
+}
+
+///|
+test "gcb_category: U+E007F -> Extend (tag range end)" {
+  inspect(gcb_category(0xE007F), content="Extend")
+}
+
+///|
+test "gcb_category: U+E0080 -> Control (after tag range)" {
+  inspect(gcb_category(0xE0080), content="Control")
+}
+
+///|
+test "gcb_category: U+E00FF -> Control (before variation selectors)" {
+  inspect(gcb_category(0xE00FF), content="Control")
+}
+
+///|
+test "gcb_category: U+E0100 -> Extend (variation selectors start)" {
+  inspect(gcb_category(0xE0100), content="Extend")
+}
+
+///|
+test "gcb_category: U+E01EF -> Extend (variation selectors end)" {
+  inspect(gcb_category(0xE01EF), content="Extend")
+}
+
+///|
+test "gcb_category: U+E01F0 -> Control (after variation selectors)" {
+  inspect(gcb_category(0xE01F0), content="Control")
+}
+
+///|
+test "gcb_category: U+E0FFF -> Control (Plane 14 end)" {
+  inspect(gcb_category(0xE0FFF), content="Control")
+}
+
+///|
+test "gcb_category: U+E1000 -> Other (beyond Plane 14 block)" {
+  inspect(gcb_category(0xE1000), content="Other")
+}
+
+// ============================================================
+// Plane 3+ fallthrough tests
+// ============================================================
+
+///|
+test "gcb_category: U+30000 (Plane 3) -> Other" {
+  inspect(gcb_category(0x30000), content="Other")
+}
+
+///|
+test "gcb_category: U+F0000 (Plane 15, Supplementary PUA-A) -> Other" {
+  inspect(gcb_category(0xF0000), content="Other")
+}
