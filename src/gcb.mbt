@@ -54,15 +54,21 @@ fn gcb_category(cp : Int) -> GCBCategory {
 
 ///|
 /// Returns whether the code point is InCB=Linker.
+/// Uses packed Bytes table (3 bytes per codepoint, big-endian, binary search).
 fn is_incb_linker(cp : Int) -> Bool {
+  let entry_size = 3
+  let count = incb_linker_packed.length() / entry_size
   let mut lo = 0
-  let mut hi = incb_linker_table.length() - 1
+  let mut hi = count - 1
   while lo <= hi {
     let mid = (lo + hi) / 2
-    let v = incb_linker_table[mid]
-    if cp < v {
+    let base = mid * entry_size
+    let val = (incb_linker_packed[base].to_int() << 16) |
+      (incb_linker_packed[base + 1].to_int() << 8) |
+      incb_linker_packed[base + 2].to_int()
+    if cp < val {
       hi = mid - 1
-    } else if cp > v {
+    } else if cp > val {
       lo = mid + 1
     } else {
       return true
@@ -73,12 +79,21 @@ fn is_incb_linker(cp : Int) -> Bool {
 
 ///|
 /// Returns whether the code point is InCB=Extend.
+/// Uses packed Bytes table (6 bytes per range: start 3B + end 3B, big-endian, binary search).
 fn is_incb_extend(cp : Int) -> Bool {
+  let entry_size = 6
+  let count = incb_extend_packed.length() / entry_size
   let mut lo = 0
-  let mut hi = incb_extend_table.length() - 1
+  let mut hi = count - 1
   while lo <= hi {
     let mid = (lo + hi) / 2
-    let (start, end) = incb_extend_table[mid]
+    let base = mid * entry_size
+    let start = (incb_extend_packed[base].to_int() << 16) |
+      (incb_extend_packed[base + 1].to_int() << 8) |
+      incb_extend_packed[base + 2].to_int()
+    let end = (incb_extend_packed[base + 3].to_int() << 16) |
+      (incb_extend_packed[base + 4].to_int() << 8) |
+      incb_extend_packed[base + 5].to_int()
     if cp < start {
       hi = mid - 1
     } else if cp > end {

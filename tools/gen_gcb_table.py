@@ -363,24 +363,35 @@ def main():
     lines.append(bytes_literal(packed_stage2))
     lines.append("")
 
-    # InCB Linker テーブル
-    lines.append("// InCB=Linker codepoints (sorted)")
+    # InCB Linker テーブル (packed: 3 bytes per codepoint, big-endian)
+    linker_packed = bytearray()
+    for cp in linker_cps:
+        linker_packed.append((cp >> 16) & 0xFF)
+        linker_packed.append((cp >> 8) & 0xFF)
+        linker_packed.append(cp & 0xFF)
+
+    lines.append(f"// InCB=Linker codepoints (sorted, packed: 3 bytes/entry, {len(linker_cps)} entries = {len(linker_packed)} bytes)")
     lines.append("")
     lines.append("///|")
-    lines.append("let incb_linker_table : FixedArray[Int] = [")
-    for cp in linker_cps:
-        lines.append(f"  {hex(cp)},")
-    lines.append("]")
+    lines.append("let incb_linker_packed : Bytes =")
+    lines.append(bytes_literal(linker_packed))
     lines.append("")
 
-    # InCB Extend テーブル
-    lines.append("// InCB=Extend codepoint ranges (sorted)")
+    # InCB Extend テーブル (packed: 6 bytes per range, start 3B + end 3B, big-endian)
+    extend_packed = bytearray()
+    for start, end in incb_extend_ranges:
+        extend_packed.append((start >> 16) & 0xFF)
+        extend_packed.append((start >> 8) & 0xFF)
+        extend_packed.append(start & 0xFF)
+        extend_packed.append((end >> 16) & 0xFF)
+        extend_packed.append((end >> 8) & 0xFF)
+        extend_packed.append(end & 0xFF)
+
+    lines.append(f"// InCB=Extend codepoint ranges (sorted, packed: 6 bytes/entry, {len(incb_extend_ranges)} entries = {len(extend_packed)} bytes)")
     lines.append("")
     lines.append("///|")
-    lines.append("let incb_extend_table : FixedArray[(Int, Int)] = [")
-    for start, end in incb_extend_ranges:
-        lines.append(f"  ({hex(start)}, {hex(end)}),")
-    lines.append("]")
+    lines.append("let incb_extend_packed : Bytes =")
+    lines.append(bytes_literal(extend_packed))
     lines.append("")
 
     output_text = "\n".join(lines)
@@ -392,8 +403,8 @@ def main():
     print(f"  gcb_stage1: {len(stage1)} bytes")
     print(f"  gcb_stage2: {len(packed_stage2)} bytes ({len(unique_blocks)} unique blocks)")
     print(f"  Total GCB table: {len(stage1) + len(packed_stage2)} bytes ({(len(stage1) + len(packed_stage2)) / 1024:.1f} KB)")
-    print(f"  incb_linker_table: {len(linker_cps)} entries")
-    print(f"  incb_extend_table: {len(incb_extend_ranges)} entries")
+    print(f"  incb_linker_packed: {len(linker_packed)} bytes ({len(linker_cps)} entries x 3 bytes)")
+    print(f"  incb_extend_packed: {len(extend_packed)} bytes ({len(incb_extend_ranges)} entries x 6 bytes)")
     print(f"  Output: {OUTPUT_FILE}")
 
     return 0
