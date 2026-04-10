@@ -1979,3 +1979,75 @@ test "graphemes: lone RI between flags" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1E6}\u{1F1FA}\u{1F1F8}")
   inspect(g.length(), content="3")
 }
+
+// Malformed UTF-16 tests.
+// 0xD800-0xDBFF are high surrogates; 0xDC00-0xDFFF are low surrogates.
+// A well-formed surrogate pair is "high followed by low". These tests
+// exercise isolated (lone) surrogates, which the decoder must treat as
+// single-unit code points rather than pairing them with unrelated neighbors.
+// Each test verifies both cluster count AND the code-unit value of the
+// lone surrogate cluster, so bugs that silently replace or drop the
+// surrogate (e.g. U+FFFD substitution) would still be detected.
+
+///|
+// Run the same malformed input through both graphemes() and grapheme_iter()
+// to confirm they agree; other malformed tests below use graphemes() only.
+test "grapheme_iter: lone high surrogate followed by ASCII" {
+  let s = String::from_array([(0xD800).unsafe_to_char(), 'A'])
+  let clusters : Array[StringView] = []
+  for cluster in grapheme_iter(s) {
+    clusters.push(cluster)
+  }
+  inspect(clusters.length(), content="2")
+  inspect(clusters[0].length(), content="1")
+  inspect(clusters[0].at(0).to_int(), content="55296") // 0xD800
+  inspect(clusters[1].to_string(), content="A")
+}
+
+///|
+test "graphemes: lone high surrogate followed by ASCII" {
+  let s = String::from_array([(0xD800).unsafe_to_char(), 'A'])
+  let g = graphemes(s)
+  inspect(g.length(), content="2")
+  inspect(g[0].length(), content="1")
+  inspect(g[0].at(0).to_int(), content="55296") // 0xD800
+  inspect(g[1].to_string(), content="A")
+}
+
+///|
+// High surrogate at end of string (no next code unit): the decoder must not
+// read past the end and must yield the lone surrogate as its own cluster.
+test "graphemes: lone high surrogate at end of string" {
+  let s = String::from_array([(0xD800).unsafe_to_char()])
+  let g = graphemes(s)
+  inspect(g.length(), content="1")
+  inspect(g[0].length(), content="1")
+  inspect(g[0].at(0).to_int(), content="55296") // 0xD800
+}
+
+///|
+// Lone low surrogate (not preceded by a high surrogate): must be treated as
+// a single-unit code point and form its own cluster.
+test "graphemes: lone low surrogate followed by ASCII" {
+  let s = String::from_array([(0xDC00).unsafe_to_char(), 'A'])
+  let g = graphemes(s)
+  inspect(g.length(), content="2")
+  inspect(g[0].length(), content="1")
+  inspect(g[0].at(0).to_int(), content="56320") // 0xDC00
+  inspect(g[1].to_string(), content="A")
+}
+
+///|
+// Two consecutive high surrogates: neither forms a valid pair (the second is
+// not followed by a low surrogate), so both must be treated as lone surrogates
+// and yield two separate clusters preserving each code-unit value.
+test "graphemes: two consecutive high surrogates" {
+  let s = String::from_array([
+    (0xD800).unsafe_to_char(),
+    (0xD801).unsafe_to_char(),
+  ])
+  let g = graphemes(s)
+  inspect(g.length(), content="2")
+  inspect(g[0].at(0).to_int(), content="55296") // 0xD800
+  inspect(g[1].at(0).to_int(), content="55297") // 0xD801
+}
