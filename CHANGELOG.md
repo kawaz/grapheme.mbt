@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 - 22 edge case tests: RI parity (3-8 code points), InCB deep nesting, skin tone modifiers, long ZWJ chains, sliced view grapheme_indices offset precision
+- 5 malformed UTF-16 tests covering lone surrogates (lib.mbt coverage: 125/126 → 126/126)
 
 ## [0.10.2] - 2026-03-20
 
