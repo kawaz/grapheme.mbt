@@ -7,12 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.10.3] - 2026-06-26
+
 ### Changed
+- Migrate to MoonBit 0.1.20260618 new manifest format (`moon.mod.json` → `moon.mod`, `moon.pkg.json` → `moon.pkg`)
+- Update `impl ... with output` blocks to required `impl ... with fn output` form
 - Bundle size: wasm-gc ~23 KB / wasm ~27 KB (improved by MoonBit compiler update)
 - README: add Performance section with benchmark results
+- justfile aligned with kawaz canonical task-runner shape (`default` → `list`, `ci` recipe, release `hint`)
+- docs/ reorganized to docs-structure canon: `STRUCTURE.md`, `ROADMAP.md`, `decisions/INDEX.md` + `DR-0001-moonbit-new-syntax-migration`, `journal/`
 
 ### Fixed
 - Replace deprecated `not()` with `!` operator (MoonBit v0.8.3 compat)
+- Replace deprecated `StringView::to_string()` calls with `to_owned()` (lib + tests + generator)
+- Replace deprecated `inspect(...)` on composed values with `@debug.debug_inspect(...)`; add `moonbitlang/core/debug` import scoped to `wbtest`
+- `tools/gen_uax29_tests.py` now emits `to_owned()` so regenerated UAX #29 tests stay deprecation-free
 
 ### Added
 - 22 edge case tests: RI parity (3-8 code points), InCB deep nesting, skin tone modifiers, long ZWJ chains, sliced view grapheme_indices offset precision
@@ -105,7 +114,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `rev_iter`, `iter2`
 - 1,093 official UAX #29 test cases passing
 
-[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.2...HEAD
+[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.3...HEAD
+[0.10.3]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.2...v0.10.3
 [0.10.2]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/kawaz/grapheme.mbt/compare/v0.9.0...v0.10.0
