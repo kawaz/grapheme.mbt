@@ -120,14 +120,8 @@ ensure-clean:
     bump-semver vcs is clean
 
 [private]
-[script]
 check-on-default-branch:
-    if ! bump-semver vcs is on-default-branch; then
-        cur=$(bump-semver vcs get current-branch 2>/dev/null || echo "(ambiguous)")
-        bn=$(bump-semver vcs get default-branch)
-        printf >&2 "⚠ 現在 '%s' bookmark/branch にいます。%s に合流してから push してください\n  1. just sync         # %s@origin に rebase\n  2. just promote      # %s bookmark を current commit に forward\n  3. %s ワークスペースに移動して just push\n" "$cur" "$bn" "$bn" "$bn" "$bn"
-        exit 1
-    fi
+    bump-semver vcs is on-default-branch
 
 sync:
     bump-semver vcs sync --onto $(bump-semver vcs get default-branch)@origin
@@ -155,13 +149,10 @@ check-version-bumped: (_check-version-bumped "src/" "moon.mod" "src/moon.pkg")
 
 [private]
 _check-version-bumped *target_paths:
-    # `?` guard + `! cmd` (bash の論理否定) の組み合わせ:
-    #   vcs diff -q が rc=0 (= no diff) → `! 0` = 1 → `?` で早期 return
-    #   vcs diff -q が rc=1 (= diff)   → `! 1` = 0 → 本体続行 (= compare gt)
-    # `?` と `!` の間にスペースを入れて「`?` だけが just sigil、`! cmd` は素朴
-    # な bash 否定」と読める形にする。
+    # `?` sigil + `! cmd` (bash の論理否定) で「no diff なら早期 return、diff
+    # なら本体続行」を実装。詳細: https://just.systems/man/en/sigils.html
     ? ! bump-semver vcs diff -q main@origin -- {{ target_paths }} --excludes 'glob:src/**/*_wbtest.mbt' --excludes 'glob:src/**/*_wbbench.mbt' --excludes 'glob:src/**/*_test.mbt'
-    bump-semver compare gt moon.mod vcs:main@origin -qq || { echo 'ERROR: product code が変わってるが moon.mod の version が main@origin より上がっていません。"just bump-version" を実行してください' >&2; exit 1; }
+    bump-semver compare gt moon.mod vcs:main@origin
 
 # --- release flow ---
 
