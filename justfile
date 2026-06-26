@@ -12,8 +12,15 @@
 #     basename auto-detect 対応済み、`bump-semver get/patch moon.mod` で動く)
 #   - bump-trigger = src/ + moon.mod + src/moon.pkg、テストファイルは除外
 
+# `set guards` (= recipe 行頭の `?` sigil で「コマンドが exit 1 なら recipe 全体を
+# success として早期 return」) を有効化するために必要な unstable flag。
+# 詳細: https://just.systems/man/en/settings.html#unstable1310
 set unstable
 
+# recipe 行頭の `?` sigil を guard として有効化。`?! cmd` (= 直後に `! cmd`) で
+# bash の論理否定と組み合わせ、「コマンドが成功なら early return / 失敗なら本体
+# 続行」の逆向き guard が書ける (= `_check-version-bumped` 参照)。
+# 詳細: https://just.systems/man/en/sigils.html
 set guards
 
 set shell := ["bash", "-euo", "pipefail", "-c"]
@@ -148,10 +155,12 @@ check-version-bumped: (_check-version-bumped "src/" "moon.mod" "src/moon.pkg")
 
 [private]
 _check-version-bumped *target_paths:
-    # ?! guard: vcs diff -q が rc=0 (= no diff) を返すと ! 反転で rc=1 になり、
-    # recipe を success として早期 return。diff があれば本体に進んで version
-    # bump が必要かを compare gt で検証する。`[script]` 不要、2 行で完結。
-    ?! bump-semver vcs diff -q main@origin -- {{ target_paths }} --excludes 'glob:src/**/*_wbtest.mbt' --excludes 'glob:src/**/*_wbbench.mbt' --excludes 'glob:src/**/*_test.mbt'
+    # `?` guard + `! cmd` (bash の論理否定) の組み合わせ:
+    #   vcs diff -q が rc=0 (= no diff) → `! 0` = 1 → `?` で早期 return
+    #   vcs diff -q が rc=1 (= diff)   → `! 1` = 0 → 本体続行 (= compare gt)
+    # `?` と `!` の間にスペースを入れて「`?` だけが just sigil、`! cmd` は素朴
+    # な bash 否定」と読める形にする。
+    ? ! bump-semver vcs diff -q main@origin -- {{ target_paths }} --excludes 'glob:src/**/*_wbtest.mbt' --excludes 'glob:src/**/*_wbbench.mbt' --excludes 'glob:src/**/*_test.mbt'
     bump-semver compare gt moon.mod vcs:main@origin -qq || { echo 'ERROR: product code が変わってるが moon.mod の version が main@origin より上がっていません。"just bump-version" を実行してください' >&2; exit 1; }
 
 # --- release flow ---
