@@ -23,7 +23,16 @@ set unstable
 # 詳細: https://just.systems/man/en/sigils.html
 set guards
 
-set shell := ["bash", "-euo", "pipefail", "-c"]
+# `set shell` の `-c` 直後の command string に `die` helper を仕込んでおき、
+# `line="$1"; shift; eval "$line"` で recipe 行を実行する。これで全 recipe 行で
+# Perl 風の `cmd || die "msg"` が使える。
+#   - `die` は `return 1` (= `exit 1` ではない) で、`die ... || true` のような
+#     subshell 不要の吸収パスも壊さない
+#   - メッセージ出力は `printf '%s\n'` (= `echo` の `-n`/`-e` オプション解釈
+#     による事故を避ける)
+#   - `shift` 後 `$@` で recipe 行以降の引数が見える形を維持 (= 将来 just が
+#     追加 positional を渡す可能性に備えた semantic)
+set shell := ["bash", "-euo", "pipefail", "-c", 'die() { printf "%s\n" "$*" >&2; return 1; }; line="$1"; shift; eval "$line"', "--"]
 
 set script-interpreter := ["bash", "-euo", "pipefail"]
 
