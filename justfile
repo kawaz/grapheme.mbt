@@ -8,9 +8,8 @@
 #
 # 言語差分:
 #   - lint/test = moon fmt --check / moon check --deny-warn / moon test
-#   - source-of-truth = moon.mod (TOML-like 専用記法、bump-semver は未 auto-detect
-#     なので --define-rule + --version-regex で読み書きする。bump-semver 側の
-#     auto-detect 対応 issue は kawaz/bump-semver docs/issue/ に起票済み)
+#   - source-of-truth = moon.mod (TOML-like 専用記法、bump-semver v0.41.0+ で
+#     basename auto-detect 対応済み、`bump-semver get/patch moon.mod` で動く)
 #   - bump-trigger = src/ + moon.mod + src/moon.pkg、テストファイルは除外
 
 set unstable
@@ -148,8 +147,8 @@ _check-version-bumped *target_paths:
       1) ;;
       *) echo "ERROR: bump-semver vcs diff failed (rc=$rc). main@origin が track されていない可能性。先に 'jj git fetch' を試してください" >&2; exit 1 ;;
     esac
-    new=$(bump-semver get moon.mod --define-rule moon.mod --format text --version-regex 'version = "(.+)"' -qq)
-    old=$(bump-semver get 'vcs:main@origin:moon.mod' --define-rule moon.mod --format text --version-regex 'version = "(.+)"' -qq 2>/dev/null || echo "0.0.0")
+    new=$(bump-semver get moon.mod -qq)
+    old=$(bump-semver get 'vcs:main@origin:moon.mod' -qq 2>/dev/null || echo "0.0.0")
     bump-semver compare gt "$new" "$old" -qq && exit 0
     echo "ERROR: product code が変わってるが version 未 bump (now=${new} origin=${old})。\"just bump-version\" を実行してください" >&2
     exit 1
@@ -159,15 +158,12 @@ _check-version-bumped *target_paths:
 # moon.mod の version を bump (default: patch) して Release commit
 [script]
 bump-version level="patch": ensure-clean
-    bump-semver "$1" moon.mod \
-      --define-rule moon.mod --format text --version-regex 'version = "(.+)"' \
-      --write --quiet
-    new=$(bump-semver get moon.mod --define-rule moon.mod --format text --version-regex 'version = "(.+)"' -qq)
-    bump-semver vcs commit -m "Release v${new}" moon.mod
+    bump-semver "$1" moon.mod --write --quiet
+    bump-semver vcs commit -m "Release v$(bump-semver get moon.mod -qq)" moon.mod
 
 # 現在の version を表示
 version:
-    @bump-semver get moon.mod --define-rule moon.mod --format text --version-regex 'version = "(.+)"' -qq
+    @bump-semver get moon.mod -qq
 
 # push to origin/main with canonical gates
 push: check-on-default-branch ci check-translations check-version-bumped
@@ -176,4 +172,4 @@ push: check-on-default-branch ci check-translations check-version-bumped
 
 # publish.yml が success になった時のフォローアクション
 on-success-release:
-    @echo "Released v$(bump-semver get moon.mod --define-rule moon.mod --format text --version-regex 'version = "(.+)"' -qq) to mooncakes.io"
+    @echo "Released v$(bump-semver get moon.mod -qq) to mooncakes.io"
