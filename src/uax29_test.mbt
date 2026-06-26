@@ -9,9 +9,9 @@ test "UAX29/0001: <CARRIAGE RETURN / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -21,11 +21,11 @@ test "UAX29/0002: <CARRIAGE RETURN / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [000D]
-  assert_eq(g[2].to_string(), "\u{000D}")
+  assert_eq(g[2].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -35,7 +35,7 @@ test "UAX29/0003: <CARRIAGE RETURN / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [000D 000A]
-  assert_eq(g[0].to_string(), "\u{000D}\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000D}\u{000A}")
 }
 
 ///|
@@ -45,11 +45,11 @@ test "UAX29/0004: <CARRIAGE RETURN / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [000A]
-  assert_eq(g[2].to_string(), "\u{000A}")
+  assert_eq(g[2].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -59,9 +59,9 @@ test "UAX29/0005: <CARRIAGE RETURN / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -71,11 +71,11 @@ test "UAX29/0006: <CARRIAGE RETURN / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0000]
-  assert_eq(g[2].to_string(), "\u{0000}")
+  assert_eq(g[2].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -85,9 +85,9 @@ test "UAX29/0007: <CARRIAGE RETURN / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [094D]
-  assert_eq(g[1].to_string(), "\u{094D}")
+  assert_eq(g[1].to_owned(), "\u{094D}")
 }
 
 ///|
@@ -97,9 +97,9 @@ test "UAX29/0008: <CARRIAGE RETURN / COMBINING DIAERESIS / DEVANAGARI SIGN VIRAM
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308 094D]
-  assert_eq(g[1].to_string(), "\u{0308}\u{094D}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{094D}")
 }
 
 ///|
@@ -109,9 +109,9 @@ test "UAX29/0009: <CARRIAGE RETURN / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0300]
-  assert_eq(g[1].to_string(), "\u{0300}")
+  assert_eq(g[1].to_owned(), "\u{0300}")
 }
 
 ///|
@@ -121,9 +121,9 @@ test "UAX29/0010: <CARRIAGE RETURN / COMBINING DIAERESIS / COMBINING GRAVE ACCEN
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308 0300]
-  assert_eq(g[1].to_string(), "\u{0308}\u{0300}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{0300}")
 }
 
 ///|
@@ -133,9 +133,9 @@ test "UAX29/0011: <CARRIAGE RETURN / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [200C]
-  assert_eq(g[1].to_string(), "\u{200C}")
+  assert_eq(g[1].to_owned(), "\u{200C}")
 }
 
 ///|
@@ -145,9 +145,9 @@ test "UAX29/0012: <CARRIAGE RETURN / COMBINING DIAERESIS / ZERO WIDTH NON-JOINER
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308 200C]
-  assert_eq(g[1].to_string(), "\u{0308}\u{200C}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{200C}")
 }
 
 ///|
@@ -157,9 +157,9 @@ test "UAX29/0013: <CARRIAGE RETURN / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [200D]
-  assert_eq(g[1].to_string(), "\u{200D}")
+  assert_eq(g[1].to_owned(), "\u{200D}")
 }
 
 ///|
@@ -169,9 +169,9 @@ test "UAX29/0014: <CARRIAGE RETURN / COMBINING DIAERESIS / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308 200D]
-  assert_eq(g[1].to_string(), "\u{0308}\u{200D}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{200D}")
 }
 
 ///|
@@ -181,9 +181,9 @@ test "UAX29/0015: <CARRIAGE RETURN / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -193,11 +193,11 @@ test "UAX29/0016: <CARRIAGE RETURN / COMBINING DIAERESIS / REGIONAL INDICATOR SY
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1F1E6]
-  assert_eq(g[2].to_string(), "\u{1F1E6}")
+  assert_eq(g[2].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -207,9 +207,9 @@ test "UAX29/0017: <CARRIAGE RETURN / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -219,11 +219,11 @@ test "UAX29/0018: <CARRIAGE RETURN / COMBINING DIAERESIS / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [06DD]
-  assert_eq(g[2].to_string(), "\u{06DD}")
+  assert_eq(g[2].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -233,9 +233,9 @@ test "UAX29/0019: <CARRIAGE RETURN / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0903]
-  assert_eq(g[1].to_string(), "\u{0903}")
+  assert_eq(g[1].to_owned(), "\u{0903}")
 }
 
 ///|
@@ -245,9 +245,9 @@ test "UAX29/0020: <CARRIAGE RETURN / COMBINING DIAERESIS / DEVANAGARI SIGN VISAR
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308 0903]
-  assert_eq(g[1].to_string(), "\u{0308}\u{0903}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{0903}")
 }
 
 ///|
@@ -257,9 +257,9 @@ test "UAX29/0021: <CARRIAGE RETURN / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -269,11 +269,11 @@ test "UAX29/0022: <CARRIAGE RETURN / COMBINING DIAERESIS / HANGUL CHOSEONG KIYEO
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1100]
-  assert_eq(g[2].to_string(), "\u{1100}")
+  assert_eq(g[2].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -283,9 +283,9 @@ test "UAX29/0023: <CARRIAGE RETURN / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -295,11 +295,11 @@ test "UAX29/0024: <CARRIAGE RETURN / COMBINING DIAERESIS / HANGUL JUNGSEONG FILL
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1160]
-  assert_eq(g[2].to_string(), "\u{1160}")
+  assert_eq(g[2].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -309,9 +309,9 @@ test "UAX29/0025: <CARRIAGE RETURN / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -321,11 +321,11 @@ test "UAX29/0026: <CARRIAGE RETURN / COMBINING DIAERESIS / HANGUL JONGSEONG KIYE
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [11A8]
-  assert_eq(g[2].to_string(), "\u{11A8}")
+  assert_eq(g[2].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -335,9 +335,9 @@ test "UAX29/0027: <CARRIAGE RETURN / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -347,11 +347,11 @@ test "UAX29/0028: <CARRIAGE RETURN / COMBINING DIAERESIS / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [AC00]
-  assert_eq(g[2].to_string(), "\u{AC00}")
+  assert_eq(g[2].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -361,9 +361,9 @@ test "UAX29/0029: <CARRIAGE RETURN / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -373,11 +373,11 @@ test "UAX29/0030: <CARRIAGE RETURN / COMBINING DIAERESIS / HANGUL SYLLABLE GAG" 
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [AC01]
-  assert_eq(g[2].to_string(), "\u{AC01}")
+  assert_eq(g[2].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -387,9 +387,9 @@ test "UAX29/0031: <CARRIAGE RETURN / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -399,11 +399,11 @@ test "UAX29/0032: <CARRIAGE RETURN / COMBINING DIAERESIS / DEVANAGARI LETTER KA"
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0915]
-  assert_eq(g[2].to_string(), "\u{0915}")
+  assert_eq(g[2].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -413,9 +413,9 @@ test "UAX29/0033: <CARRIAGE RETURN / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -425,11 +425,11 @@ test "UAX29/0034: <CARRIAGE RETURN / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [00A9]
-  assert_eq(g[2].to_string(), "\u{00A9}")
+  assert_eq(g[2].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -439,9 +439,9 @@ test "UAX29/0035: <CARRIAGE RETURN / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -451,11 +451,11 @@ test "UAX29/0036: <CARRIAGE RETURN / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0020]
-  assert_eq(g[2].to_string(), "\u{0020}")
+  assert_eq(g[2].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -465,9 +465,9 @@ test "UAX29/0037: <CARRIAGE RETURN / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -477,11 +477,11 @@ test "UAX29/0038: <CARRIAGE RETURN / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000D]
-  assert_eq(g[0].to_string(), "\u{000D}")
+  assert_eq(g[0].to_owned(), "\u{000D}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0378]
-  assert_eq(g[2].to_string(), "\u{0378}")
+  assert_eq(g[2].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -491,9 +491,9 @@ test "UAX29/0039: <LINE FEED / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -503,11 +503,11 @@ test "UAX29/0040: <LINE FEED / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [000D]
-  assert_eq(g[2].to_string(), "\u{000D}")
+  assert_eq(g[2].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -517,9 +517,9 @@ test "UAX29/0041: <LINE FEED / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -529,11 +529,11 @@ test "UAX29/0042: <LINE FEED / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [000A]
-  assert_eq(g[2].to_string(), "\u{000A}")
+  assert_eq(g[2].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -543,9 +543,9 @@ test "UAX29/0043: <LINE FEED / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -555,11 +555,11 @@ test "UAX29/0044: <LINE FEED / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0000]
-  assert_eq(g[2].to_string(), "\u{0000}")
+  assert_eq(g[2].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -569,9 +569,9 @@ test "UAX29/0045: <LINE FEED / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [094D]
-  assert_eq(g[1].to_string(), "\u{094D}")
+  assert_eq(g[1].to_owned(), "\u{094D}")
 }
 
 ///|
@@ -581,9 +581,9 @@ test "UAX29/0046: <LINE FEED / COMBINING DIAERESIS / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308 094D]
-  assert_eq(g[1].to_string(), "\u{0308}\u{094D}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{094D}")
 }
 
 ///|
@@ -593,9 +593,9 @@ test "UAX29/0047: <LINE FEED / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0300]
-  assert_eq(g[1].to_string(), "\u{0300}")
+  assert_eq(g[1].to_owned(), "\u{0300}")
 }
 
 ///|
@@ -605,9 +605,9 @@ test "UAX29/0048: <LINE FEED / COMBINING DIAERESIS / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308 0300]
-  assert_eq(g[1].to_string(), "\u{0308}\u{0300}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{0300}")
 }
 
 ///|
@@ -617,9 +617,9 @@ test "UAX29/0049: <LINE FEED / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [200C]
-  assert_eq(g[1].to_string(), "\u{200C}")
+  assert_eq(g[1].to_owned(), "\u{200C}")
 }
 
 ///|
@@ -629,9 +629,9 @@ test "UAX29/0050: <LINE FEED / COMBINING DIAERESIS / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308 200C]
-  assert_eq(g[1].to_string(), "\u{0308}\u{200C}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{200C}")
 }
 
 ///|
@@ -641,9 +641,9 @@ test "UAX29/0051: <LINE FEED / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [200D]
-  assert_eq(g[1].to_string(), "\u{200D}")
+  assert_eq(g[1].to_owned(), "\u{200D}")
 }
 
 ///|
@@ -653,9 +653,9 @@ test "UAX29/0052: <LINE FEED / COMBINING DIAERESIS / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308 200D]
-  assert_eq(g[1].to_string(), "\u{0308}\u{200D}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{200D}")
 }
 
 ///|
@@ -665,9 +665,9 @@ test "UAX29/0053: <LINE FEED / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -677,11 +677,11 @@ test "UAX29/0054: <LINE FEED / COMBINING DIAERESIS / REGIONAL INDICATOR SYMBOL L
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1F1E6]
-  assert_eq(g[2].to_string(), "\u{1F1E6}")
+  assert_eq(g[2].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -691,9 +691,9 @@ test "UAX29/0055: <LINE FEED / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -703,11 +703,11 @@ test "UAX29/0056: <LINE FEED / COMBINING DIAERESIS / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [06DD]
-  assert_eq(g[2].to_string(), "\u{06DD}")
+  assert_eq(g[2].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -717,9 +717,9 @@ test "UAX29/0057: <LINE FEED / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0903]
-  assert_eq(g[1].to_string(), "\u{0903}")
+  assert_eq(g[1].to_owned(), "\u{0903}")
 }
 
 ///|
@@ -729,9 +729,9 @@ test "UAX29/0058: <LINE FEED / COMBINING DIAERESIS / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308 0903]
-  assert_eq(g[1].to_string(), "\u{0308}\u{0903}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{0903}")
 }
 
 ///|
@@ -741,9 +741,9 @@ test "UAX29/0059: <LINE FEED / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -753,11 +753,11 @@ test "UAX29/0060: <LINE FEED / COMBINING DIAERESIS / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1100]
-  assert_eq(g[2].to_string(), "\u{1100}")
+  assert_eq(g[2].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -767,9 +767,9 @@ test "UAX29/0061: <LINE FEED / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -779,11 +779,11 @@ test "UAX29/0062: <LINE FEED / COMBINING DIAERESIS / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1160]
-  assert_eq(g[2].to_string(), "\u{1160}")
+  assert_eq(g[2].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -793,9 +793,9 @@ test "UAX29/0063: <LINE FEED / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -805,11 +805,11 @@ test "UAX29/0064: <LINE FEED / COMBINING DIAERESIS / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [11A8]
-  assert_eq(g[2].to_string(), "\u{11A8}")
+  assert_eq(g[2].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -819,9 +819,9 @@ test "UAX29/0065: <LINE FEED / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -831,11 +831,11 @@ test "UAX29/0066: <LINE FEED / COMBINING DIAERESIS / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [AC00]
-  assert_eq(g[2].to_string(), "\u{AC00}")
+  assert_eq(g[2].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -845,9 +845,9 @@ test "UAX29/0067: <LINE FEED / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -857,11 +857,11 @@ test "UAX29/0068: <LINE FEED / COMBINING DIAERESIS / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [AC01]
-  assert_eq(g[2].to_string(), "\u{AC01}")
+  assert_eq(g[2].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -871,9 +871,9 @@ test "UAX29/0069: <LINE FEED / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -883,11 +883,11 @@ test "UAX29/0070: <LINE FEED / COMBINING DIAERESIS / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0915]
-  assert_eq(g[2].to_string(), "\u{0915}")
+  assert_eq(g[2].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -897,9 +897,9 @@ test "UAX29/0071: <LINE FEED / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -909,11 +909,11 @@ test "UAX29/0072: <LINE FEED / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [00A9]
-  assert_eq(g[2].to_string(), "\u{00A9}")
+  assert_eq(g[2].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -923,9 +923,9 @@ test "UAX29/0073: <LINE FEED / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -935,11 +935,11 @@ test "UAX29/0074: <LINE FEED / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0020]
-  assert_eq(g[2].to_string(), "\u{0020}")
+  assert_eq(g[2].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -949,9 +949,9 @@ test "UAX29/0075: <LINE FEED / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -961,11 +961,11 @@ test "UAX29/0076: <LINE FEED / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [000A]
-  assert_eq(g[0].to_string(), "\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000A}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0378]
-  assert_eq(g[2].to_string(), "\u{0378}")
+  assert_eq(g[2].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -975,9 +975,9 @@ test "UAX29/0077: <NULL> / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -987,11 +987,11 @@ test "UAX29/0078: <NULL> / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [000D]
-  assert_eq(g[2].to_string(), "\u{000D}")
+  assert_eq(g[2].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -1001,9 +1001,9 @@ test "UAX29/0079: <NULL> / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -1013,11 +1013,11 @@ test "UAX29/0080: <NULL> / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [000A]
-  assert_eq(g[2].to_string(), "\u{000A}")
+  assert_eq(g[2].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -1027,9 +1027,9 @@ test "UAX29/0081: <NULL> / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -1039,11 +1039,11 @@ test "UAX29/0082: <NULL> / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0000]
-  assert_eq(g[2].to_string(), "\u{0000}")
+  assert_eq(g[2].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -1053,9 +1053,9 @@ test "UAX29/0083: <NULL> / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [094D]
-  assert_eq(g[1].to_string(), "\u{094D}")
+  assert_eq(g[1].to_owned(), "\u{094D}")
 }
 
 ///|
@@ -1065,9 +1065,9 @@ test "UAX29/0084: <NULL> / COMBINING DIAERESIS / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308 094D]
-  assert_eq(g[1].to_string(), "\u{0308}\u{094D}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{094D}")
 }
 
 ///|
@@ -1077,9 +1077,9 @@ test "UAX29/0085: <NULL> / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0300]
-  assert_eq(g[1].to_string(), "\u{0300}")
+  assert_eq(g[1].to_owned(), "\u{0300}")
 }
 
 ///|
@@ -1089,9 +1089,9 @@ test "UAX29/0086: <NULL> / COMBINING DIAERESIS / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308 0300]
-  assert_eq(g[1].to_string(), "\u{0308}\u{0300}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{0300}")
 }
 
 ///|
@@ -1101,9 +1101,9 @@ test "UAX29/0087: <NULL> / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [200C]
-  assert_eq(g[1].to_string(), "\u{200C}")
+  assert_eq(g[1].to_owned(), "\u{200C}")
 }
 
 ///|
@@ -1113,9 +1113,9 @@ test "UAX29/0088: <NULL> / COMBINING DIAERESIS / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308 200C]
-  assert_eq(g[1].to_string(), "\u{0308}\u{200C}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{200C}")
 }
 
 ///|
@@ -1125,9 +1125,9 @@ test "UAX29/0089: <NULL> / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [200D]
-  assert_eq(g[1].to_string(), "\u{200D}")
+  assert_eq(g[1].to_owned(), "\u{200D}")
 }
 
 ///|
@@ -1137,9 +1137,9 @@ test "UAX29/0090: <NULL> / COMBINING DIAERESIS / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308 200D]
-  assert_eq(g[1].to_string(), "\u{0308}\u{200D}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{200D}")
 }
 
 ///|
@@ -1149,9 +1149,9 @@ test "UAX29/0091: <NULL> / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -1161,11 +1161,11 @@ test "UAX29/0092: <NULL> / COMBINING DIAERESIS / REGIONAL INDICATOR SYMBOL L..."
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1F1E6]
-  assert_eq(g[2].to_string(), "\u{1F1E6}")
+  assert_eq(g[2].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -1175,9 +1175,9 @@ test "UAX29/0093: <NULL> / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -1187,11 +1187,11 @@ test "UAX29/0094: <NULL> / COMBINING DIAERESIS / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [06DD]
-  assert_eq(g[2].to_string(), "\u{06DD}")
+  assert_eq(g[2].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -1201,9 +1201,9 @@ test "UAX29/0095: <NULL> / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0903]
-  assert_eq(g[1].to_string(), "\u{0903}")
+  assert_eq(g[1].to_owned(), "\u{0903}")
 }
 
 ///|
@@ -1213,9 +1213,9 @@ test "UAX29/0096: <NULL> / COMBINING DIAERESIS / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308 0903]
-  assert_eq(g[1].to_string(), "\u{0308}\u{0903}")
+  assert_eq(g[1].to_owned(), "\u{0308}\u{0903}")
 }
 
 ///|
@@ -1225,9 +1225,9 @@ test "UAX29/0097: <NULL> / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -1237,11 +1237,11 @@ test "UAX29/0098: <NULL> / COMBINING DIAERESIS / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1100]
-  assert_eq(g[2].to_string(), "\u{1100}")
+  assert_eq(g[2].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -1251,9 +1251,9 @@ test "UAX29/0099: <NULL> / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -1263,11 +1263,11 @@ test "UAX29/0100: <NULL> / COMBINING DIAERESIS / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [1160]
-  assert_eq(g[2].to_string(), "\u{1160}")
+  assert_eq(g[2].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -1277,9 +1277,9 @@ test "UAX29/0101: <NULL> / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -1289,11 +1289,11 @@ test "UAX29/0102: <NULL> / COMBINING DIAERESIS / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [11A8]
-  assert_eq(g[2].to_string(), "\u{11A8}")
+  assert_eq(g[2].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -1303,9 +1303,9 @@ test "UAX29/0103: <NULL> / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -1315,11 +1315,11 @@ test "UAX29/0104: <NULL> / COMBINING DIAERESIS / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [AC00]
-  assert_eq(g[2].to_string(), "\u{AC00}")
+  assert_eq(g[2].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -1329,9 +1329,9 @@ test "UAX29/0105: <NULL> / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -1341,11 +1341,11 @@ test "UAX29/0106: <NULL> / COMBINING DIAERESIS / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [AC01]
-  assert_eq(g[2].to_string(), "\u{AC01}")
+  assert_eq(g[2].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -1355,9 +1355,9 @@ test "UAX29/0107: <NULL> / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -1367,11 +1367,11 @@ test "UAX29/0108: <NULL> / COMBINING DIAERESIS / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0915]
-  assert_eq(g[2].to_string(), "\u{0915}")
+  assert_eq(g[2].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -1381,9 +1381,9 @@ test "UAX29/0109: <NULL> / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -1393,11 +1393,11 @@ test "UAX29/0110: <NULL> / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [00A9]
-  assert_eq(g[2].to_string(), "\u{00A9}")
+  assert_eq(g[2].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -1407,9 +1407,9 @@ test "UAX29/0111: <NULL> / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -1419,11 +1419,11 @@ test "UAX29/0112: <NULL> / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0020]
-  assert_eq(g[2].to_string(), "\u{0020}")
+  assert_eq(g[2].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -1433,9 +1433,9 @@ test "UAX29/0113: <NULL> / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -1445,11 +1445,11 @@ test "UAX29/0114: <NULL> / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [0000]
-  assert_eq(g[0].to_string(), "\u{0000}")
+  assert_eq(g[0].to_owned(), "\u{0000}")
   // cluster 1: [0308]
-  assert_eq(g[1].to_string(), "\u{0308}")
+  assert_eq(g[1].to_owned(), "\u{0308}")
   // cluster 2: [0378]
-  assert_eq(g[2].to_string(), "\u{0378}")
+  assert_eq(g[2].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -1459,9 +1459,9 @@ test "UAX29/0115: DEVANAGARI SIGN VIRAMA / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -1471,9 +1471,9 @@ test "UAX29/0116: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / <CARRIAGE RETUR
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -1483,9 +1483,9 @@ test "UAX29/0117: DEVANAGARI SIGN VIRAMA / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -1495,9 +1495,9 @@ test "UAX29/0118: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -1507,9 +1507,9 @@ test "UAX29/0119: DEVANAGARI SIGN VIRAMA / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -1519,9 +1519,9 @@ test "UAX29/0120: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -1531,7 +1531,7 @@ test "UAX29/0121: DEVANAGARI SIGN VIRAMA / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 094D]
-  assert_eq(g[0].to_string(), "\u{094D}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{094D}")
 }
 
 ///|
@@ -1541,7 +1541,7 @@ test "UAX29/0122: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / DEVANAGARI SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 0308 094D]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}\u{094D}")
 }
 
 ///|
@@ -1551,7 +1551,7 @@ test "UAX29/0123: DEVANAGARI SIGN VIRAMA / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 0300]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0300}")
 }
 
 ///|
@@ -1561,7 +1561,7 @@ test "UAX29/0124: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / COMBINING GRAVE
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 0308 0300]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}\u{0300}")
 }
 
 ///|
@@ -1571,7 +1571,7 @@ test "UAX29/0125: DEVANAGARI SIGN VIRAMA / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 200C]
-  assert_eq(g[0].to_string(), "\u{094D}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{200C}")
 }
 
 ///|
@@ -1581,7 +1581,7 @@ test "UAX29/0126: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / ZERO WIDTH NON-
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 0308 200C]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}\u{200C}")
 }
 
 ///|
@@ -1591,7 +1591,7 @@ test "UAX29/0127: DEVANAGARI SIGN VIRAMA / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 200D]
-  assert_eq(g[0].to_string(), "\u{094D}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{200D}")
 }
 
 ///|
@@ -1601,7 +1601,7 @@ test "UAX29/0128: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / ZERO WIDTH JOIN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 0308 200D]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}\u{200D}")
 }
 
 ///|
@@ -1611,9 +1611,9 @@ test "UAX29/0129: DEVANAGARI SIGN VIRAMA / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -1623,9 +1623,9 @@ test "UAX29/0130: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / REGIONAL INDICA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -1635,9 +1635,9 @@ test "UAX29/0131: DEVANAGARI SIGN VIRAMA / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -1647,9 +1647,9 @@ test "UAX29/0132: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / ARABIC END OF A
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -1659,7 +1659,7 @@ test "UAX29/0133: DEVANAGARI SIGN VIRAMA / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 0903]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0903}")
 }
 
 ///|
@@ -1669,7 +1669,7 @@ test "UAX29/0134: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / DEVANAGARI SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [094D 0308 0903]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}\u{0903}")
 }
 
 ///|
@@ -1679,9 +1679,9 @@ test "UAX29/0135: DEVANAGARI SIGN VIRAMA / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -1691,9 +1691,9 @@ test "UAX29/0136: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / HANGUL CHOSEONG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -1703,9 +1703,9 @@ test "UAX29/0137: DEVANAGARI SIGN VIRAMA / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -1715,9 +1715,9 @@ test "UAX29/0138: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / HANGUL JUNGSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -1727,9 +1727,9 @@ test "UAX29/0139: DEVANAGARI SIGN VIRAMA / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -1739,9 +1739,9 @@ test "UAX29/0140: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / HANGUL JONGSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -1751,9 +1751,9 @@ test "UAX29/0141: DEVANAGARI SIGN VIRAMA / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -1763,9 +1763,9 @@ test "UAX29/0142: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / HANGUL SYLLABLE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -1775,9 +1775,9 @@ test "UAX29/0143: DEVANAGARI SIGN VIRAMA / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -1787,9 +1787,9 @@ test "UAX29/0144: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / HANGUL SYLLABLE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -1799,9 +1799,9 @@ test "UAX29/0145: DEVANAGARI SIGN VIRAMA / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -1811,9 +1811,9 @@ test "UAX29/0146: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / DEVANAGARI LETT
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -1823,9 +1823,9 @@ test "UAX29/0147: DEVANAGARI SIGN VIRAMA / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -1835,9 +1835,9 @@ test "UAX29/0148: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / COPYRIGHT SIGN"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -1847,9 +1847,9 @@ test "UAX29/0149: DEVANAGARI SIGN VIRAMA / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -1859,9 +1859,9 @@ test "UAX29/0150: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -1871,9 +1871,9 @@ test "UAX29/0151: DEVANAGARI SIGN VIRAMA / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D]
-  assert_eq(g[0].to_string(), "\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{094D}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -1883,9 +1883,9 @@ test "UAX29/0152: DEVANAGARI SIGN VIRAMA / COMBINING DIAERESIS / <reserved-0378>
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [094D 0308]
-  assert_eq(g[0].to_string(), "\u{094D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{094D}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -1895,9 +1895,9 @@ test "UAX29/0153: COMBINING GRAVE ACCENT / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -1907,9 +1907,9 @@ test "UAX29/0154: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / <CARRIAGE RETUR
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -1919,9 +1919,9 @@ test "UAX29/0155: COMBINING GRAVE ACCENT / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -1931,9 +1931,9 @@ test "UAX29/0156: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -1943,9 +1943,9 @@ test "UAX29/0157: COMBINING GRAVE ACCENT / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -1955,9 +1955,9 @@ test "UAX29/0158: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -1967,7 +1967,7 @@ test "UAX29/0159: COMBINING GRAVE ACCENT / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 094D]
-  assert_eq(g[0].to_string(), "\u{0300}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{094D}")
 }
 
 ///|
@@ -1977,7 +1977,7 @@ test "UAX29/0160: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / DEVANAGARI SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 0308 094D]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}\u{094D}")
 }
 
 ///|
@@ -1987,7 +1987,7 @@ test "UAX29/0161: COMBINING GRAVE ACCENT / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 0300]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0300}")
 }
 
 ///|
@@ -1997,7 +1997,7 @@ test "UAX29/0162: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / COMBINING GRAVE
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 0308 0300]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}\u{0300}")
 }
 
 ///|
@@ -2007,7 +2007,7 @@ test "UAX29/0163: COMBINING GRAVE ACCENT / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 200C]
-  assert_eq(g[0].to_string(), "\u{0300}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{200C}")
 }
 
 ///|
@@ -2017,7 +2017,7 @@ test "UAX29/0164: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / ZERO WIDTH NON-
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 0308 200C]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}\u{200C}")
 }
 
 ///|
@@ -2027,7 +2027,7 @@ test "UAX29/0165: COMBINING GRAVE ACCENT / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 200D]
-  assert_eq(g[0].to_string(), "\u{0300}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{200D}")
 }
 
 ///|
@@ -2037,7 +2037,7 @@ test "UAX29/0166: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / ZERO WIDTH JOIN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 0308 200D]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}\u{200D}")
 }
 
 ///|
@@ -2047,9 +2047,9 @@ test "UAX29/0167: COMBINING GRAVE ACCENT / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -2059,9 +2059,9 @@ test "UAX29/0168: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / REGIONAL INDICA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -2071,9 +2071,9 @@ test "UAX29/0169: COMBINING GRAVE ACCENT / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -2083,9 +2083,9 @@ test "UAX29/0170: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / ARABIC END OF A
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -2095,7 +2095,7 @@ test "UAX29/0171: COMBINING GRAVE ACCENT / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 0903]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0903}")
 }
 
 ///|
@@ -2105,7 +2105,7 @@ test "UAX29/0172: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / DEVANAGARI SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0300 0308 0903]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}\u{0903}")
 }
 
 ///|
@@ -2115,9 +2115,9 @@ test "UAX29/0173: COMBINING GRAVE ACCENT / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -2127,9 +2127,9 @@ test "UAX29/0174: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / HANGUL CHOSEONG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -2139,9 +2139,9 @@ test "UAX29/0175: COMBINING GRAVE ACCENT / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -2151,9 +2151,9 @@ test "UAX29/0176: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / HANGUL JUNGSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -2163,9 +2163,9 @@ test "UAX29/0177: COMBINING GRAVE ACCENT / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -2175,9 +2175,9 @@ test "UAX29/0178: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / HANGUL JONGSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -2187,9 +2187,9 @@ test "UAX29/0179: COMBINING GRAVE ACCENT / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -2199,9 +2199,9 @@ test "UAX29/0180: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / HANGUL SYLLABLE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -2211,9 +2211,9 @@ test "UAX29/0181: COMBINING GRAVE ACCENT / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -2223,9 +2223,9 @@ test "UAX29/0182: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / HANGUL SYLLABLE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -2235,9 +2235,9 @@ test "UAX29/0183: COMBINING GRAVE ACCENT / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -2247,9 +2247,9 @@ test "UAX29/0184: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / DEVANAGARI LETT
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -2259,9 +2259,9 @@ test "UAX29/0185: COMBINING GRAVE ACCENT / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -2271,9 +2271,9 @@ test "UAX29/0186: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / COPYRIGHT SIGN"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -2283,9 +2283,9 @@ test "UAX29/0187: COMBINING GRAVE ACCENT / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -2295,9 +2295,9 @@ test "UAX29/0188: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -2307,9 +2307,9 @@ test "UAX29/0189: COMBINING GRAVE ACCENT / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300]
-  assert_eq(g[0].to_string(), "\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0300}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -2319,9 +2319,9 @@ test "UAX29/0190: COMBINING GRAVE ACCENT / COMBINING DIAERESIS / <reserved-0378>
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0300 0308]
-  assert_eq(g[0].to_string(), "\u{0300}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0300}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -2331,9 +2331,9 @@ test "UAX29/0191: ZERO WIDTH NON-JOINER / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -2343,9 +2343,9 @@ test "UAX29/0192: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / <CARRIAGE RETURN
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -2355,9 +2355,9 @@ test "UAX29/0193: ZERO WIDTH NON-JOINER / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -2367,9 +2367,9 @@ test "UAX29/0194: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -2379,9 +2379,9 @@ test "UAX29/0195: ZERO WIDTH NON-JOINER / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -2391,9 +2391,9 @@ test "UAX29/0196: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -2403,7 +2403,7 @@ test "UAX29/0197: ZERO WIDTH NON-JOINER / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 094D]
-  assert_eq(g[0].to_string(), "\u{200C}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{094D}")
 }
 
 ///|
@@ -2413,7 +2413,7 @@ test "UAX29/0198: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / DEVANAGARI SIGN 
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 0308 094D]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}\u{094D}")
 }
 
 ///|
@@ -2423,7 +2423,7 @@ test "UAX29/0199: ZERO WIDTH NON-JOINER / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 0300]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0300}")
 }
 
 ///|
@@ -2433,7 +2433,7 @@ test "UAX29/0200: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / COMBINING GRAVE 
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 0308 0300]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}\u{0300}")
 }
 
 ///|
@@ -2443,7 +2443,7 @@ test "UAX29/0201: ZERO WIDTH NON-JOINER / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 200C]
-  assert_eq(g[0].to_string(), "\u{200C}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{200C}")
 }
 
 ///|
@@ -2453,7 +2453,7 @@ test "UAX29/0202: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / ZERO WIDTH NON-J
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 0308 200C]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}\u{200C}")
 }
 
 ///|
@@ -2463,7 +2463,7 @@ test "UAX29/0203: ZERO WIDTH NON-JOINER / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 200D]
-  assert_eq(g[0].to_string(), "\u{200C}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{200D}")
 }
 
 ///|
@@ -2473,7 +2473,7 @@ test "UAX29/0204: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / ZERO WIDTH JOINE
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 0308 200D]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}\u{200D}")
 }
 
 ///|
@@ -2483,9 +2483,9 @@ test "UAX29/0205: ZERO WIDTH NON-JOINER / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -2495,9 +2495,9 @@ test "UAX29/0206: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / REGIONAL INDICAT
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -2507,9 +2507,9 @@ test "UAX29/0207: ZERO WIDTH NON-JOINER / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -2519,9 +2519,9 @@ test "UAX29/0208: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / ARABIC END OF AY
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -2531,7 +2531,7 @@ test "UAX29/0209: ZERO WIDTH NON-JOINER / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 0903]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0903}")
 }
 
 ///|
@@ -2541,7 +2541,7 @@ test "UAX29/0210: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / DEVANAGARI SIGN 
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200C 0308 0903]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}\u{0903}")
 }
 
 ///|
@@ -2551,9 +2551,9 @@ test "UAX29/0211: ZERO WIDTH NON-JOINER / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -2563,9 +2563,9 @@ test "UAX29/0212: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / HANGUL CHOSEONG 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -2575,9 +2575,9 @@ test "UAX29/0213: ZERO WIDTH NON-JOINER / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -2587,9 +2587,9 @@ test "UAX29/0214: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / HANGUL JUNGSEONG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -2599,9 +2599,9 @@ test "UAX29/0215: ZERO WIDTH NON-JOINER / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -2611,9 +2611,9 @@ test "UAX29/0216: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / HANGUL JONGSEONG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -2623,9 +2623,9 @@ test "UAX29/0217: ZERO WIDTH NON-JOINER / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -2635,9 +2635,9 @@ test "UAX29/0218: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / HANGUL SYLLABLE 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -2647,9 +2647,9 @@ test "UAX29/0219: ZERO WIDTH NON-JOINER / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -2659,9 +2659,9 @@ test "UAX29/0220: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / HANGUL SYLLABLE 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -2671,9 +2671,9 @@ test "UAX29/0221: ZERO WIDTH NON-JOINER / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -2683,9 +2683,9 @@ test "UAX29/0222: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / DEVANAGARI LETTE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -2695,9 +2695,9 @@ test "UAX29/0223: ZERO WIDTH NON-JOINER / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -2707,9 +2707,9 @@ test "UAX29/0224: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / COPYRIGHT SIGN" 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -2719,9 +2719,9 @@ test "UAX29/0225: ZERO WIDTH NON-JOINER / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -2731,9 +2731,9 @@ test "UAX29/0226: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -2743,9 +2743,9 @@ test "UAX29/0227: ZERO WIDTH NON-JOINER / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C]
-  assert_eq(g[0].to_string(), "\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200C}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -2755,9 +2755,9 @@ test "UAX29/0228: ZERO WIDTH NON-JOINER / COMBINING DIAERESIS / <reserved-0378>"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200C 0308]
-  assert_eq(g[0].to_string(), "\u{200C}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200C}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -2767,9 +2767,9 @@ test "UAX29/0229: ZERO WIDTH JOINER / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -2779,9 +2779,9 @@ test "UAX29/0230: ZERO WIDTH JOINER / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -2791,9 +2791,9 @@ test "UAX29/0231: ZERO WIDTH JOINER / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -2803,9 +2803,9 @@ test "UAX29/0232: ZERO WIDTH JOINER / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -2815,9 +2815,9 @@ test "UAX29/0233: ZERO WIDTH JOINER / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -2827,9 +2827,9 @@ test "UAX29/0234: ZERO WIDTH JOINER / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -2839,7 +2839,7 @@ test "UAX29/0235: ZERO WIDTH JOINER / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 094D]
-  assert_eq(g[0].to_string(), "\u{200D}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{094D}")
 }
 
 ///|
@@ -2849,7 +2849,7 @@ test "UAX29/0236: ZERO WIDTH JOINER / COMBINING DIAERESIS / DEVANAGARI SIGN VIRA
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 0308 094D]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}\u{094D}")
 }
 
 ///|
@@ -2859,7 +2859,7 @@ test "UAX29/0237: ZERO WIDTH JOINER / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 0300]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0300}")
 }
 
 ///|
@@ -2869,7 +2869,7 @@ test "UAX29/0238: ZERO WIDTH JOINER / COMBINING DIAERESIS / COMBINING GRAVE ACCE
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 0308 0300]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}\u{0300}")
 }
 
 ///|
@@ -2879,7 +2879,7 @@ test "UAX29/0239: ZERO WIDTH JOINER / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 200C]
-  assert_eq(g[0].to_string(), "\u{200D}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{200C}")
 }
 
 ///|
@@ -2889,7 +2889,7 @@ test "UAX29/0240: ZERO WIDTH JOINER / COMBINING DIAERESIS / ZERO WIDTH NON-JOINE
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 0308 200C]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}\u{200C}")
 }
 
 ///|
@@ -2899,7 +2899,7 @@ test "UAX29/0241: ZERO WIDTH JOINER / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 200D]
-  assert_eq(g[0].to_string(), "\u{200D}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{200D}")
 }
 
 ///|
@@ -2909,7 +2909,7 @@ test "UAX29/0242: ZERO WIDTH JOINER / COMBINING DIAERESIS / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 0308 200D]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}\u{200D}")
 }
 
 ///|
@@ -2919,9 +2919,9 @@ test "UAX29/0243: ZERO WIDTH JOINER / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -2931,9 +2931,9 @@ test "UAX29/0244: ZERO WIDTH JOINER / COMBINING DIAERESIS / REGIONAL INDICATOR S
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -2943,9 +2943,9 @@ test "UAX29/0245: ZERO WIDTH JOINER / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -2955,9 +2955,9 @@ test "UAX29/0246: ZERO WIDTH JOINER / COMBINING DIAERESIS / ARABIC END OF AYAH" 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -2967,7 +2967,7 @@ test "UAX29/0247: ZERO WIDTH JOINER / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 0903]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0903}")
 }
 
 ///|
@@ -2977,7 +2977,7 @@ test "UAX29/0248: ZERO WIDTH JOINER / COMBINING DIAERESIS / DEVANAGARI SIGN VISA
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [200D 0308 0903]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}\u{0903}")
 }
 
 ///|
@@ -2987,9 +2987,9 @@ test "UAX29/0249: ZERO WIDTH JOINER / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -2999,9 +2999,9 @@ test "UAX29/0250: ZERO WIDTH JOINER / COMBINING DIAERESIS / HANGUL CHOSEONG KIYE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -3011,9 +3011,9 @@ test "UAX29/0251: ZERO WIDTH JOINER / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -3023,9 +3023,9 @@ test "UAX29/0252: ZERO WIDTH JOINER / COMBINING DIAERESIS / HANGUL JUNGSEONG FIL
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -3035,9 +3035,9 @@ test "UAX29/0253: ZERO WIDTH JOINER / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -3047,9 +3047,9 @@ test "UAX29/0254: ZERO WIDTH JOINER / COMBINING DIAERESIS / HANGUL JONGSEONG KIY
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -3059,9 +3059,9 @@ test "UAX29/0255: ZERO WIDTH JOINER / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -3071,9 +3071,9 @@ test "UAX29/0256: ZERO WIDTH JOINER / COMBINING DIAERESIS / HANGUL SYLLABLE GA" 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -3083,9 +3083,9 @@ test "UAX29/0257: ZERO WIDTH JOINER / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -3095,9 +3095,9 @@ test "UAX29/0258: ZERO WIDTH JOINER / COMBINING DIAERESIS / HANGUL SYLLABLE GAG"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -3107,9 +3107,9 @@ test "UAX29/0259: ZERO WIDTH JOINER / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -3119,9 +3119,9 @@ test "UAX29/0260: ZERO WIDTH JOINER / COMBINING DIAERESIS / DEVANAGARI LETTER KA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -3131,9 +3131,9 @@ test "UAX29/0261: ZERO WIDTH JOINER / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -3143,9 +3143,9 @@ test "UAX29/0262: ZERO WIDTH JOINER / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -3155,9 +3155,9 @@ test "UAX29/0263: ZERO WIDTH JOINER / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -3167,9 +3167,9 @@ test "UAX29/0264: ZERO WIDTH JOINER / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -3179,9 +3179,9 @@ test "UAX29/0265: ZERO WIDTH JOINER / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D]
-  assert_eq(g[0].to_string(), "\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{200D}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -3191,9 +3191,9 @@ test "UAX29/0266: ZERO WIDTH JOINER / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [200D 0308]
-  assert_eq(g[0].to_string(), "\u{200D}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{200D}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -3203,9 +3203,9 @@ test "UAX29/0267: REGIONAL INDICATOR SYMBOL L... / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -3215,9 +3215,9 @@ test "UAX29/0268: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / <CARRIA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -3227,9 +3227,9 @@ test "UAX29/0269: REGIONAL INDICATOR SYMBOL L... / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -3239,9 +3239,9 @@ test "UAX29/0270: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / <LINE F
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -3251,9 +3251,9 @@ test "UAX29/0271: REGIONAL INDICATOR SYMBOL L... / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -3263,9 +3263,9 @@ test "UAX29/0272: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / <NULL>"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -3275,7 +3275,7 @@ test "UAX29/0273: REGIONAL INDICATOR SYMBOL L... / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 094D]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{094D}")
 }
 
 ///|
@@ -3285,7 +3285,7 @@ test "UAX29/0274: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / DEVANAG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 0308 094D]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}\u{094D}")
 }
 
 ///|
@@ -3295,7 +3295,7 @@ test "UAX29/0275: REGIONAL INDICATOR SYMBOL L... / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 0300]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0300}")
 }
 
 ///|
@@ -3305,7 +3305,7 @@ test "UAX29/0276: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / COMBINI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 0308 0300]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}\u{0300}")
 }
 
 ///|
@@ -3315,7 +3315,7 @@ test "UAX29/0277: REGIONAL INDICATOR SYMBOL L... / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 200C]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{200C}")
 }
 
 ///|
@@ -3325,7 +3325,7 @@ test "UAX29/0278: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / ZERO WI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 0308 200C]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}\u{200C}")
 }
 
 ///|
@@ -3335,7 +3335,7 @@ test "UAX29/0279: REGIONAL INDICATOR SYMBOL L... / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 200D]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{200D}")
 }
 
 ///|
@@ -3345,7 +3345,7 @@ test "UAX29/0280: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / ZERO WI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 0308 200D]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}\u{200D}")
 }
 
 ///|
@@ -3355,7 +3355,7 @@ test "UAX29/0281: REGIONAL INDICATOR SYMBOL L... / REGIONAL INDICATOR SYMBOL L..
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{1F1E6}")
 }
 
 ///|
@@ -3365,9 +3365,9 @@ test "UAX29/0282: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / REGIONA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -3377,9 +3377,9 @@ test "UAX29/0283: REGIONAL INDICATOR SYMBOL L... / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -3389,9 +3389,9 @@ test "UAX29/0284: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / ARABIC 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -3401,7 +3401,7 @@ test "UAX29/0285: REGIONAL INDICATOR SYMBOL L... / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 0903]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0903}")
 }
 
 ///|
@@ -3411,7 +3411,7 @@ test "UAX29/0286: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / DEVANAG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F1E6 0308 0903]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}\u{0903}")
 }
 
 ///|
@@ -3421,9 +3421,9 @@ test "UAX29/0287: REGIONAL INDICATOR SYMBOL L... / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -3433,9 +3433,9 @@ test "UAX29/0288: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / HANGUL 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -3445,9 +3445,9 @@ test "UAX29/0289: REGIONAL INDICATOR SYMBOL L... / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -3457,9 +3457,9 @@ test "UAX29/0290: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / HANGUL 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -3469,9 +3469,9 @@ test "UAX29/0291: REGIONAL INDICATOR SYMBOL L... / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -3481,9 +3481,9 @@ test "UAX29/0292: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / HANGUL 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -3493,9 +3493,9 @@ test "UAX29/0293: REGIONAL INDICATOR SYMBOL L... / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -3505,9 +3505,9 @@ test "UAX29/0294: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / HANGUL 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -3517,9 +3517,9 @@ test "UAX29/0295: REGIONAL INDICATOR SYMBOL L... / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -3529,9 +3529,9 @@ test "UAX29/0296: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / HANGUL 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -3541,9 +3541,9 @@ test "UAX29/0297: REGIONAL INDICATOR SYMBOL L... / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -3553,9 +3553,9 @@ test "UAX29/0298: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / DEVANAG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -3565,9 +3565,9 @@ test "UAX29/0299: REGIONAL INDICATOR SYMBOL L... / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -3577,9 +3577,9 @@ test "UAX29/0300: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / COPYRIG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -3589,9 +3589,9 @@ test "UAX29/0301: REGIONAL INDICATOR SYMBOL L... / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -3601,9 +3601,9 @@ test "UAX29/0302: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / SPACE" 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -3613,9 +3613,9 @@ test "UAX29/0303: REGIONAL INDICATOR SYMBOL L... / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6]
-  assert_eq(g[0].to_string(), "\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -3625,9 +3625,9 @@ test "UAX29/0304: REGIONAL INDICATOR SYMBOL L... / COMBINING DIAERESIS / <reserv
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F1E6 0308]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -3637,9 +3637,9 @@ test "UAX29/0305: ARABIC END OF AYAH / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD]
-  assert_eq(g[0].to_string(), "\u{06DD}")
+  assert_eq(g[0].to_owned(), "\u{06DD}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -3649,9 +3649,9 @@ test "UAX29/0306: ARABIC END OF AYAH / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -3661,9 +3661,9 @@ test "UAX29/0307: ARABIC END OF AYAH / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD]
-  assert_eq(g[0].to_string(), "\u{06DD}")
+  assert_eq(g[0].to_owned(), "\u{06DD}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -3673,9 +3673,9 @@ test "UAX29/0308: ARABIC END OF AYAH / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -3685,9 +3685,9 @@ test "UAX29/0309: ARABIC END OF AYAH / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD]
-  assert_eq(g[0].to_string(), "\u{06DD}")
+  assert_eq(g[0].to_owned(), "\u{06DD}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -3697,9 +3697,9 @@ test "UAX29/0310: ARABIC END OF AYAH / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -3709,7 +3709,7 @@ test "UAX29/0311: ARABIC END OF AYAH / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 094D]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{094D}")
 }
 
 ///|
@@ -3719,7 +3719,7 @@ test "UAX29/0312: ARABIC END OF AYAH / COMBINING DIAERESIS / DEVANAGARI SIGN VIR
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0308 094D]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}\u{094D}")
 }
 
 ///|
@@ -3729,7 +3729,7 @@ test "UAX29/0313: ARABIC END OF AYAH / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0300]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0300}")
 }
 
 ///|
@@ -3739,7 +3739,7 @@ test "UAX29/0314: ARABIC END OF AYAH / COMBINING DIAERESIS / COMBINING GRAVE ACC
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0308 0300]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}\u{0300}")
 }
 
 ///|
@@ -3749,7 +3749,7 @@ test "UAX29/0315: ARABIC END OF AYAH / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 200C]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{200C}")
 }
 
 ///|
@@ -3759,7 +3759,7 @@ test "UAX29/0316: ARABIC END OF AYAH / COMBINING DIAERESIS / ZERO WIDTH NON-JOIN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0308 200C]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}\u{200C}")
 }
 
 ///|
@@ -3769,7 +3769,7 @@ test "UAX29/0317: ARABIC END OF AYAH / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 200D]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{200D}")
 }
 
 ///|
@@ -3779,7 +3779,7 @@ test "UAX29/0318: ARABIC END OF AYAH / COMBINING DIAERESIS / ZERO WIDTH JOINER" 
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0308 200D]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}\u{200D}")
 }
 
 ///|
@@ -3789,7 +3789,7 @@ test "UAX29/0319: ARABIC END OF AYAH / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 1F1E6]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{1F1E6}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{1F1E6}")
 }
 
 ///|
@@ -3799,9 +3799,9 @@ test "UAX29/0320: ARABIC END OF AYAH / COMBINING DIAERESIS / REGIONAL INDICATOR 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -3811,7 +3811,7 @@ test "UAX29/0321: ARABIC END OF AYAH / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 06DD]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{06DD}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{06DD}")
 }
 
 ///|
@@ -3821,9 +3821,9 @@ test "UAX29/0322: ARABIC END OF AYAH / COMBINING DIAERESIS / ARABIC END OF AYAH"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -3833,7 +3833,7 @@ test "UAX29/0323: ARABIC END OF AYAH / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0903]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0903}")
 }
 
 ///|
@@ -3843,7 +3843,7 @@ test "UAX29/0324: ARABIC END OF AYAH / COMBINING DIAERESIS / DEVANAGARI SIGN VIS
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0308 0903]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}\u{0903}")
 }
 
 ///|
@@ -3853,7 +3853,7 @@ test "UAX29/0325: ARABIC END OF AYAH / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 1100]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{1100}")
 }
 
 ///|
@@ -3863,9 +3863,9 @@ test "UAX29/0326: ARABIC END OF AYAH / COMBINING DIAERESIS / HANGUL CHOSEONG KIY
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -3875,7 +3875,7 @@ test "UAX29/0327: ARABIC END OF AYAH / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 1160]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{1160}")
 }
 
 ///|
@@ -3885,9 +3885,9 @@ test "UAX29/0328: ARABIC END OF AYAH / COMBINING DIAERESIS / HANGUL JUNGSEONG FI
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -3897,7 +3897,7 @@ test "UAX29/0329: ARABIC END OF AYAH / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 11A8]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{11A8}")
 }
 
 ///|
@@ -3907,9 +3907,9 @@ test "UAX29/0330: ARABIC END OF AYAH / COMBINING DIAERESIS / HANGUL JONGSEONG KI
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -3919,7 +3919,7 @@ test "UAX29/0331: ARABIC END OF AYAH / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD AC00]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{AC00}")
 }
 
 ///|
@@ -3929,9 +3929,9 @@ test "UAX29/0332: ARABIC END OF AYAH / COMBINING DIAERESIS / HANGUL SYLLABLE GA"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -3941,7 +3941,7 @@ test "UAX29/0333: ARABIC END OF AYAH / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD AC01]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{AC01}")
 }
 
 ///|
@@ -3951,9 +3951,9 @@ test "UAX29/0334: ARABIC END OF AYAH / COMBINING DIAERESIS / HANGUL SYLLABLE GAG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -3963,7 +3963,7 @@ test "UAX29/0335: ARABIC END OF AYAH / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0915]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0915}")
 }
 
 ///|
@@ -3973,9 +3973,9 @@ test "UAX29/0336: ARABIC END OF AYAH / COMBINING DIAERESIS / DEVANAGARI LETTER K
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -3985,7 +3985,7 @@ test "UAX29/0337: ARABIC END OF AYAH / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 00A9]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{00A9}")
 }
 
 ///|
@@ -3995,9 +3995,9 @@ test "UAX29/0338: ARABIC END OF AYAH / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -4007,7 +4007,7 @@ test "UAX29/0339: ARABIC END OF AYAH / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0020]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0020}")
 }
 
 ///|
@@ -4017,9 +4017,9 @@ test "UAX29/0340: ARABIC END OF AYAH / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -4029,7 +4029,7 @@ test "UAX29/0341: ARABIC END OF AYAH / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [06DD 0378]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0378}")
 }
 
 ///|
@@ -4039,9 +4039,9 @@ test "UAX29/0342: ARABIC END OF AYAH / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [06DD 0308]
-  assert_eq(g[0].to_string(), "\u{06DD}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{06DD}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -4051,9 +4051,9 @@ test "UAX29/0343: DEVANAGARI SIGN VISARGA / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -4063,9 +4063,9 @@ test "UAX29/0344: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / <CARRIAGE RETU
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -4075,9 +4075,9 @@ test "UAX29/0345: DEVANAGARI SIGN VISARGA / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -4087,9 +4087,9 @@ test "UAX29/0346: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -4099,9 +4099,9 @@ test "UAX29/0347: DEVANAGARI SIGN VISARGA / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -4111,9 +4111,9 @@ test "UAX29/0348: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -4123,7 +4123,7 @@ test "UAX29/0349: DEVANAGARI SIGN VISARGA / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 094D]
-  assert_eq(g[0].to_string(), "\u{0903}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{094D}")
 }
 
 ///|
@@ -4133,7 +4133,7 @@ test "UAX29/0350: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / DEVANAGARI SIG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 0308 094D]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}\u{094D}")
 }
 
 ///|
@@ -4143,7 +4143,7 @@ test "UAX29/0351: DEVANAGARI SIGN VISARGA / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 0300]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0300}")
 }
 
 ///|
@@ -4153,7 +4153,7 @@ test "UAX29/0352: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / COMBINING GRAV
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 0308 0300]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}\u{0300}")
 }
 
 ///|
@@ -4163,7 +4163,7 @@ test "UAX29/0353: DEVANAGARI SIGN VISARGA / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 200C]
-  assert_eq(g[0].to_string(), "\u{0903}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{200C}")
 }
 
 ///|
@@ -4173,7 +4173,7 @@ test "UAX29/0354: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / ZERO WIDTH NON
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 0308 200C]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}\u{200C}")
 }
 
 ///|
@@ -4183,7 +4183,7 @@ test "UAX29/0355: DEVANAGARI SIGN VISARGA / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 200D]
-  assert_eq(g[0].to_string(), "\u{0903}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{200D}")
 }
 
 ///|
@@ -4193,7 +4193,7 @@ test "UAX29/0356: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / ZERO WIDTH JOI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 0308 200D]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}\u{200D}")
 }
 
 ///|
@@ -4203,9 +4203,9 @@ test "UAX29/0357: DEVANAGARI SIGN VISARGA / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -4215,9 +4215,9 @@ test "UAX29/0358: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / REGIONAL INDIC
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -4227,9 +4227,9 @@ test "UAX29/0359: DEVANAGARI SIGN VISARGA / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -4239,9 +4239,9 @@ test "UAX29/0360: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / ARABIC END OF 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -4251,7 +4251,7 @@ test "UAX29/0361: DEVANAGARI SIGN VISARGA / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 0903]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0903}")
 }
 
 ///|
@@ -4261,7 +4261,7 @@ test "UAX29/0362: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / DEVANAGARI SIG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0903 0308 0903]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}\u{0903}")
 }
 
 ///|
@@ -4271,9 +4271,9 @@ test "UAX29/0363: DEVANAGARI SIGN VISARGA / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -4283,9 +4283,9 @@ test "UAX29/0364: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / HANGUL CHOSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -4295,9 +4295,9 @@ test "UAX29/0365: DEVANAGARI SIGN VISARGA / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -4307,9 +4307,9 @@ test "UAX29/0366: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / HANGUL JUNGSEO
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -4319,9 +4319,9 @@ test "UAX29/0367: DEVANAGARI SIGN VISARGA / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -4331,9 +4331,9 @@ test "UAX29/0368: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / HANGUL JONGSEO
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -4343,9 +4343,9 @@ test "UAX29/0369: DEVANAGARI SIGN VISARGA / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -4355,9 +4355,9 @@ test "UAX29/0370: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / HANGUL SYLLABL
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -4367,9 +4367,9 @@ test "UAX29/0371: DEVANAGARI SIGN VISARGA / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -4379,9 +4379,9 @@ test "UAX29/0372: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / HANGUL SYLLABL
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -4391,9 +4391,9 @@ test "UAX29/0373: DEVANAGARI SIGN VISARGA / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -4403,9 +4403,9 @@ test "UAX29/0374: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / DEVANAGARI LET
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -4415,9 +4415,9 @@ test "UAX29/0375: DEVANAGARI SIGN VISARGA / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -4427,9 +4427,9 @@ test "UAX29/0376: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / COPYRIGHT SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -4439,9 +4439,9 @@ test "UAX29/0377: DEVANAGARI SIGN VISARGA / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -4451,9 +4451,9 @@ test "UAX29/0378: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -4463,9 +4463,9 @@ test "UAX29/0379: DEVANAGARI SIGN VISARGA / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903]
-  assert_eq(g[0].to_string(), "\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0903}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -4475,9 +4475,9 @@ test "UAX29/0380: DEVANAGARI SIGN VISARGA / COMBINING DIAERESIS / <reserved-0378
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0903 0308]
-  assert_eq(g[0].to_string(), "\u{0903}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0903}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -4487,9 +4487,9 @@ test "UAX29/0381: HANGUL CHOSEONG KIYEOK / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -4499,9 +4499,9 @@ test "UAX29/0382: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / <CARRIAGE RETUR
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -4511,9 +4511,9 @@ test "UAX29/0383: HANGUL CHOSEONG KIYEOK / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -4523,9 +4523,9 @@ test "UAX29/0384: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -4535,9 +4535,9 @@ test "UAX29/0385: HANGUL CHOSEONG KIYEOK / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -4547,9 +4547,9 @@ test "UAX29/0386: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -4559,7 +4559,7 @@ test "UAX29/0387: HANGUL CHOSEONG KIYEOK / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 094D]
-  assert_eq(g[0].to_string(), "\u{1100}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{094D}")
 }
 
 ///|
@@ -4569,7 +4569,7 @@ test "UAX29/0388: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / DEVANAGARI SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 0308 094D]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}\u{094D}")
 }
 
 ///|
@@ -4579,7 +4579,7 @@ test "UAX29/0389: HANGUL CHOSEONG KIYEOK / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 0300]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0300}")
 }
 
 ///|
@@ -4589,7 +4589,7 @@ test "UAX29/0390: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / COMBINING GRAVE
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 0308 0300]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}\u{0300}")
 }
 
 ///|
@@ -4599,7 +4599,7 @@ test "UAX29/0391: HANGUL CHOSEONG KIYEOK / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 200C]
-  assert_eq(g[0].to_string(), "\u{1100}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{200C}")
 }
 
 ///|
@@ -4609,7 +4609,7 @@ test "UAX29/0392: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / ZERO WIDTH NON-
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 0308 200C]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}\u{200C}")
 }
 
 ///|
@@ -4619,7 +4619,7 @@ test "UAX29/0393: HANGUL CHOSEONG KIYEOK / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 200D]
-  assert_eq(g[0].to_string(), "\u{1100}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{200D}")
 }
 
 ///|
@@ -4629,7 +4629,7 @@ test "UAX29/0394: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / ZERO WIDTH JOIN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 0308 200D]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}\u{200D}")
 }
 
 ///|
@@ -4639,9 +4639,9 @@ test "UAX29/0395: HANGUL CHOSEONG KIYEOK / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -4651,9 +4651,9 @@ test "UAX29/0396: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / REGIONAL INDICA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -4663,9 +4663,9 @@ test "UAX29/0397: HANGUL CHOSEONG KIYEOK / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -4675,9 +4675,9 @@ test "UAX29/0398: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / ARABIC END OF A
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -4687,7 +4687,7 @@ test "UAX29/0399: HANGUL CHOSEONG KIYEOK / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 0903]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0903}")
 }
 
 ///|
@@ -4697,7 +4697,7 @@ test "UAX29/0400: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / DEVANAGARI SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 0308 0903]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}\u{0903}")
 }
 
 ///|
@@ -4707,7 +4707,7 @@ test "UAX29/0401: HANGUL CHOSEONG KIYEOK / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 1100]
-  assert_eq(g[0].to_string(), "\u{1100}\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{1100}")
 }
 
 ///|
@@ -4717,9 +4717,9 @@ test "UAX29/0402: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / HANGUL CHOSEONG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -4729,7 +4729,7 @@ test "UAX29/0403: HANGUL CHOSEONG KIYEOK / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 1160]
-  assert_eq(g[0].to_string(), "\u{1100}\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{1160}")
 }
 
 ///|
@@ -4739,9 +4739,9 @@ test "UAX29/0404: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / HANGUL JUNGSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -4751,9 +4751,9 @@ test "UAX29/0405: HANGUL CHOSEONG KIYEOK / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -4763,9 +4763,9 @@ test "UAX29/0406: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / HANGUL JONGSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -4775,7 +4775,7 @@ test "UAX29/0407: HANGUL CHOSEONG KIYEOK / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 AC00]
-  assert_eq(g[0].to_string(), "\u{1100}\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{AC00}")
 }
 
 ///|
@@ -4785,9 +4785,9 @@ test "UAX29/0408: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / HANGUL SYLLABLE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -4797,7 +4797,7 @@ test "UAX29/0409: HANGUL CHOSEONG KIYEOK / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 AC01]
-  assert_eq(g[0].to_string(), "\u{1100}\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{AC01}")
 }
 
 ///|
@@ -4807,9 +4807,9 @@ test "UAX29/0410: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / HANGUL SYLLABLE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -4819,9 +4819,9 @@ test "UAX29/0411: HANGUL CHOSEONG KIYEOK / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -4831,9 +4831,9 @@ test "UAX29/0412: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / DEVANAGARI LETT
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -4843,9 +4843,9 @@ test "UAX29/0413: HANGUL CHOSEONG KIYEOK / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -4855,9 +4855,9 @@ test "UAX29/0414: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / COPYRIGHT SIGN"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -4867,9 +4867,9 @@ test "UAX29/0415: HANGUL CHOSEONG KIYEOK / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -4879,9 +4879,9 @@ test "UAX29/0416: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -4891,9 +4891,9 @@ test "UAX29/0417: HANGUL CHOSEONG KIYEOK / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100]
-  assert_eq(g[0].to_string(), "\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -4903,9 +4903,9 @@ test "UAX29/0418: HANGUL CHOSEONG KIYEOK / COMBINING DIAERESIS / <reserved-0378>
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1100 0308]
-  assert_eq(g[0].to_string(), "\u{1100}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -4915,9 +4915,9 @@ test "UAX29/0419: HANGUL JUNGSEONG FILLER / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -4927,9 +4927,9 @@ test "UAX29/0420: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / <CARRIAGE RETU
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -4939,9 +4939,9 @@ test "UAX29/0421: HANGUL JUNGSEONG FILLER / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -4951,9 +4951,9 @@ test "UAX29/0422: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -4963,9 +4963,9 @@ test "UAX29/0423: HANGUL JUNGSEONG FILLER / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -4975,9 +4975,9 @@ test "UAX29/0424: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -4987,7 +4987,7 @@ test "UAX29/0425: HANGUL JUNGSEONG FILLER / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 094D]
-  assert_eq(g[0].to_string(), "\u{1160}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{094D}")
 }
 
 ///|
@@ -4997,7 +4997,7 @@ test "UAX29/0426: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / DEVANAGARI SIG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 0308 094D]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}\u{094D}")
 }
 
 ///|
@@ -5007,7 +5007,7 @@ test "UAX29/0427: HANGUL JUNGSEONG FILLER / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 0300]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0300}")
 }
 
 ///|
@@ -5017,7 +5017,7 @@ test "UAX29/0428: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / COMBINING GRAV
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 0308 0300]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}\u{0300}")
 }
 
 ///|
@@ -5027,7 +5027,7 @@ test "UAX29/0429: HANGUL JUNGSEONG FILLER / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 200C]
-  assert_eq(g[0].to_string(), "\u{1160}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{200C}")
 }
 
 ///|
@@ -5037,7 +5037,7 @@ test "UAX29/0430: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / ZERO WIDTH NON
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 0308 200C]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}\u{200C}")
 }
 
 ///|
@@ -5047,7 +5047,7 @@ test "UAX29/0431: HANGUL JUNGSEONG FILLER / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 200D]
-  assert_eq(g[0].to_string(), "\u{1160}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{200D}")
 }
 
 ///|
@@ -5057,7 +5057,7 @@ test "UAX29/0432: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / ZERO WIDTH JOI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 0308 200D]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}\u{200D}")
 }
 
 ///|
@@ -5067,9 +5067,9 @@ test "UAX29/0433: HANGUL JUNGSEONG FILLER / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -5079,9 +5079,9 @@ test "UAX29/0434: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / REGIONAL INDIC
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -5091,9 +5091,9 @@ test "UAX29/0435: HANGUL JUNGSEONG FILLER / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -5103,9 +5103,9 @@ test "UAX29/0436: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / ARABIC END OF 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -5115,7 +5115,7 @@ test "UAX29/0437: HANGUL JUNGSEONG FILLER / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 0903]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0903}")
 }
 
 ///|
@@ -5125,7 +5125,7 @@ test "UAX29/0438: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / DEVANAGARI SIG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 0308 0903]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}\u{0903}")
 }
 
 ///|
@@ -5135,9 +5135,9 @@ test "UAX29/0439: HANGUL JUNGSEONG FILLER / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -5147,9 +5147,9 @@ test "UAX29/0440: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / HANGUL CHOSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -5159,7 +5159,7 @@ test "UAX29/0441: HANGUL JUNGSEONG FILLER / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 1160]
-  assert_eq(g[0].to_string(), "\u{1160}\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{1160}")
 }
 
 ///|
@@ -5169,9 +5169,9 @@ test "UAX29/0442: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / HANGUL JUNGSEO
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -5181,7 +5181,7 @@ test "UAX29/0443: HANGUL JUNGSEONG FILLER / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1160 11A8]
-  assert_eq(g[0].to_string(), "\u{1160}\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{11A8}")
 }
 
 ///|
@@ -5191,9 +5191,9 @@ test "UAX29/0444: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / HANGUL JONGSEO
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -5203,9 +5203,9 @@ test "UAX29/0445: HANGUL JUNGSEONG FILLER / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -5215,9 +5215,9 @@ test "UAX29/0446: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / HANGUL SYLLABL
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -5227,9 +5227,9 @@ test "UAX29/0447: HANGUL JUNGSEONG FILLER / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -5239,9 +5239,9 @@ test "UAX29/0448: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / HANGUL SYLLABL
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -5251,9 +5251,9 @@ test "UAX29/0449: HANGUL JUNGSEONG FILLER / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -5263,9 +5263,9 @@ test "UAX29/0450: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / DEVANAGARI LET
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -5275,9 +5275,9 @@ test "UAX29/0451: HANGUL JUNGSEONG FILLER / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -5287,9 +5287,9 @@ test "UAX29/0452: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / COPYRIGHT SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -5299,9 +5299,9 @@ test "UAX29/0453: HANGUL JUNGSEONG FILLER / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -5311,9 +5311,9 @@ test "UAX29/0454: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -5323,9 +5323,9 @@ test "UAX29/0455: HANGUL JUNGSEONG FILLER / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160]
-  assert_eq(g[0].to_string(), "\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{1160}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -5335,9 +5335,9 @@ test "UAX29/0456: HANGUL JUNGSEONG FILLER / COMBINING DIAERESIS / <reserved-0378
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1160 0308]
-  assert_eq(g[0].to_string(), "\u{1160}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{1160}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -5347,9 +5347,9 @@ test "UAX29/0457: HANGUL JONGSEONG KIYEOK / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -5359,9 +5359,9 @@ test "UAX29/0458: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / <CARRIAGE RETU
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -5371,9 +5371,9 @@ test "UAX29/0459: HANGUL JONGSEONG KIYEOK / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -5383,9 +5383,9 @@ test "UAX29/0460: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -5395,9 +5395,9 @@ test "UAX29/0461: HANGUL JONGSEONG KIYEOK / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -5407,9 +5407,9 @@ test "UAX29/0462: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -5419,7 +5419,7 @@ test "UAX29/0463: HANGUL JONGSEONG KIYEOK / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 094D]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{094D}")
 }
 
 ///|
@@ -5429,7 +5429,7 @@ test "UAX29/0464: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / DEVANAGARI SIG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 0308 094D]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}\u{094D}")
 }
 
 ///|
@@ -5439,7 +5439,7 @@ test "UAX29/0465: HANGUL JONGSEONG KIYEOK / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 0300]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0300}")
 }
 
 ///|
@@ -5449,7 +5449,7 @@ test "UAX29/0466: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / COMBINING GRAV
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 0308 0300]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}\u{0300}")
 }
 
 ///|
@@ -5459,7 +5459,7 @@ test "UAX29/0467: HANGUL JONGSEONG KIYEOK / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 200C]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{200C}")
 }
 
 ///|
@@ -5469,7 +5469,7 @@ test "UAX29/0468: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / ZERO WIDTH NON
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 0308 200C]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}\u{200C}")
 }
 
 ///|
@@ -5479,7 +5479,7 @@ test "UAX29/0469: HANGUL JONGSEONG KIYEOK / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 200D]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{200D}")
 }
 
 ///|
@@ -5489,7 +5489,7 @@ test "UAX29/0470: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / ZERO WIDTH JOI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 0308 200D]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}\u{200D}")
 }
 
 ///|
@@ -5499,9 +5499,9 @@ test "UAX29/0471: HANGUL JONGSEONG KIYEOK / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -5511,9 +5511,9 @@ test "UAX29/0472: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / REGIONAL INDIC
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -5523,9 +5523,9 @@ test "UAX29/0473: HANGUL JONGSEONG KIYEOK / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -5535,9 +5535,9 @@ test "UAX29/0474: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / ARABIC END OF 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -5547,7 +5547,7 @@ test "UAX29/0475: HANGUL JONGSEONG KIYEOK / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 0903]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0903}")
 }
 
 ///|
@@ -5557,7 +5557,7 @@ test "UAX29/0476: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / DEVANAGARI SIG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 0308 0903]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}\u{0903}")
 }
 
 ///|
@@ -5567,9 +5567,9 @@ test "UAX29/0477: HANGUL JONGSEONG KIYEOK / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -5579,9 +5579,9 @@ test "UAX29/0478: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / HANGUL CHOSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -5591,9 +5591,9 @@ test "UAX29/0479: HANGUL JONGSEONG KIYEOK / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -5603,9 +5603,9 @@ test "UAX29/0480: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / HANGUL JUNGSEO
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -5615,7 +5615,7 @@ test "UAX29/0481: HANGUL JONGSEONG KIYEOK / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [11A8 11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{11A8}")
 }
 
 ///|
@@ -5625,9 +5625,9 @@ test "UAX29/0482: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / HANGUL JONGSEO
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -5637,9 +5637,9 @@ test "UAX29/0483: HANGUL JONGSEONG KIYEOK / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -5649,9 +5649,9 @@ test "UAX29/0484: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / HANGUL SYLLABL
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -5661,9 +5661,9 @@ test "UAX29/0485: HANGUL JONGSEONG KIYEOK / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -5673,9 +5673,9 @@ test "UAX29/0486: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / HANGUL SYLLABL
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -5685,9 +5685,9 @@ test "UAX29/0487: HANGUL JONGSEONG KIYEOK / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -5697,9 +5697,9 @@ test "UAX29/0488: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / DEVANAGARI LET
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -5709,9 +5709,9 @@ test "UAX29/0489: HANGUL JONGSEONG KIYEOK / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -5721,9 +5721,9 @@ test "UAX29/0490: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / COPYRIGHT SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -5733,9 +5733,9 @@ test "UAX29/0491: HANGUL JONGSEONG KIYEOK / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -5745,9 +5745,9 @@ test "UAX29/0492: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -5757,9 +5757,9 @@ test "UAX29/0493: HANGUL JONGSEONG KIYEOK / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8]
-  assert_eq(g[0].to_string(), "\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{11A8}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -5769,9 +5769,9 @@ test "UAX29/0494: HANGUL JONGSEONG KIYEOK / COMBINING DIAERESIS / <reserved-0378
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [11A8 0308]
-  assert_eq(g[0].to_string(), "\u{11A8}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{11A8}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -5781,9 +5781,9 @@ test "UAX29/0495: HANGUL SYLLABLE GA / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -5793,9 +5793,9 @@ test "UAX29/0496: HANGUL SYLLABLE GA / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -5805,9 +5805,9 @@ test "UAX29/0497: HANGUL SYLLABLE GA / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -5817,9 +5817,9 @@ test "UAX29/0498: HANGUL SYLLABLE GA / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -5829,9 +5829,9 @@ test "UAX29/0499: HANGUL SYLLABLE GA / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -5841,9 +5841,9 @@ test "UAX29/0500: HANGUL SYLLABLE GA / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -5853,7 +5853,7 @@ test "UAX29/0501: HANGUL SYLLABLE GA / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 094D]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{094D}")
 }
 
 ///|
@@ -5863,7 +5863,7 @@ test "UAX29/0502: HANGUL SYLLABLE GA / COMBINING DIAERESIS / DEVANAGARI SIGN VIR
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 0308 094D]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}\u{094D}")
 }
 
 ///|
@@ -5873,7 +5873,7 @@ test "UAX29/0503: HANGUL SYLLABLE GA / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 0300]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0300}")
 }
 
 ///|
@@ -5883,7 +5883,7 @@ test "UAX29/0504: HANGUL SYLLABLE GA / COMBINING DIAERESIS / COMBINING GRAVE ACC
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 0308 0300]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}\u{0300}")
 }
 
 ///|
@@ -5893,7 +5893,7 @@ test "UAX29/0505: HANGUL SYLLABLE GA / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 200C]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{200C}")
 }
 
 ///|
@@ -5903,7 +5903,7 @@ test "UAX29/0506: HANGUL SYLLABLE GA / COMBINING DIAERESIS / ZERO WIDTH NON-JOIN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 0308 200C]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}\u{200C}")
 }
 
 ///|
@@ -5913,7 +5913,7 @@ test "UAX29/0507: HANGUL SYLLABLE GA / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 200D]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{200D}")
 }
 
 ///|
@@ -5923,7 +5923,7 @@ test "UAX29/0508: HANGUL SYLLABLE GA / COMBINING DIAERESIS / ZERO WIDTH JOINER" 
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 0308 200D]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}\u{200D}")
 }
 
 ///|
@@ -5933,9 +5933,9 @@ test "UAX29/0509: HANGUL SYLLABLE GA / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -5945,9 +5945,9 @@ test "UAX29/0510: HANGUL SYLLABLE GA / COMBINING DIAERESIS / REGIONAL INDICATOR 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -5957,9 +5957,9 @@ test "UAX29/0511: HANGUL SYLLABLE GA / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -5969,9 +5969,9 @@ test "UAX29/0512: HANGUL SYLLABLE GA / COMBINING DIAERESIS / ARABIC END OF AYAH"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -5981,7 +5981,7 @@ test "UAX29/0513: HANGUL SYLLABLE GA / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 0903]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0903}")
 }
 
 ///|
@@ -5991,7 +5991,7 @@ test "UAX29/0514: HANGUL SYLLABLE GA / COMBINING DIAERESIS / DEVANAGARI SIGN VIS
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 0308 0903]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}\u{0903}")
 }
 
 ///|
@@ -6001,9 +6001,9 @@ test "UAX29/0515: HANGUL SYLLABLE GA / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -6013,9 +6013,9 @@ test "UAX29/0516: HANGUL SYLLABLE GA / COMBINING DIAERESIS / HANGUL CHOSEONG KIY
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -6025,7 +6025,7 @@ test "UAX29/0517: HANGUL SYLLABLE GA / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 1160]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{1160}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{1160}")
 }
 
 ///|
@@ -6035,9 +6035,9 @@ test "UAX29/0518: HANGUL SYLLABLE GA / COMBINING DIAERESIS / HANGUL JUNGSEONG FI
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -6047,7 +6047,7 @@ test "UAX29/0519: HANGUL SYLLABLE GA / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC00 11A8]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{11A8}")
 }
 
 ///|
@@ -6057,9 +6057,9 @@ test "UAX29/0520: HANGUL SYLLABLE GA / COMBINING DIAERESIS / HANGUL JONGSEONG KI
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -6069,9 +6069,9 @@ test "UAX29/0521: HANGUL SYLLABLE GA / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -6081,9 +6081,9 @@ test "UAX29/0522: HANGUL SYLLABLE GA / COMBINING DIAERESIS / HANGUL SYLLABLE GA"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -6093,9 +6093,9 @@ test "UAX29/0523: HANGUL SYLLABLE GA / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -6105,9 +6105,9 @@ test "UAX29/0524: HANGUL SYLLABLE GA / COMBINING DIAERESIS / HANGUL SYLLABLE GAG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -6117,9 +6117,9 @@ test "UAX29/0525: HANGUL SYLLABLE GA / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -6129,9 +6129,9 @@ test "UAX29/0526: HANGUL SYLLABLE GA / COMBINING DIAERESIS / DEVANAGARI LETTER K
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -6141,9 +6141,9 @@ test "UAX29/0527: HANGUL SYLLABLE GA / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -6153,9 +6153,9 @@ test "UAX29/0528: HANGUL SYLLABLE GA / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -6165,9 +6165,9 @@ test "UAX29/0529: HANGUL SYLLABLE GA / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -6177,9 +6177,9 @@ test "UAX29/0530: HANGUL SYLLABLE GA / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -6189,9 +6189,9 @@ test "UAX29/0531: HANGUL SYLLABLE GA / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00]
-  assert_eq(g[0].to_string(), "\u{AC00}")
+  assert_eq(g[0].to_owned(), "\u{AC00}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -6201,9 +6201,9 @@ test "UAX29/0532: HANGUL SYLLABLE GA / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 0308]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -6213,9 +6213,9 @@ test "UAX29/0533: HANGUL SYLLABLE GAG / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -6225,9 +6225,9 @@ test "UAX29/0534: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / <CARRIAGE RETURN" 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -6237,9 +6237,9 @@ test "UAX29/0535: HANGUL SYLLABLE GAG / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -6249,9 +6249,9 @@ test "UAX29/0536: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -6261,9 +6261,9 @@ test "UAX29/0537: HANGUL SYLLABLE GAG / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -6273,9 +6273,9 @@ test "UAX29/0538: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -6285,7 +6285,7 @@ test "UAX29/0539: HANGUL SYLLABLE GAG / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 094D]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{094D}")
 }
 
 ///|
@@ -6295,7 +6295,7 @@ test "UAX29/0540: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / DEVANAGARI SIGN VI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 0308 094D]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}\u{094D}")
 }
 
 ///|
@@ -6305,7 +6305,7 @@ test "UAX29/0541: HANGUL SYLLABLE GAG / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 0300]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0300}")
 }
 
 ///|
@@ -6315,7 +6315,7 @@ test "UAX29/0542: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / COMBINING GRAVE AC
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 0308 0300]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}\u{0300}")
 }
 
 ///|
@@ -6325,7 +6325,7 @@ test "UAX29/0543: HANGUL SYLLABLE GAG / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 200C]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{200C}")
 }
 
 ///|
@@ -6335,7 +6335,7 @@ test "UAX29/0544: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / ZERO WIDTH NON-JOI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 0308 200C]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}\u{200C}")
 }
 
 ///|
@@ -6345,7 +6345,7 @@ test "UAX29/0545: HANGUL SYLLABLE GAG / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 200D]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{200D}")
 }
 
 ///|
@@ -6355,7 +6355,7 @@ test "UAX29/0546: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / ZERO WIDTH JOINER"
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 0308 200D]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}\u{200D}")
 }
 
 ///|
@@ -6365,9 +6365,9 @@ test "UAX29/0547: HANGUL SYLLABLE GAG / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -6377,9 +6377,9 @@ test "UAX29/0548: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / REGIONAL INDICATOR
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -6389,9 +6389,9 @@ test "UAX29/0549: HANGUL SYLLABLE GAG / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -6401,9 +6401,9 @@ test "UAX29/0550: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / ARABIC END OF AYAH
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -6413,7 +6413,7 @@ test "UAX29/0551: HANGUL SYLLABLE GAG / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 0903]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0903}")
 }
 
 ///|
@@ -6423,7 +6423,7 @@ test "UAX29/0552: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / DEVANAGARI SIGN VI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 0308 0903]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}\u{0903}")
 }
 
 ///|
@@ -6433,9 +6433,9 @@ test "UAX29/0553: HANGUL SYLLABLE GAG / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -6445,9 +6445,9 @@ test "UAX29/0554: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / HANGUL CHOSEONG KI
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -6457,9 +6457,9 @@ test "UAX29/0555: HANGUL SYLLABLE GAG / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -6469,9 +6469,9 @@ test "UAX29/0556: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / HANGUL JUNGSEONG F
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -6481,7 +6481,7 @@ test "UAX29/0557: HANGUL SYLLABLE GAG / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [AC01 11A8]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{11A8}")
 }
 
 ///|
@@ -6491,9 +6491,9 @@ test "UAX29/0558: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / HANGUL JONGSEONG K
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -6503,9 +6503,9 @@ test "UAX29/0559: HANGUL SYLLABLE GAG / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -6515,9 +6515,9 @@ test "UAX29/0560: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / HANGUL SYLLABLE GA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -6527,9 +6527,9 @@ test "UAX29/0561: HANGUL SYLLABLE GAG / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -6539,9 +6539,9 @@ test "UAX29/0562: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / HANGUL SYLLABLE GA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -6551,9 +6551,9 @@ test "UAX29/0563: HANGUL SYLLABLE GAG / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -6563,9 +6563,9 @@ test "UAX29/0564: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / DEVANAGARI LETTER 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -6575,9 +6575,9 @@ test "UAX29/0565: HANGUL SYLLABLE GAG / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -6587,9 +6587,9 @@ test "UAX29/0566: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -6599,9 +6599,9 @@ test "UAX29/0567: HANGUL SYLLABLE GAG / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -6611,9 +6611,9 @@ test "UAX29/0568: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -6623,9 +6623,9 @@ test "UAX29/0569: HANGUL SYLLABLE GAG / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01]
-  assert_eq(g[0].to_string(), "\u{AC01}")
+  assert_eq(g[0].to_owned(), "\u{AC01}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -6635,9 +6635,9 @@ test "UAX29/0570: HANGUL SYLLABLE GAG / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 0308]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -6647,9 +6647,9 @@ test "UAX29/0571: DEVANAGARI LETTER KA / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -6659,9 +6659,9 @@ test "UAX29/0572: DEVANAGARI LETTER KA / COMBINING DIAERESIS / <CARRIAGE RETURN"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -6671,9 +6671,9 @@ test "UAX29/0573: DEVANAGARI LETTER KA / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -6683,9 +6683,9 @@ test "UAX29/0574: DEVANAGARI LETTER KA / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -6695,9 +6695,9 @@ test "UAX29/0575: DEVANAGARI LETTER KA / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -6707,9 +6707,9 @@ test "UAX29/0576: DEVANAGARI LETTER KA / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -6719,7 +6719,7 @@ test "UAX29/0577: DEVANAGARI LETTER KA / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 094D]
-  assert_eq(g[0].to_string(), "\u{0915}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{094D}")
 }
 
 ///|
@@ -6729,7 +6729,7 @@ test "UAX29/0578: DEVANAGARI LETTER KA / COMBINING DIAERESIS / DEVANAGARI SIGN V
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 0308 094D]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}\u{094D}")
 }
 
 ///|
@@ -6739,7 +6739,7 @@ test "UAX29/0579: DEVANAGARI LETTER KA / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 0300]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0300}")
 }
 
 ///|
@@ -6749,7 +6749,7 @@ test "UAX29/0580: DEVANAGARI LETTER KA / COMBINING DIAERESIS / COMBINING GRAVE A
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 0308 0300]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}\u{0300}")
 }
 
 ///|
@@ -6759,7 +6759,7 @@ test "UAX29/0581: DEVANAGARI LETTER KA / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 200C]
-  assert_eq(g[0].to_string(), "\u{0915}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{200C}")
 }
 
 ///|
@@ -6769,7 +6769,7 @@ test "UAX29/0582: DEVANAGARI LETTER KA / COMBINING DIAERESIS / ZERO WIDTH NON-JO
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 0308 200C]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}\u{200C}")
 }
 
 ///|
@@ -6779,7 +6779,7 @@ test "UAX29/0583: DEVANAGARI LETTER KA / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 200D]
-  assert_eq(g[0].to_string(), "\u{0915}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{200D}")
 }
 
 ///|
@@ -6789,7 +6789,7 @@ test "UAX29/0584: DEVANAGARI LETTER KA / COMBINING DIAERESIS / ZERO WIDTH JOINER
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 0308 200D]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}\u{200D}")
 }
 
 ///|
@@ -6799,9 +6799,9 @@ test "UAX29/0585: DEVANAGARI LETTER KA / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -6811,9 +6811,9 @@ test "UAX29/0586: DEVANAGARI LETTER KA / COMBINING DIAERESIS / REGIONAL INDICATO
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -6823,9 +6823,9 @@ test "UAX29/0587: DEVANAGARI LETTER KA / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -6835,9 +6835,9 @@ test "UAX29/0588: DEVANAGARI LETTER KA / COMBINING DIAERESIS / ARABIC END OF AYA
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -6847,7 +6847,7 @@ test "UAX29/0589: DEVANAGARI LETTER KA / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 0903]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0903}")
 }
 
 ///|
@@ -6857,7 +6857,7 @@ test "UAX29/0590: DEVANAGARI LETTER KA / COMBINING DIAERESIS / DEVANAGARI SIGN V
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 0308 0903]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}\u{0903}")
 }
 
 ///|
@@ -6867,9 +6867,9 @@ test "UAX29/0591: DEVANAGARI LETTER KA / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -6879,9 +6879,9 @@ test "UAX29/0592: DEVANAGARI LETTER KA / COMBINING DIAERESIS / HANGUL CHOSEONG K
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -6891,9 +6891,9 @@ test "UAX29/0593: DEVANAGARI LETTER KA / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -6903,9 +6903,9 @@ test "UAX29/0594: DEVANAGARI LETTER KA / COMBINING DIAERESIS / HANGUL JUNGSEONG 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -6915,9 +6915,9 @@ test "UAX29/0595: DEVANAGARI LETTER KA / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -6927,9 +6927,9 @@ test "UAX29/0596: DEVANAGARI LETTER KA / COMBINING DIAERESIS / HANGUL JONGSEONG 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -6939,9 +6939,9 @@ test "UAX29/0597: DEVANAGARI LETTER KA / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -6951,9 +6951,9 @@ test "UAX29/0598: DEVANAGARI LETTER KA / COMBINING DIAERESIS / HANGUL SYLLABLE G
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -6963,9 +6963,9 @@ test "UAX29/0599: DEVANAGARI LETTER KA / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -6975,9 +6975,9 @@ test "UAX29/0600: DEVANAGARI LETTER KA / COMBINING DIAERESIS / HANGUL SYLLABLE G
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -6987,9 +6987,9 @@ test "UAX29/0601: DEVANAGARI LETTER KA / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -6999,9 +6999,9 @@ test "UAX29/0602: DEVANAGARI LETTER KA / COMBINING DIAERESIS / DEVANAGARI LETTER
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -7011,9 +7011,9 @@ test "UAX29/0603: DEVANAGARI LETTER KA / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -7023,9 +7023,9 @@ test "UAX29/0604: DEVANAGARI LETTER KA / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -7035,9 +7035,9 @@ test "UAX29/0605: DEVANAGARI LETTER KA / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -7047,9 +7047,9 @@ test "UAX29/0606: DEVANAGARI LETTER KA / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -7059,9 +7059,9 @@ test "UAX29/0607: DEVANAGARI LETTER KA / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -7071,9 +7071,9 @@ test "UAX29/0608: DEVANAGARI LETTER KA / COMBINING DIAERESIS / <reserved-0378>" 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 0308]
-  assert_eq(g[0].to_string(), "\u{0915}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -7083,9 +7083,9 @@ test "UAX29/0609: COPYRIGHT SIGN / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -7095,9 +7095,9 @@ test "UAX29/0610: COPYRIGHT SIGN / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -7107,9 +7107,9 @@ test "UAX29/0611: COPYRIGHT SIGN / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -7119,9 +7119,9 @@ test "UAX29/0612: COPYRIGHT SIGN / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -7131,9 +7131,9 @@ test "UAX29/0613: COPYRIGHT SIGN / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -7143,9 +7143,9 @@ test "UAX29/0614: COPYRIGHT SIGN / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -7155,7 +7155,7 @@ test "UAX29/0615: COPYRIGHT SIGN / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 094D]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{094D}")
 }
 
 ///|
@@ -7165,7 +7165,7 @@ test "UAX29/0616: COPYRIGHT SIGN / COMBINING DIAERESIS / DEVANAGARI SIGN VIRAMA"
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 0308 094D]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}\u{094D}")
 }
 
 ///|
@@ -7175,7 +7175,7 @@ test "UAX29/0617: COPYRIGHT SIGN / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 0300]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0300}")
 }
 
 ///|
@@ -7185,7 +7185,7 @@ test "UAX29/0618: COPYRIGHT SIGN / COMBINING DIAERESIS / COMBINING GRAVE ACCENT"
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 0308 0300]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}\u{0300}")
 }
 
 ///|
@@ -7195,7 +7195,7 @@ test "UAX29/0619: COPYRIGHT SIGN / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 200C]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{200C}")
 }
 
 ///|
@@ -7205,7 +7205,7 @@ test "UAX29/0620: COPYRIGHT SIGN / COMBINING DIAERESIS / ZERO WIDTH NON-JOINER" 
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 0308 200C]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}\u{200C}")
 }
 
 ///|
@@ -7215,7 +7215,7 @@ test "UAX29/0621: COPYRIGHT SIGN / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 200D]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{200D}")
 }
 
 ///|
@@ -7225,7 +7225,7 @@ test "UAX29/0622: COPYRIGHT SIGN / COMBINING DIAERESIS / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 0308 200D]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}\u{200D}")
 }
 
 ///|
@@ -7235,9 +7235,9 @@ test "UAX29/0623: COPYRIGHT SIGN / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -7247,9 +7247,9 @@ test "UAX29/0624: COPYRIGHT SIGN / COMBINING DIAERESIS / REGIONAL INDICATOR SYMB
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -7259,9 +7259,9 @@ test "UAX29/0625: COPYRIGHT SIGN / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -7271,9 +7271,9 @@ test "UAX29/0626: COPYRIGHT SIGN / COMBINING DIAERESIS / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -7283,7 +7283,7 @@ test "UAX29/0627: COPYRIGHT SIGN / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 0903]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0903}")
 }
 
 ///|
@@ -7293,7 +7293,7 @@ test "UAX29/0628: COPYRIGHT SIGN / COMBINING DIAERESIS / DEVANAGARI SIGN VISARGA
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [00A9 0308 0903]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}\u{0903}")
 }
 
 ///|
@@ -7303,9 +7303,9 @@ test "UAX29/0629: COPYRIGHT SIGN / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -7315,9 +7315,9 @@ test "UAX29/0630: COPYRIGHT SIGN / COMBINING DIAERESIS / HANGUL CHOSEONG KIYEOK"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -7327,9 +7327,9 @@ test "UAX29/0631: COPYRIGHT SIGN / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -7339,9 +7339,9 @@ test "UAX29/0632: COPYRIGHT SIGN / COMBINING DIAERESIS / HANGUL JUNGSEONG FILLER
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -7351,9 +7351,9 @@ test "UAX29/0633: COPYRIGHT SIGN / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -7363,9 +7363,9 @@ test "UAX29/0634: COPYRIGHT SIGN / COMBINING DIAERESIS / HANGUL JONGSEONG KIYEOK
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -7375,9 +7375,9 @@ test "UAX29/0635: COPYRIGHT SIGN / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -7387,9 +7387,9 @@ test "UAX29/0636: COPYRIGHT SIGN / COMBINING DIAERESIS / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -7399,9 +7399,9 @@ test "UAX29/0637: COPYRIGHT SIGN / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -7411,9 +7411,9 @@ test "UAX29/0638: COPYRIGHT SIGN / COMBINING DIAERESIS / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -7423,9 +7423,9 @@ test "UAX29/0639: COPYRIGHT SIGN / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -7435,9 +7435,9 @@ test "UAX29/0640: COPYRIGHT SIGN / COMBINING DIAERESIS / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -7447,9 +7447,9 @@ test "UAX29/0641: COPYRIGHT SIGN / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -7459,9 +7459,9 @@ test "UAX29/0642: COPYRIGHT SIGN / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -7471,9 +7471,9 @@ test "UAX29/0643: COPYRIGHT SIGN / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -7483,9 +7483,9 @@ test "UAX29/0644: COPYRIGHT SIGN / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -7495,9 +7495,9 @@ test "UAX29/0645: COPYRIGHT SIGN / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9]
-  assert_eq(g[0].to_string(), "\u{00A9}")
+  assert_eq(g[0].to_owned(), "\u{00A9}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -7507,9 +7507,9 @@ test "UAX29/0646: COPYRIGHT SIGN / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [00A9 0308]
-  assert_eq(g[0].to_string(), "\u{00A9}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{00A9}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -7519,9 +7519,9 @@ test "UAX29/0647: SPACE / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -7531,9 +7531,9 @@ test "UAX29/0648: SPACE / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -7543,9 +7543,9 @@ test "UAX29/0649: SPACE / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -7555,9 +7555,9 @@ test "UAX29/0650: SPACE / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -7567,9 +7567,9 @@ test "UAX29/0651: SPACE / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -7579,9 +7579,9 @@ test "UAX29/0652: SPACE / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -7591,7 +7591,7 @@ test "UAX29/0653: SPACE / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 094D]
-  assert_eq(g[0].to_string(), "\u{0020}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{094D}")
 }
 
 ///|
@@ -7601,7 +7601,7 @@ test "UAX29/0654: SPACE / COMBINING DIAERESIS / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 0308 094D]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}\u{094D}")
 }
 
 ///|
@@ -7611,7 +7611,7 @@ test "UAX29/0655: SPACE / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 0300]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0300}")
 }
 
 ///|
@@ -7621,7 +7621,7 @@ test "UAX29/0656: SPACE / COMBINING DIAERESIS / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 0308 0300]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}\u{0300}")
 }
 
 ///|
@@ -7631,7 +7631,7 @@ test "UAX29/0657: SPACE / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 200C]
-  assert_eq(g[0].to_string(), "\u{0020}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{200C}")
 }
 
 ///|
@@ -7641,7 +7641,7 @@ test "UAX29/0658: SPACE / COMBINING DIAERESIS / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 0308 200C]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}\u{200C}")
 }
 
 ///|
@@ -7651,7 +7651,7 @@ test "UAX29/0659: SPACE / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 200D]
-  assert_eq(g[0].to_string(), "\u{0020}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{200D}")
 }
 
 ///|
@@ -7661,7 +7661,7 @@ test "UAX29/0660: SPACE / COMBINING DIAERESIS / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 0308 200D]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}\u{200D}")
 }
 
 ///|
@@ -7671,9 +7671,9 @@ test "UAX29/0661: SPACE / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -7683,9 +7683,9 @@ test "UAX29/0662: SPACE / COMBINING DIAERESIS / REGIONAL INDICATOR SYMBOL L..." 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -7695,9 +7695,9 @@ test "UAX29/0663: SPACE / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -7707,9 +7707,9 @@ test "UAX29/0664: SPACE / COMBINING DIAERESIS / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -7719,7 +7719,7 @@ test "UAX29/0665: SPACE / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 0903]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0903}")
 }
 
 ///|
@@ -7729,7 +7729,7 @@ test "UAX29/0666: SPACE / COMBINING DIAERESIS / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0020 0308 0903]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}\u{0903}")
 }
 
 ///|
@@ -7739,9 +7739,9 @@ test "UAX29/0667: SPACE / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -7751,9 +7751,9 @@ test "UAX29/0668: SPACE / COMBINING DIAERESIS / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -7763,9 +7763,9 @@ test "UAX29/0669: SPACE / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -7775,9 +7775,9 @@ test "UAX29/0670: SPACE / COMBINING DIAERESIS / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -7787,9 +7787,9 @@ test "UAX29/0671: SPACE / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -7799,9 +7799,9 @@ test "UAX29/0672: SPACE / COMBINING DIAERESIS / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -7811,9 +7811,9 @@ test "UAX29/0673: SPACE / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -7823,9 +7823,9 @@ test "UAX29/0674: SPACE / COMBINING DIAERESIS / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -7835,9 +7835,9 @@ test "UAX29/0675: SPACE / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -7847,9 +7847,9 @@ test "UAX29/0676: SPACE / COMBINING DIAERESIS / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -7859,9 +7859,9 @@ test "UAX29/0677: SPACE / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -7871,9 +7871,9 @@ test "UAX29/0678: SPACE / COMBINING DIAERESIS / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -7883,9 +7883,9 @@ test "UAX29/0679: SPACE / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -7895,9 +7895,9 @@ test "UAX29/0680: SPACE / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -7907,9 +7907,9 @@ test "UAX29/0681: SPACE / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -7919,9 +7919,9 @@ test "UAX29/0682: SPACE / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -7931,9 +7931,9 @@ test "UAX29/0683: SPACE / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020]
-  assert_eq(g[0].to_string(), "\u{0020}")
+  assert_eq(g[0].to_owned(), "\u{0020}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -7943,9 +7943,9 @@ test "UAX29/0684: SPACE / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 0308]
-  assert_eq(g[0].to_string(), "\u{0020}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -7955,9 +7955,9 @@ test "UAX29/0685: <reserved-0378> / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -7967,9 +7967,9 @@ test "UAX29/0686: <reserved-0378> / COMBINING DIAERESIS / <CARRIAGE RETURN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [000D]
-  assert_eq(g[1].to_string(), "\u{000D}")
+  assert_eq(g[1].to_owned(), "\u{000D}")
 }
 
 ///|
@@ -7979,9 +7979,9 @@ test "UAX29/0687: <reserved-0378> / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -7991,9 +7991,9 @@ test "UAX29/0688: <reserved-0378> / COMBINING DIAERESIS / <LINE FEED" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [000A]
-  assert_eq(g[1].to_string(), "\u{000A}")
+  assert_eq(g[1].to_owned(), "\u{000A}")
 }
 
 ///|
@@ -8003,9 +8003,9 @@ test "UAX29/0689: <reserved-0378> / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -8015,9 +8015,9 @@ test "UAX29/0690: <reserved-0378> / COMBINING DIAERESIS / <NULL>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [0000]
-  assert_eq(g[1].to_string(), "\u{0000}")
+  assert_eq(g[1].to_owned(), "\u{0000}")
 }
 
 ///|
@@ -8027,7 +8027,7 @@ test "UAX29/0691: <reserved-0378> / DEVANAGARI SIGN VIRAMA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 094D]
-  assert_eq(g[0].to_string(), "\u{0378}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{094D}")
 }
 
 ///|
@@ -8037,7 +8037,7 @@ test "UAX29/0692: <reserved-0378> / COMBINING DIAERESIS / DEVANAGARI SIGN VIRAMA
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 0308 094D]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}\u{094D}")
 }
 
 ///|
@@ -8047,7 +8047,7 @@ test "UAX29/0693: <reserved-0378> / COMBINING GRAVE ACCENT" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 0300]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0300}")
 }
 
 ///|
@@ -8057,7 +8057,7 @@ test "UAX29/0694: <reserved-0378> / COMBINING DIAERESIS / COMBINING GRAVE ACCENT
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 0308 0300]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}\u{0300}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}\u{0300}")
 }
 
 ///|
@@ -8067,7 +8067,7 @@ test "UAX29/0695: <reserved-0378> / ZERO WIDTH NON-JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 200C]
-  assert_eq(g[0].to_string(), "\u{0378}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{200C}")
 }
 
 ///|
@@ -8077,7 +8077,7 @@ test "UAX29/0696: <reserved-0378> / COMBINING DIAERESIS / ZERO WIDTH NON-JOINER"
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 0308 200C]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}\u{200C}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}\u{200C}")
 }
 
 ///|
@@ -8087,7 +8087,7 @@ test "UAX29/0697: <reserved-0378> / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 200D]
-  assert_eq(g[0].to_string(), "\u{0378}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{200D}")
 }
 
 ///|
@@ -8097,7 +8097,7 @@ test "UAX29/0698: <reserved-0378> / COMBINING DIAERESIS / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 0308 200D]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}\u{200D}")
 }
 
 ///|
@@ -8107,9 +8107,9 @@ test "UAX29/0699: <reserved-0378> / REGIONAL INDICATOR SYMBOL L..." {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -8119,9 +8119,9 @@ test "UAX29/0700: <reserved-0378> / COMBINING DIAERESIS / REGIONAL INDICATOR SYM
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [1F1E6]
-  assert_eq(g[1].to_string(), "\u{1F1E6}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}")
 }
 
 ///|
@@ -8131,9 +8131,9 @@ test "UAX29/0701: <reserved-0378> / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -8143,9 +8143,9 @@ test "UAX29/0702: <reserved-0378> / COMBINING DIAERESIS / ARABIC END OF AYAH" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [06DD]
-  assert_eq(g[1].to_string(), "\u{06DD}")
+  assert_eq(g[1].to_owned(), "\u{06DD}")
 }
 
 ///|
@@ -8155,7 +8155,7 @@ test "UAX29/0703: <reserved-0378> / DEVANAGARI SIGN VISARGA" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 0903]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0903}")
 }
 
 ///|
@@ -8165,7 +8165,7 @@ test "UAX29/0704: <reserved-0378> / COMBINING DIAERESIS / DEVANAGARI SIGN VISARG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0378 0308 0903]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}\u{0903}")
 }
 
 ///|
@@ -8175,9 +8175,9 @@ test "UAX29/0705: <reserved-0378> / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -8187,9 +8187,9 @@ test "UAX29/0706: <reserved-0378> / COMBINING DIAERESIS / HANGUL CHOSEONG KIYEOK
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -8199,9 +8199,9 @@ test "UAX29/0707: <reserved-0378> / HANGUL JUNGSEONG FILLER" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -8211,9 +8211,9 @@ test "UAX29/0708: <reserved-0378> / COMBINING DIAERESIS / HANGUL JUNGSEONG FILLE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [1160]
-  assert_eq(g[1].to_string(), "\u{1160}")
+  assert_eq(g[1].to_owned(), "\u{1160}")
 }
 
 ///|
@@ -8223,9 +8223,9 @@ test "UAX29/0709: <reserved-0378> / HANGUL JONGSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -8235,9 +8235,9 @@ test "UAX29/0710: <reserved-0378> / COMBINING DIAERESIS / HANGUL JONGSEONG KIYEO
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [11A8]
-  assert_eq(g[1].to_string(), "\u{11A8}")
+  assert_eq(g[1].to_owned(), "\u{11A8}")
 }
 
 ///|
@@ -8247,9 +8247,9 @@ test "UAX29/0711: <reserved-0378> / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -8259,9 +8259,9 @@ test "UAX29/0712: <reserved-0378> / COMBINING DIAERESIS / HANGUL SYLLABLE GA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [AC00]
-  assert_eq(g[1].to_string(), "\u{AC00}")
+  assert_eq(g[1].to_owned(), "\u{AC00}")
 }
 
 ///|
@@ -8271,9 +8271,9 @@ test "UAX29/0713: <reserved-0378> / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -8283,9 +8283,9 @@ test "UAX29/0714: <reserved-0378> / COMBINING DIAERESIS / HANGUL SYLLABLE GAG" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [AC01]
-  assert_eq(g[1].to_string(), "\u{AC01}")
+  assert_eq(g[1].to_owned(), "\u{AC01}")
 }
 
 ///|
@@ -8295,9 +8295,9 @@ test "UAX29/0715: <reserved-0378> / DEVANAGARI LETTER KA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -8307,9 +8307,9 @@ test "UAX29/0716: <reserved-0378> / COMBINING DIAERESIS / DEVANAGARI LETTER KA" 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [0915]
-  assert_eq(g[1].to_string(), "\u{0915}")
+  assert_eq(g[1].to_owned(), "\u{0915}")
 }
 
 ///|
@@ -8319,9 +8319,9 @@ test "UAX29/0717: <reserved-0378> / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -8331,9 +8331,9 @@ test "UAX29/0718: <reserved-0378> / COMBINING DIAERESIS / COPYRIGHT SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [00A9]
-  assert_eq(g[1].to_string(), "\u{00A9}")
+  assert_eq(g[1].to_owned(), "\u{00A9}")
 }
 
 ///|
@@ -8343,9 +8343,9 @@ test "UAX29/0719: <reserved-0378> / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -8355,9 +8355,9 @@ test "UAX29/0720: <reserved-0378> / COMBINING DIAERESIS / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -8367,9 +8367,9 @@ test "UAX29/0721: <reserved-0378> / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378]
-  assert_eq(g[0].to_string(), "\u{0378}")
+  assert_eq(g[0].to_owned(), "\u{0378}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -8379,9 +8379,9 @@ test "UAX29/0722: <reserved-0378> / COMBINING DIAERESIS / <reserved-0378>" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0378 0308]
-  assert_eq(g[0].to_string(), "\u{0378}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0378}\u{0308}")
   // cluster 1: [0378]
-  assert_eq(g[1].to_string(), "\u{0378}")
+  assert_eq(g[1].to_owned(), "\u{0378}")
 }
 
 ///|
@@ -8391,13 +8391,13 @@ test "UAX29/0723: <CARRIAGE RETURN / <LINE FEED / LATIN SMALL LETTER A / <LINE F
   let g = graphemes(input)
   assert_eq(g.length(), 4)
   // cluster 0: [000D 000A]
-  assert_eq(g[0].to_string(), "\u{000D}\u{000A}")
+  assert_eq(g[0].to_owned(), "\u{000D}\u{000A}")
   // cluster 1: [0061]
-  assert_eq(g[1].to_string(), "\u{0061}")
+  assert_eq(g[1].to_owned(), "\u{0061}")
   // cluster 2: [000A]
-  assert_eq(g[2].to_string(), "\u{000A}")
+  assert_eq(g[2].to_owned(), "\u{000A}")
   // cluster 3: [0308]
-  assert_eq(g[3].to_string(), "\u{0308}")
+  assert_eq(g[3].to_owned(), "\u{0308}")
 }
 
 ///|
@@ -8407,7 +8407,7 @@ test "UAX29/0724: LATIN SMALL LETTER A / COMBINING DIAERESIS" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0061 0308]
-  assert_eq(g[0].to_string(), "\u{0061}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{0308}")
 }
 
 ///|
@@ -8417,9 +8417,9 @@ test "UAX29/0725: SPACE / ZERO WIDTH JOINER / ARABIC LETTER NOON" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0020 200D]
-  assert_eq(g[0].to_string(), "\u{0020}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0020}\u{200D}")
   // cluster 1: [0646]
-  assert_eq(g[1].to_string(), "\u{0646}")
+  assert_eq(g[1].to_owned(), "\u{0646}")
 }
 
 ///|
@@ -8429,9 +8429,9 @@ test "UAX29/0726: ARABIC LETTER NOON / ZERO WIDTH JOINER / SPACE" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0646 200D]
-  assert_eq(g[0].to_string(), "\u{0646}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0646}\u{200D}")
   // cluster 1: [0020]
-  assert_eq(g[1].to_string(), "\u{0020}")
+  assert_eq(g[1].to_owned(), "\u{0020}")
 }
 
 ///|
@@ -8441,7 +8441,7 @@ test "UAX29/0727: HANGUL CHOSEONG KIYEOK / HANGUL CHOSEONG KIYEOK" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1100 1100]
-  assert_eq(g[0].to_string(), "\u{1100}\u{1100}")
+  assert_eq(g[0].to_owned(), "\u{1100}\u{1100}")
 }
 
 ///|
@@ -8451,9 +8451,9 @@ test "UAX29/0728: HANGUL SYLLABLE GA / HANGUL JONGSEONG KIYEOK / HANGUL CHOSEONG
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC00 11A8]
-  assert_eq(g[0].to_string(), "\u{AC00}\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{AC00}\u{11A8}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -8463,9 +8463,9 @@ test "UAX29/0729: HANGUL SYLLABLE GAG / HANGUL JONGSEONG KIYEOK / HANGUL CHOSEON
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [AC01 11A8]
-  assert_eq(g[0].to_string(), "\u{AC01}\u{11A8}")
+  assert_eq(g[0].to_owned(), "\u{AC01}\u{11A8}")
   // cluster 1: [1100]
-  assert_eq(g[1].to_string(), "\u{1100}")
+  assert_eq(g[1].to_owned(), "\u{1100}")
 }
 
 ///|
@@ -8475,11 +8475,11 @@ test "UAX29/0730: REGIONAL INDICATOR SYMBOL L... / REGIONAL INDICATOR SYMBOL L..
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [1F1E6 1F1E7]
-  assert_eq(g[0].to_string(), "\u{1F1E6}\u{1F1E7}")
+  assert_eq(g[0].to_owned(), "\u{1F1E6}\u{1F1E7}")
   // cluster 1: [1F1E8]
-  assert_eq(g[1].to_string(), "\u{1F1E8}")
+  assert_eq(g[1].to_owned(), "\u{1F1E8}")
   // cluster 2: [0062]
-  assert_eq(g[2].to_string(), "\u{0062}")
+  assert_eq(g[2].to_owned(), "\u{0062}")
 }
 
 ///|
@@ -8489,13 +8489,13 @@ test "UAX29/0731: LATIN SMALL LETTER A / REGIONAL INDICATOR SYMBOL L... / REGION
   let g = graphemes(input)
   assert_eq(g.length(), 4)
   // cluster 0: [0061]
-  assert_eq(g[0].to_string(), "\u{0061}")
+  assert_eq(g[0].to_owned(), "\u{0061}")
   // cluster 1: [1F1E6 1F1E7]
-  assert_eq(g[1].to_string(), "\u{1F1E6}\u{1F1E7}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}\u{1F1E7}")
   // cluster 2: [1F1E8]
-  assert_eq(g[2].to_string(), "\u{1F1E8}")
+  assert_eq(g[2].to_owned(), "\u{1F1E8}")
   // cluster 3: [0062]
-  assert_eq(g[3].to_string(), "\u{0062}")
+  assert_eq(g[3].to_owned(), "\u{0062}")
 }
 
 ///|
@@ -8505,13 +8505,13 @@ test "UAX29/0732: LATIN SMALL LETTER A / REGIONAL INDICATOR SYMBOL L... / REGION
   let g = graphemes(input)
   assert_eq(g.length(), 4)
   // cluster 0: [0061]
-  assert_eq(g[0].to_string(), "\u{0061}")
+  assert_eq(g[0].to_owned(), "\u{0061}")
   // cluster 1: [1F1E6 1F1E7 200D]
-  assert_eq(g[1].to_string(), "\u{1F1E6}\u{1F1E7}\u{200D}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}\u{1F1E7}\u{200D}")
   // cluster 2: [1F1E8]
-  assert_eq(g[2].to_string(), "\u{1F1E8}")
+  assert_eq(g[2].to_owned(), "\u{1F1E8}")
   // cluster 3: [0062]
-  assert_eq(g[3].to_string(), "\u{0062}")
+  assert_eq(g[3].to_owned(), "\u{0062}")
 }
 
 ///|
@@ -8521,13 +8521,13 @@ test "UAX29/0733: LATIN SMALL LETTER A / REGIONAL INDICATOR SYMBOL L... / ZERO W
   let g = graphemes(input)
   assert_eq(g.length(), 4)
   // cluster 0: [0061]
-  assert_eq(g[0].to_string(), "\u{0061}")
+  assert_eq(g[0].to_owned(), "\u{0061}")
   // cluster 1: [1F1E6 200D]
-  assert_eq(g[1].to_string(), "\u{1F1E6}\u{200D}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}\u{200D}")
   // cluster 2: [1F1E7 1F1E8]
-  assert_eq(g[2].to_string(), "\u{1F1E7}\u{1F1E8}")
+  assert_eq(g[2].to_owned(), "\u{1F1E7}\u{1F1E8}")
   // cluster 3: [0062]
-  assert_eq(g[3].to_string(), "\u{0062}")
+  assert_eq(g[3].to_owned(), "\u{0062}")
 }
 
 ///|
@@ -8537,13 +8537,13 @@ test "UAX29/0734: LATIN SMALL LETTER A / REGIONAL INDICATOR SYMBOL L... / REGION
   let g = graphemes(input)
   assert_eq(g.length(), 4)
   // cluster 0: [0061]
-  assert_eq(g[0].to_string(), "\u{0061}")
+  assert_eq(g[0].to_owned(), "\u{0061}")
   // cluster 1: [1F1E6 1F1E7]
-  assert_eq(g[1].to_string(), "\u{1F1E6}\u{1F1E7}")
+  assert_eq(g[1].to_owned(), "\u{1F1E6}\u{1F1E7}")
   // cluster 2: [1F1E8 1F1E9]
-  assert_eq(g[2].to_string(), "\u{1F1E8}\u{1F1E9}")
+  assert_eq(g[2].to_owned(), "\u{1F1E8}\u{1F1E9}")
   // cluster 3: [0062]
-  assert_eq(g[3].to_string(), "\u{0062}")
+  assert_eq(g[3].to_owned(), "\u{0062}")
 }
 
 ///|
@@ -8553,7 +8553,7 @@ test "UAX29/0735: LATIN SMALL LETTER A / ZERO WIDTH JOINER" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0061 200D]
-  assert_eq(g[0].to_string(), "\u{0061}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{200D}")
 }
 
 ///|
@@ -8563,9 +8563,9 @@ test "UAX29/0736: LATIN SMALL LETTER A / COMBINING DIAERESIS / LATIN SMALL LETTE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0061 0308]
-  assert_eq(g[0].to_string(), "\u{0061}\u{0308}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{0308}")
   // cluster 1: [0062]
-  assert_eq(g[1].to_string(), "\u{0062}")
+  assert_eq(g[1].to_owned(), "\u{0062}")
 }
 
 ///|
@@ -8575,9 +8575,9 @@ test "UAX29/0737: LATIN SMALL LETTER A / DEVANAGARI SIGN VISARGA / LATIN SMALL L
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0061 0903]
-  assert_eq(g[0].to_string(), "\u{0061}\u{0903}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{0903}")
   // cluster 1: [0062]
-  assert_eq(g[1].to_string(), "\u{0062}")
+  assert_eq(g[1].to_owned(), "\u{0062}")
 }
 
 ///|
@@ -8587,9 +8587,9 @@ test "UAX29/0738: LATIN SMALL LETTER A / ARABIC NUMBER SIGN / LATIN SMALL LETTER
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0061]
-  assert_eq(g[0].to_string(), "\u{0061}")
+  assert_eq(g[0].to_owned(), "\u{0061}")
   // cluster 1: [0600 0062]
-  assert_eq(g[1].to_string(), "\u{0600}\u{0062}")
+  assert_eq(g[1].to_owned(), "\u{0600}\u{0062}")
 }
 
 ///|
@@ -8599,9 +8599,9 @@ test "UAX29/0739: BABY / EMOJI MODIFIER FITZPATRICK ... / BABY" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1F476 1F3FF]
-  assert_eq(g[0].to_string(), "\u{1F476}\u{1F3FF}")
+  assert_eq(g[0].to_owned(), "\u{1F476}\u{1F3FF}")
   // cluster 1: [1F476]
-  assert_eq(g[1].to_string(), "\u{1F476}")
+  assert_eq(g[1].to_owned(), "\u{1F476}")
 }
 
 ///|
@@ -8611,9 +8611,9 @@ test "UAX29/0740: LATIN SMALL LETTER A / EMOJI MODIFIER FITZPATRICK ... / BABY" 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0061 1F3FF]
-  assert_eq(g[0].to_string(), "\u{0061}\u{1F3FF}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{1F3FF}")
   // cluster 1: [1F476]
-  assert_eq(g[1].to_string(), "\u{1F476}")
+  assert_eq(g[1].to_owned(), "\u{1F476}")
 }
 
 ///|
@@ -8623,9 +8623,9 @@ test "UAX29/0741: LATIN SMALL LETTER A / EMOJI MODIFIER FITZPATRICK ... / BABY /
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0061 1F3FF]
-  assert_eq(g[0].to_string(), "\u{0061}\u{1F3FF}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{1F3FF}")
   // cluster 1: [1F476 200D 1F6D1]
-  assert_eq(g[1].to_string(), "\u{1F476}\u{200D}\u{1F6D1}")
+  assert_eq(g[1].to_owned(), "\u{1F476}\u{200D}\u{1F6D1}")
 }
 
 ///|
@@ -8636,7 +8636,7 @@ test "UAX29/0742: BABY / EMOJI MODIFIER FITZPATRICK ... / COMBINING DIAERESIS / 
   assert_eq(g.length(), 1)
   // cluster 0: [1F476 1F3FF 0308 200D 1F476 1F3FF]
   assert_eq(
-    g[0].to_string(),
+    g[0].to_owned(),
     "\u{1F476}\u{1F3FF}\u{0308}\u{200D}\u{1F476}\u{1F3FF}",
   )
 }
@@ -8648,7 +8648,7 @@ test "UAX29/0743: OCTAGONAL SIGN / ZERO WIDTH JOINER / OCTAGONAL SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1F6D1 200D 1F6D1]
-  assert_eq(g[0].to_string(), "\u{1F6D1}\u{200D}\u{1F6D1}")
+  assert_eq(g[0].to_owned(), "\u{1F6D1}\u{200D}\u{1F6D1}")
 }
 
 ///|
@@ -8658,9 +8658,9 @@ test "UAX29/0744: LATIN SMALL LETTER A / ZERO WIDTH JOINER / OCTAGONAL SIGN" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0061 200D]
-  assert_eq(g[0].to_string(), "\u{0061}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{200D}")
   // cluster 1: [1F6D1]
-  assert_eq(g[1].to_string(), "\u{1F6D1}")
+  assert_eq(g[1].to_owned(), "\u{1F6D1}")
 }
 
 ///|
@@ -8670,9 +8670,9 @@ test "UAX29/0745: UPPER BLADE SCISSORS / ZERO WIDTH JOINER / UPPER BLADE SCISSOR
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [2701 200D]
-  assert_eq(g[0].to_string(), "\u{2701}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{2701}\u{200D}")
   // cluster 1: [2701]
-  assert_eq(g[1].to_string(), "\u{2701}")
+  assert_eq(g[1].to_owned(), "\u{2701}")
 }
 
 ///|
@@ -8682,9 +8682,9 @@ test "UAX29/0746: LATIN SMALL LETTER A / ZERO WIDTH JOINER / UPPER BLADE SCISSOR
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0061 200D]
-  assert_eq(g[0].to_string(), "\u{0061}\u{200D}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{200D}")
   // cluster 1: [2701]
-  assert_eq(g[1].to_string(), "\u{2701}")
+  assert_eq(g[1].to_owned(), "\u{2701}")
 }
 
 ///|
@@ -8694,9 +8694,9 @@ test "UAX29/0747: DEVANAGARI LETTER KA / DEVANAGARI LETTER TA" {
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915]
-  assert_eq(g[0].to_string(), "\u{0915}")
+  assert_eq(g[0].to_owned(), "\u{0915}")
   // cluster 1: [0924]
-  assert_eq(g[1].to_string(), "\u{0924}")
+  assert_eq(g[1].to_owned(), "\u{0924}")
 }
 
 ///|
@@ -8706,7 +8706,7 @@ test "UAX29/0748: DEVANAGARI LETTER KA / DEVANAGARI SIGN VIRAMA / DEVANAGARI LET
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 094D 0924]
-  assert_eq(g[0].to_string(), "\u{0915}\u{094D}\u{0924}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{094D}\u{0924}")
 }
 
 ///|
@@ -8716,7 +8716,7 @@ test "UAX29/0749: DEVANAGARI LETTER KA / DEVANAGARI SIGN VIRAMA / DEVANAGARI SIG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 094D 094D 0924]
-  assert_eq(g[0].to_string(), "\u{0915}\u{094D}\u{094D}\u{0924}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{094D}\u{094D}\u{0924}")
 }
 
 ///|
@@ -8726,7 +8726,7 @@ test "UAX29/0750: DEVANAGARI LETTER KA / DEVANAGARI SIGN VIRAMA / ZERO WIDTH JOI
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 094D 200D 0924]
-  assert_eq(g[0].to_string(), "\u{0915}\u{094D}\u{200D}\u{0924}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{094D}\u{200D}\u{0924}")
 }
 
 ///|
@@ -8736,7 +8736,7 @@ test "UAX29/0751: DEVANAGARI LETTER KA / DEVANAGARI SIGN NUKTA / ZERO WIDTH JOIN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 093C 200D 094D 0924]
-  assert_eq(g[0].to_string(), "\u{0915}\u{093C}\u{200D}\u{094D}\u{0924}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{093C}\u{200D}\u{094D}\u{0924}")
 }
 
 ///|
@@ -8746,7 +8746,7 @@ test "UAX29/0752: DEVANAGARI LETTER KA / DEVANAGARI SIGN NUKTA / DEVANAGARI SIGN
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 093C 094D 200D 0924]
-  assert_eq(g[0].to_string(), "\u{0915}\u{093C}\u{094D}\u{200D}\u{0924}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{093C}\u{094D}\u{200D}\u{0924}")
 }
 
 ///|
@@ -8756,7 +8756,7 @@ test "UAX29/0753: DEVANAGARI LETTER KA / DEVANAGARI SIGN VIRAMA / DEVANAGARI LET
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 094D 0924 094D 092F]
-  assert_eq(g[0].to_string(), "\u{0915}\u{094D}\u{0924}\u{094D}\u{092F}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{094D}\u{0924}\u{094D}\u{092F}")
 }
 
 ///|
@@ -8766,9 +8766,9 @@ test "UAX29/0754: DEVANAGARI LETTER KA / DEVANAGARI SIGN VIRAMA / LATIN SMALL LE
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0915 094D]
-  assert_eq(g[0].to_string(), "\u{0915}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{094D}")
   // cluster 1: [0061]
-  assert_eq(g[1].to_string(), "\u{0061}")
+  assert_eq(g[1].to_owned(), "\u{0061}")
 }
 
 ///|
@@ -8778,9 +8778,9 @@ test "UAX29/0755: LATIN SMALL LETTER A / DEVANAGARI SIGN VIRAMA / DEVANAGARI LET
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [0061 094D]
-  assert_eq(g[0].to_string(), "\u{0061}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{0061}\u{094D}")
   // cluster 1: [0924]
-  assert_eq(g[1].to_string(), "\u{0924}")
+  assert_eq(g[1].to_owned(), "\u{0924}")
 }
 
 ///|
@@ -8790,9 +8790,9 @@ test "UAX29/0756: QUESTION MARK / DEVANAGARI SIGN VIRAMA / DEVANAGARI LETTER TA"
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [003F 094D]
-  assert_eq(g[0].to_string(), "\u{003F}\u{094D}")
+  assert_eq(g[0].to_owned(), "\u{003F}\u{094D}")
   // cluster 1: [0924]
-  assert_eq(g[1].to_string(), "\u{0924}")
+  assert_eq(g[1].to_owned(), "\u{0924}")
 }
 
 ///|
@@ -8802,7 +8802,7 @@ test "UAX29/0757: DEVANAGARI LETTER KA / DEVANAGARI SIGN VIRAMA / DEVANAGARI SIG
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0915 094D 094D 0924]
-  assert_eq(g[0].to_string(), "\u{0915}\u{094D}\u{094D}\u{0924}")
+  assert_eq(g[0].to_owned(), "\u{0915}\u{094D}\u{094D}\u{0924}")
 }
 
 ///|
@@ -8812,7 +8812,7 @@ test "UAX29/0758: GUJARATI LETTER SA / GUJARATI SIGN SHADDA / GUJARATI SIGN VIRA
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [0AB8 0AFB 0ACD 0AB8 0AFB]
-  assert_eq(g[0].to_string(), "\u{0AB8}\u{0AFB}\u{0ACD}\u{0AB8}\u{0AFB}")
+  assert_eq(g[0].to_owned(), "\u{0AB8}\u{0AFB}\u{0ACD}\u{0AB8}\u{0AFB}")
 }
 
 ///|
@@ -8822,9 +8822,9 @@ test "UAX29/0759: MYANMAR LETTER MA / MYANMAR SIGN VIRAMA / MYANMAR LETTER BHA /
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1019 1039 1018]
-  assert_eq(g[0].to_string(), "\u{1019}\u{1039}\u{1018}")
+  assert_eq(g[0].to_owned(), "\u{1019}\u{1039}\u{1018}")
   // cluster 1: [102C 1037]
-  assert_eq(g[1].to_string(), "\u{102C}\u{1037}")
+  assert_eq(g[1].to_owned(), "\u{102C}\u{1037}")
 }
 
 ///|
@@ -8834,10 +8834,7 @@ test "UAX29/0760: MYANMAR LETTER NGA / MYANMAR SIGN ASAT / MYANMAR SIGN VIRAMA /
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [1004 103A 1039 1011 1039 1011]
-  assert_eq(
-    g[0].to_string(),
-    "\u{1004}\u{103A}\u{1039}\u{1011}\u{1039}\u{1011}",
-  )
+  assert_eq(g[0].to_owned(), "\u{1004}\u{103A}\u{1039}\u{1011}\u{1039}\u{1011}")
 }
 
 ///|
@@ -8847,13 +8844,13 @@ test "UAX29/0761: BALINESE LETTER OKARA TEDUNG / BALINESE SIGN ULU CANDRA / BALI
   let g = graphemes(input)
   assert_eq(g.length(), 4)
   // cluster 0: [1B12 1B01]
-  assert_eq(g[0].to_string(), "\u{1B12}\u{1B01}")
+  assert_eq(g[0].to_owned(), "\u{1B12}\u{1B01}")
   // cluster 1: [1B32 1B44 1B2F]
-  assert_eq(g[1].to_string(), "\u{1B32}\u{1B44}\u{1B2F}")
+  assert_eq(g[1].to_owned(), "\u{1B32}\u{1B44}\u{1B2F}")
   // cluster 2: [1B32 1B44 1B22 1B44 1B2C]
-  assert_eq(g[2].to_string(), "\u{1B32}\u{1B44}\u{1B22}\u{1B44}\u{1B2C}")
+  assert_eq(g[2].to_owned(), "\u{1B32}\u{1B44}\u{1B22}\u{1B44}\u{1B2C}")
   // cluster 3: [1B32 1B44 1B22 1B38]
-  assert_eq(g[3].to_string(), "\u{1B32}\u{1B44}\u{1B22}\u{1B38}")
+  assert_eq(g[3].to_owned(), "\u{1B32}\u{1B44}\u{1B22}\u{1B38}")
 }
 
 ///|
@@ -8863,10 +8860,7 @@ test "UAX29/0762: KHMER LETTER SA / KHMER SIGN COENG / KHMER LETTER TA / KHMER S
   let g = graphemes(input)
   assert_eq(g.length(), 1)
   // cluster 0: [179F 17D2 178F 17D2 179A 17B8]
-  assert_eq(
-    g[0].to_string(),
-    "\u{179F}\u{17D2}\u{178F}\u{17D2}\u{179A}\u{17B8}",
-  )
+  assert_eq(g[0].to_owned(), "\u{179F}\u{17D2}\u{178F}\u{17D2}\u{179A}\u{17B8}")
 }
 
 ///|
@@ -8876,9 +8870,9 @@ test "UAX29/0763: BALINESE LETTER NA / BALINESE LETTER NGA / BALINESE ADEG ADEG 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1B26]
-  assert_eq(g[0].to_string(), "\u{1B26}")
+  assert_eq(g[0].to_owned(), "\u{1B26}")
   // cluster 1: [1B17 1B44 1B13]
-  assert_eq(g[1].to_string(), "\u{1B17}\u{1B44}\u{1B13}")
+  assert_eq(g[1].to_owned(), "\u{1B17}\u{1B44}\u{1B13}")
 }
 
 ///|
@@ -8888,11 +8882,11 @@ test "UAX29/0764: BALINESE LETTER PA / BALINESE LETTER KA / BALINESE ADEG ADEG /
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [1B27]
-  assert_eq(g[0].to_string(), "\u{1B27}")
+  assert_eq(g[0].to_owned(), "\u{1B27}")
   // cluster 1: [1B13 1B44 1B0B]
-  assert_eq(g[1].to_string(), "\u{1B13}\u{1B44}\u{1B0B}")
+  assert_eq(g[1].to_owned(), "\u{1B13}\u{1B44}\u{1B0B}")
   // cluster 2: [1B0B 1B04]
-  assert_eq(g[2].to_string(), "\u{1B0B}\u{1B04}")
+  assert_eq(g[2].to_owned(), "\u{1B0B}\u{1B04}")
 }
 
 ///|
@@ -8902,9 +8896,9 @@ test "UAX29/0765: KHMER LETTER PHA / KHMER SIGN COENG / KHMER INDEPENDENT VOWEL 
   let g = graphemes(input)
   assert_eq(g.length(), 2)
   // cluster 0: [1795 17D2 17AF]
-  assert_eq(g[0].to_string(), "\u{1795}\u{17D2}\u{17AF}")
+  assert_eq(g[0].to_owned(), "\u{1795}\u{17D2}\u{17AF}")
   // cluster 1: [1798]
-  assert_eq(g[1].to_string(), "\u{1798}")
+  assert_eq(g[1].to_owned(), "\u{1798}")
 }
 
 ///|
@@ -8914,9 +8908,9 @@ test "UAX29/0766: KHMER LETTER HA / KHMER SIGN COENG / KHMER INDEPENDENT VOWEL R
   let g = graphemes(input)
   assert_eq(g.length(), 3)
   // cluster 0: [17A0 17D2 17AB]
-  assert_eq(g[0].to_string(), "\u{17A0}\u{17D2}\u{17AB}")
+  assert_eq(g[0].to_owned(), "\u{17A0}\u{17D2}\u{17AB}")
   // cluster 1: [1791 17D0]
-  assert_eq(g[1].to_string(), "\u{1791}\u{17D0}")
+  assert_eq(g[1].to_owned(), "\u{1791}\u{17D0}")
   // cluster 2: [1799]
-  assert_eq(g[2].to_string(), "\u{1799}")
+  assert_eq(g[2].to_owned(), "\u{1799}")
 }

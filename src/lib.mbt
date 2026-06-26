@@ -138,14 +138,14 @@ pub fn GraphemeView::to_string(self : GraphemeView) -> String {
       start_offset=self.boundaries[self.cluster_start],
       end_offset=self.boundaries[self.cluster_end],
     )
-    .to_string()
+    .to_owned()
   }
 }
 
 ///|
 /// Implements Show trait for GraphemeView.
 /// Output format: GraphemeView(["cluster1", "cluster2", ...])
-pub impl Show for GraphemeView with output(self, logger) {
+pub impl Show for GraphemeView with fn output(self, logger) {
   logger.write_string("GraphemeView([")
   let len = self.length()
   for i = 0; i < len; i = i + 1 {
@@ -153,7 +153,7 @@ pub impl Show for GraphemeView with output(self, logger) {
       logger.write_string(", ")
     }
     logger.write_string("\"")
-    logger.write_string(self[i].to_string())
+    logger.write_string(self[i].to_owned())
     logger.write_string("\"")
   }
   logger.write_string("])")
@@ -222,7 +222,7 @@ pub fn GraphemeView::iter2(self : GraphemeView) -> Iter2[Int, StringView] {
 /// Two GraphemeViews are equal if they have the same number of clusters
 /// and each corresponding cluster has the same string content.
 /// Compares by code point sequence, not Unicode canonical equivalence (NFC/NFD).
-pub impl Eq for GraphemeView with equal(self, other) {
+pub impl Eq for GraphemeView with fn equal(self, other) {
   let len = self.length()
   if len != other.length() {
     return false
@@ -238,7 +238,7 @@ pub impl Eq for GraphemeView with equal(self, other) {
 ///|
 /// Implements Hash trait for GraphemeView.
 /// Hashes character content directly without String allocation, consistent with Eq.
-pub impl Hash for GraphemeView with hash_combine(self, hasher) {
+pub impl Hash for GraphemeView with fn hash_combine(self, hasher) {
   if self.length() > 0 {
     let view = self.source.view(
       start_offset=self.boundaries[self.cluster_start],

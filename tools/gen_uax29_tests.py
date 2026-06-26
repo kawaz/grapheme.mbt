@@ -155,7 +155,7 @@ def generate_test(test_num: int, clusters: list, comment: str, raw_line: str) ->
         cluster_str = "".join(cp_to_moonbit_escape(cp) for cp in cluster)
         cp_hex = " ".join(f"{cp:04X}" for cp in cluster)
         lines.append(f'  // cluster {i}: [{cp_hex}]')
-        lines.append(f'  assert_eq(g[{i}].to_string(), "{cluster_str}")')
+        lines.append(f'  assert_eq(g[{i}].to_owned(), "{cluster_str}")')
 
     lines.append("}")
     return "\n".join(lines)

@@ -1,7 +1,7 @@
 // Show impls for test-only types (mirrors derive(Show) output)
 
 ///|
-impl Show for EmojiState with output(self, logger) {
+impl Show for EmojiState with fn output(self, logger) {
   logger.write_string(
     match self {
       ES_None => "ES_None"
@@ -12,7 +12,7 @@ impl Show for EmojiState with output(self, logger) {
 }
 
 ///|
-impl Show for InCBState with output(self, logger) {
+impl Show for InCBState with fn output(self, logger) {
   logger.write_string(
     match self {
       IC_None => "IC_None"

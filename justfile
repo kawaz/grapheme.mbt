@@ -1,11 +1,27 @@
 # MoonBit Project Commands
+#
+# Canonical task runner. Mirrors the shape of kawaz/bump-semver:
+# `default` aliases `list`, atomic recipes first, release flow at the bottom.
 
-version := `jq -r '.version' moon.mod.json`
+set shell := ["bash", "-euo", "pipefail", "-c"]
+
+set script-interpreter := ["bash", "-euo", "pipefail"]
+
+set positional-arguments
+
+# Read `version = "x.y.z"` line from MoonBit moon.mod (new TOML-like format)
+version := `awk -F'"' '/^version[[:space:]]*=/ { print $2; exit }' moon.mod`
 tag := "v" + version
 repo_git := `git rev-parse --git-common-dir`
 
-# Default: check + test
-default: check test
+# default behaviour: alias for `list`
+default: list
+
+# show the recipe list
+list:
+    @just --list --unsorted
+
+# ---------- atomic (lint / test / build) ----------
 
 # Format code
 fmt:
@@ -15,13 +31,17 @@ fmt:
 fmt-check:
     moon fmt --check
 
-# Type check
+# Type check (warnings are errors)
 check:
     moon check --deny-warn
 
 # Run tests
 test:
     moon test
+
+# Run tests on all targets
+test-all:
+    moon test --target all
 
 # Update snapshot tests
 test-update:
@@ -35,10 +55,6 @@ info:
 clean:
     moon clean
 
-# Run tests on all targets
-test-all:
-    moon test --target all
-
 # Run benchmarks
 bench:
     moon bench
@@ -50,6 +66,11 @@ coverage:
 # Coverage HTML report (runs tests with instrumentation internally)
 coverage-html:
     moon coverage analyze -- -f html
+
+# CI entry point: fmt-check + check + info + test
+ci: fmt-check check info test
+
+# ---------- code generation ----------
 
 # Regenerate GCB tables from Unicode data
 gen-tables:
@@ -64,14 +85,17 @@ gen-tests:
 # Regenerate all generated files
 gen: gen-tables gen-tests
 
-# Pre-release check
-release-check: fmt-check check info test
+# ---------- release flow ----------
 
-# Release: check, tag, and push to trigger CI publish
+# Pre-release check (back-compat alias of `ci`)
+release-check: ci
+
+# Release: tag and push to trigger CI publish
 [confirm]
-release: release-check _release-preflight _release-push _release-tag
+release: ci _release-preflight _release-push _release-tag
     @echo ""
     @echo "==> {{ tag }} released! CI will publish to mooncakes.io."
+    @echo "[hint] gh-monitor:watch-workflow --sha $(jj log -r main -T 'commit_id' --no-graph) publish.yml '' kawaz/grapheme.mbt"
 
 _release-preflight: _release-fetch _release-check-changelog _release-check-no-tag _release-check-clean
 

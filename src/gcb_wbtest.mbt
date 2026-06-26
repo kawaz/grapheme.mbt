@@ -1,7 +1,7 @@
 // Show impl for GCBCategory (test-only, mirrors derive(Show) output)
 
 ///|
-impl Show for GCBCategory with output(self, logger) {
+impl Show for GCBCategory with fn output(self, logger) {
   logger.write_string(
     match self {
       Other => "Other"

@@ -14,16 +14,16 @@ test "graphemes: BMP characters" {
 test "graphemes: surrogate pair characters" {
   let g = graphemes("A\u{1F600}B")
   inspect(g.length(), content="3")
-  inspect(g[1].to_string(), content="\u{1F600}")
+  inspect(g[1].to_owned(), content="\u{1F600}")
 }
 
 ///|
 test "graphemes: iter" {
   let result : Array[String] = []
   for cluster in graphemes("A\u{1F600}B").iter() {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
-  inspect(
+  @debug.debug_inspect(
     result,
     content=(
       #|["A", "😀", "B"]
@@ -42,7 +42,7 @@ test "graphemes: empty string" {
 test "graphemes: combining character ga" {
   let g = graphemes("\u{304B}\u{3099}")
   inspect(g.length(), content="1")
-  inspect(g[0].to_string(), content="\u{304B}\u{3099}")
+  inspect(g[0].to_owned(), content="\u{304B}\u{3099}")
 }
 
 ///|
@@ -119,13 +119,13 @@ test "graphemes: RI x5" {
 ///|
 test "graphemes: op_get first index" {
   let g = graphemes("ABC")
-  inspect(g[0].to_string(), content="A")
+  inspect(g[0].to_owned(), content="A")
 }
 
 ///|
 test "graphemes: op_get last index" {
   let g = graphemes("ABC")
-  inspect(g[g.length() - 1].to_string(), content="C")
+  inspect(g[g.length() - 1].to_owned(), content="C")
 }
 
 // ============================================================
@@ -199,7 +199,7 @@ test "graphemes: iter collects all clusters" {
   let g = graphemes("A\u{1F600}B")
   let collected : Array[String] = []
   for cluster in g.iter() {
-    collected.push(cluster.to_string())
+    collected.push(cluster.to_owned())
   }
   inspect(collected.length(), content="3")
   inspect(collected[0], content="A")
@@ -289,7 +289,7 @@ test "graphemes: concatenation invariant ASCII" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g.iter() {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string(), content="Hello World")
 }
@@ -300,7 +300,7 @@ test "graphemes: concatenation invariant mixed" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g.iter() {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string() == input, content="true")
 }
@@ -311,7 +311,7 @@ test "graphemes: concatenation invariant empty" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g.iter() {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string(), content="")
 }
@@ -323,7 +323,7 @@ test "graphemes: concatenation invariant combining marks" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g.iter() {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string() == input, content="true")
 }
@@ -387,19 +387,19 @@ test "GraphemeView: get valid index" {
 ///|
 test "GraphemeView: get out of range returns None" {
   let g = graphemes("ABC")
-  inspect(g.get(3), content="None")
+  @debug.debug_inspect(g.get(3), content="None")
 }
 
 ///|
 test "GraphemeView: get negative returns None" {
   let g = graphemes("ABC")
-  inspect(g.get(-1), content="None")
+  @debug.debug_inspect(g.get(-1), content="None")
 }
 
 ///|
 test "GraphemeView: get on empty returns None" {
   let g = graphemes("")
-  inspect(g.get(0), content="None")
+  @debug.debug_inspect(g.get(0), content="None")
 }
 
 // ============================================================
@@ -476,8 +476,8 @@ test "GraphemeView: slice with op_as_view" {
   let g = graphemes("ABCDE")
   let sliced = g[1:3] // B, C
   inspect(sliced.length(), content="2")
-  inspect(sliced[0].to_string(), content="B")
-  inspect(sliced[1].to_string(), content="C")
+  inspect(sliced[0].to_owned(), content="B")
+  inspect(sliced[1].to_owned(), content="C")
 }
 
 ///|
@@ -506,7 +506,7 @@ test "GraphemeView: nested slice" {
   let g = graphemes("ABCDE")
   let s1 = g[1:4] // B, C, D
   let s2 = s1[1:2] // C
-  inspect(s2[0].to_string(), content="C")
+  inspect(s2[0].to_owned(), content="C")
 }
 
 // ============================================================
@@ -520,9 +520,9 @@ test "GraphemeView: iter2 indexed iteration" {
   let values : Array[String] = []
   for i, cluster in g.iter2() {
     indices.push(i)
-    values.push(cluster.to_string())
+    values.push(cluster.to_owned())
   }
-  inspect(indices, content="[0, 1, 2]")
+  @debug.debug_inspect(indices, content="[0, 1, 2]")
   inspect(values[1], content="\u{1F600}")
 }
 
@@ -535,11 +535,11 @@ test "GraphemeView: rev_iter" {
   let g = graphemes("ABC")
   let result : Array[String] = []
   for cluster in g.rev_iter() {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
   let expected =
     #|["C", "B", "A"]
-  inspect(result, content=expected)
+  @debug.debug_inspect(result, content=expected)
 }
 
 // ============================================================
@@ -611,7 +611,7 @@ test "GraphemeView: slice emoji preservation" {
   // 絵文字がスライスで壊れないことを確認
   let g = graphemes("A🇯🇵B")
   let sliced = g[1:2]
-  inspect(sliced[0].to_string(), content="🇯🇵")
+  inspect(sliced[0].to_owned(), content="🇯🇵")
 }
 
 ///|
@@ -620,7 +620,7 @@ test "GraphemeView: slice then iter" {
   let sliced = g[1:4]
   let result : Array[String] = []
   for cluster in sliced {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
   inspect(result.length(), content="3")
 }
@@ -634,7 +634,7 @@ test "GraphemeView: slice then iter2" {
     indices.push(i)
   }
   // スライス内のインデックスは0始まり
-  inspect(indices, content="[0, 1, 2]")
+  @debug.debug_inspect(indices, content="[0, 1, 2]")
 }
 
 ///|
@@ -643,11 +643,11 @@ test "GraphemeView: slice then rev_iter" {
   let sliced = g[1:4]
   let result : Array[String] = []
   for cluster in sliced.rev_iter() {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
   let expected =
     #|["D", "C", "B"]
-  inspect(result, content=expected)
+  @debug.debug_inspect(result, content=expected)
 }
 
 // ============================================================
@@ -659,7 +659,7 @@ test "GraphemeView: slice open end (g[1:])" {
   let g = graphemes("ABCDE")
   let sliced = g[1:]
   inspect(sliced.length(), content="4")
-  inspect(sliced[0].to_string(), content="B")
+  inspect(sliced[0].to_owned(), content="B")
 }
 
 ///|
@@ -667,7 +667,7 @@ test "GraphemeView: slice open start (g[:3])" {
   let g = graphemes("ABCDE")
   let sliced = g[:3]
   inspect(sliced.length(), content="3")
-  inspect(sliced[0].to_string(), content="A")
+  inspect(sliced[0].to_owned(), content="A")
 }
 
 ///|
@@ -682,7 +682,7 @@ test "GraphemeView: slice negative start clamped to 0" {
   let g = graphemes("ABCDE")
   let sliced = g[-2:3]
   inspect(sliced.length(), content="3")
-  inspect(sliced[0].to_string(), content="A")
+  inspect(sliced[0].to_owned(), content="A")
 }
 
 ///|
@@ -697,7 +697,7 @@ test "GraphemeView: slice end beyond length clamped" {
   let g = graphemes("ABCDE")
   let sliced = g[2:100]
   inspect(sliced.length(), content="3")
-  inspect(sliced[0].to_string(), content="C")
+  inspect(sliced[0].to_owned(), content="C")
 }
 
 ///|
@@ -719,7 +719,7 @@ test "GraphemeView: grapheme_indices ASCII" {
     offsets.push((entry.0, entry.1))
   }
   // ASCII: 各文字は1コードユニット
-  inspect(offsets, content="[(0, 1), (1, 2), (2, 3)]")
+  @debug.debug_inspect(offsets, content="[(0, 1), (1, 2), (2, 3)]")
 }
 
 ///|
@@ -730,7 +730,7 @@ test "GraphemeView: grapheme_indices emoji" {
     offsets.push((entry.0, entry.1))
   }
   // 😀 はサロゲートペアで2コードユニット
-  inspect(offsets, content="[(0, 1), (1, 3), (3, 4)]")
+  @debug.debug_inspect(offsets, content="[(0, 1), (1, 3), (3, 4)]")
 }
 
 ///|
@@ -740,7 +740,7 @@ test "GraphemeView: grapheme_indices empty" {
   for entry in g.grapheme_indices() {
     offsets.push((entry.0, entry.1))
   }
-  inspect(offsets, content="[]")
+  @debug.debug_inspect(offsets, content="[]")
 }
 
 ///|
@@ -752,7 +752,7 @@ test "GraphemeView: grapheme_indices sliced" {
     offsets.push((entry.0, entry.1))
   }
   // スライスされた場合、オフセットは元の文字列内の位置
-  inspect(offsets, content="[(1, 2), (2, 3)]")
+  @debug.debug_inspect(offsets, content="[(1, 2), (2, 3)]")
 }
 
 ///|
@@ -760,9 +760,9 @@ test "GraphemeView: grapheme_indices cluster content" {
   let g = graphemes("A\u{1F600}B")
   let clusters : Array[String] = []
   for entry in g.grapheme_indices() {
-    clusters.push(entry.2.to_string())
+    clusters.push(entry.2.to_owned())
   }
-  inspect(
+  @debug.debug_inspect(
     clusters,
     content=(
       #|["A", "😀", "B"]
@@ -778,7 +778,7 @@ test "GraphemeView: grapheme_indices cluster content" {
 test "graphemes: replacement character U+FFFD" {
   let g = graphemes("\u{FFFD}")
   inspect(g.length(), content="1")
-  inspect(g[0].to_string(), content="\u{FFFD}")
+  inspect(g[0].to_owned(), content="\u{FFFD}")
 }
 
 ///|
@@ -792,7 +792,7 @@ test "graphemes: BOM U+FEFF is Control, breaks cluster" {
   // BOM (GCB=Control) should be its own cluster and break from text
   let g = graphemes("\u{FEFF}text")
   inspect(g.length(), content="5") // BOM + t + e + x + t
-  inspect(g[0].to_string(), content="\u{FEFF}")
+  inspect(g[0].to_owned(), content="\u{FEFF}")
 }
 
 ///|
@@ -858,7 +858,7 @@ test "grapheme_indices: single character" {
   for entry in g.grapheme_indices() {
     offsets.push((entry.0, entry.1))
   }
-  inspect(offsets, content="[(0, 1)]")
+  @debug.debug_inspect(offsets, content="[(0, 1)]")
 }
 
 ///|
@@ -869,7 +869,7 @@ test "grapheme_indices: combining character cluster" {
   for entry in g.grapheme_indices() {
     offsets.push((entry.0, entry.1))
   }
-  inspect(offsets, content="[(0, 2)]")
+  @debug.debug_inspect(offsets, content="[(0, 2)]")
 }
 
 ///|
@@ -879,7 +879,7 @@ test "grapheme_indices: CRLF cluster" {
   for entry in g.grapheme_indices() {
     offsets.push((entry.0, entry.1))
   }
-  inspect(offsets, content="[(0, 2)]")
+  @debug.debug_inspect(offsets, content="[(0, 2)]")
 }
 
 ///|
@@ -890,7 +890,7 @@ test "grapheme_indices: sliced single element" {
     offsets.push((entry.0, entry.1))
   }
   // Offset refers to position in original string
-  inspect(offsets, content="[(2, 3)]")
+  @debug.debug_inspect(offsets, content="[(2, 3)]")
 }
 
 // ============================================================
@@ -904,7 +904,7 @@ test "iter2: empty" {
   for i, _cluster in g.iter2() {
     indices.push(i)
   }
-  inspect(indices, content="[]")
+  @debug.debug_inspect(indices, content="[]")
 }
 
 ///|
@@ -914,10 +914,10 @@ test "iter2: single element" {
   let values : Array[String] = []
   for i, cluster in g.iter2() {
     indices.push(i)
-    values.push(cluster.to_string())
+    values.push(cluster.to_owned())
   }
-  inspect(indices, content="[0]")
-  inspect(values, content="[\"Z\"]")
+  @debug.debug_inspect(indices, content="[0]")
+  @debug.debug_inspect(values, content="[\"Z\"]")
 }
 
 ///|
@@ -927,10 +927,10 @@ test "iter2: on sliced view indices are 0-based" {
   let values : Array[String] = []
   for i, cluster in g.iter2() {
     indices.push(i)
-    values.push(cluster.to_string())
+    values.push(cluster.to_owned())
   }
-  inspect(indices, content="[0, 1, 2]")
-  inspect(values, content="[\"C\", \"D\", \"E\"]")
+  @debug.debug_inspect(indices, content="[0, 1, 2]")
+  @debug.debug_inspect(values, content="[\"C\", \"D\", \"E\"]")
 }
 
 // ============================================================
@@ -942,9 +942,9 @@ test "rev_iter: empty" {
   let g = graphemes("")
   let result : Array[String] = []
   for cluster in g.rev_iter() {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
-  inspect(result, content="[]")
+  @debug.debug_inspect(result, content="[]")
 }
 
 ///|
@@ -952,9 +952,9 @@ test "rev_iter: single element" {
   let g = graphemes("Q")
   let result : Array[String] = []
   for cluster in g.rev_iter() {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
-  inspect(result, content="[\"Q\"]")
+  @debug.debug_inspect(result, content="[\"Q\"]")
 }
 
 ///|
@@ -962,11 +962,11 @@ test "rev_iter: on sliced view" {
   let g = graphemes("ABCDE")[1:4]
   let result : Array[String] = []
   for cluster in g.rev_iter() {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
   let expected =
     #|["D", "C", "B"]
-  inspect(result, content=expected)
+  @debug.debug_inspect(result, content=expected)
 }
 
 // ============================================================
@@ -1324,8 +1324,8 @@ test "op_as_view: slice of a slice" {
   let s1 = g[2:6] // C D E F
   let s2 = s1[1:3] // D E
   inspect(s2.length(), content="2")
-  inspect(s2[0].to_string(), content="D")
-  inspect(s2[1].to_string(), content="E")
+  inspect(s2[0].to_owned(), content="D")
+  inspect(s2[1].to_owned(), content="E")
 }
 
 ///|
@@ -1335,8 +1335,8 @@ test "op_as_view: triple nested slice" {
   let s2 = s1[2:6] // D E F G
   let s3 = s2[1:3] // E F
   inspect(s3.length(), content="2")
-  inspect(s3[0].to_string(), content="E")
-  inspect(s3[1].to_string(), content="F")
+  inspect(s3[0].to_owned(), content="E")
+  inspect(s3[1].to_owned(), content="F")
 }
 
 // ============================================================
@@ -1346,25 +1346,31 @@ test "op_as_view: triple nested slice" {
 ///|
 test "get: first element of sliced view" {
   let g = graphemes("ABCDE")[2:4]
-  inspect(g.get(0).map(fn(v) { v.to_string() }), content="Some(\"C\")")
+  @debug.debug_inspect(
+    g.get(0).map(fn(v) { v.to_owned() }),
+    content="Some(\"C\")",
+  )
 }
 
 ///|
 test "get: last element of sliced view" {
   let g = graphemes("ABCDE")[2:4]
-  inspect(g.get(1).map(fn(v) { v.to_string() }), content="Some(\"D\")")
+  @debug.debug_inspect(
+    g.get(1).map(fn(v) { v.to_owned() }),
+    content="Some(\"D\")",
+  )
 }
 
 ///|
 test "get: out of range on sliced view" {
   let g = graphemes("ABCDE")[2:4]
-  inspect(g.get(2), content="None")
+  @debug.debug_inspect(g.get(2), content="None")
 }
 
 ///|
 test "get: negative on sliced view" {
   let g = graphemes("ABCDE")[2:4]
-  inspect(g.get(-1), content="None")
+  @debug.debug_inspect(g.get(-1), content="None")
 }
 
 // ============================================================
@@ -1393,7 +1399,7 @@ test "graphemes: concatenation invariant for CRLF" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g.iter() {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string() == input, content="true")
 }
@@ -1404,7 +1410,7 @@ test "graphemes: concatenation invariant for control characters" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g.iter() {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string() == input, content="true")
 }
@@ -1415,7 +1421,7 @@ test "graphemes: concatenation invariant for BOM" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g.iter() {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string() == input, content="true")
 }
@@ -1426,7 +1432,7 @@ test "graphemes: concatenation invariant for special codepoints" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g.iter() {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string() == input, content="true")
 }
@@ -1442,7 +1448,7 @@ test "graphemes: concatenation invariant for long combining marks" {
   let g = graphemes(input)
   let buf2 = StringBuilder::new()
   for cluster in g.iter() {
-    buf2.write_string(cluster.to_string())
+    buf2.write_string(cluster.to_owned())
   }
   inspect(buf2.to_string() == input, content="true")
 }
@@ -1458,7 +1464,7 @@ test "grapheme_indices: on empty slice" {
   for entry in g.grapheme_indices() {
     offsets.push((entry.0, entry.1))
   }
-  inspect(offsets, content="[]")
+  @debug.debug_inspect(offsets, content="[]")
 }
 
 ///|
@@ -1469,7 +1475,7 @@ test "grapheme_indices: on full emoji string" {
     offsets.push((entry.0, entry.1))
   }
   // Flag: 2+2=4 code units, A: 1 code unit
-  inspect(offsets, content="[(0, 4), (4, 5)]")
+  @debug.debug_inspect(offsets, content="[(0, 4), (4, 5)]")
 }
 
 // ============================================================
@@ -1481,9 +1487,9 @@ test "rev_iter: sliced view with emoji" {
   let g = graphemes("A\u{1F600}BC")[1:3]
   let result : Array[String] = []
   for cluster in g.rev_iter() {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
-  inspect(
+  @debug.debug_inspect(
     result,
     content=(
       #|["B", "😀"]
@@ -1503,9 +1509,9 @@ test "iter: break early" {
     if result.length() >= 2 {
       break
     }
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
-  inspect(result, content="[\"A\", \"B\"]")
+  @debug.debug_inspect(result, content="[\"A\", \"B\"]")
 }
 
 // ============================================================
@@ -1672,7 +1678,7 @@ test "graphemes: concatenation invariant Thai" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string() == input, content="true")
 }
@@ -1684,7 +1690,7 @@ test "graphemes: concatenation invariant Arabic" {
   let g = graphemes(input)
   let buf = StringBuilder::new()
   for cluster in g {
-    buf.write_string(cluster.to_string())
+    buf.write_string(cluster.to_owned())
   }
   inspect(buf.to_string() == input, content="true")
 }
@@ -1693,7 +1699,7 @@ test "graphemes: concatenation invariant Arabic" {
 test "grapheme_iter: basic iteration" {
   let result : Array[String] = []
   for cluster in grapheme_iter("A\u{1F600}B") {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
   }
   inspect(result.length(), content="3")
   inspect(result[0], content="A")
@@ -1705,7 +1711,7 @@ test "grapheme_iter: basic iteration" {
 test "grapheme_iter: early break (first 2 only)" {
   let result : Array[String] = []
   for cluster in grapheme_iter("ABCDEFGHIJ") {
-    result.push(cluster.to_string())
+    result.push(cluster.to_owned())
     if result.length() >= 2 {
       break
     }
@@ -1758,11 +1764,11 @@ test "grapheme_iter: matches graphemes() count and content" {
     let g = graphemes(input)
     let iter_result : Array[String] = []
     for cluster in grapheme_iter(input) {
-      iter_result.push(cluster.to_string())
+      iter_result.push(cluster.to_owned())
     }
     assert_eq(g.length(), iter_result.length())
     for i in 0..<g.length() {
-      assert_eq(g[i].to_string(), iter_result[i])
+      assert_eq(g[i].to_owned(), iter_result[i])
     }
   }
 }
@@ -1918,8 +1924,8 @@ test "graphemes: ZWJ between non-EP is not GB11" {
   // A + ZWJ → 1 cluster (GB9: × ZWJ), then B → separate cluster (GB999)
   let g = graphemes("A\u{200D}B")
   inspect(g.length(), content="2")
-  inspect(g[0].to_string(), content="A\u{200D}")
-  inspect(g[1].to_string(), content="B")
+  inspect(g[0].to_owned(), content="A\u{200D}")
+  inspect(g[1].to_owned(), content="B")
 }
 
 // AT. Sliced view grapheme_indices offset precision
@@ -1934,7 +1940,7 @@ test "grapheme_indices: sliced view offsets refer to original source" {
     offsets.push((entry.0, entry.1))
   }
   // C starts at offset 2, D starts at offset 3 in original string
-  inspect(offsets, content="[(2, 3), (3, 4)]")
+  @debug.debug_inspect(offsets, content="[(2, 3), (3, 4)]")
 }
 
 ///|
@@ -1948,7 +1954,7 @@ test "grapheme_indices: double-sliced view offsets" {
     offsets.push((entry.0, entry.1))
   }
   // D=3, E=4, F=5 in original string
-  inspect(offsets, content="[(3, 4), (4, 5), (5, 6)]")
+  @debug.debug_inspect(offsets, content="[(3, 4), (4, 5), (5, 6)]")
 }
 
 ///|
@@ -1961,7 +1967,7 @@ test "grapheme_indices: sliced emoji view offsets" {
     offsets.push((entry.0, entry.1))
   }
   // Flag occupies UTF-16 offsets 1..5 (2 surrogate pairs)
-  inspect(offsets, content="[(1, 5)]")
+  @debug.debug_inspect(offsets, content="[(1, 5)]")
 }
 
 // AU. RI parity reset after non-RI character
@@ -2001,7 +2007,7 @@ test "grapheme_iter: lone high surrogate followed by ASCII" {
   inspect(clusters.length(), content="2")
   inspect(clusters[0].length(), content="1")
   inspect(clusters[0].at(0).to_int(), content="55296") // 0xD800
-  inspect(clusters[1].to_string(), content="A")
+  inspect(clusters[1].to_owned(), content="A")
 }
 
 ///|
@@ -2011,7 +2017,7 @@ test "graphemes: lone high surrogate followed by ASCII" {
   inspect(g.length(), content="2")
   inspect(g[0].length(), content="1")
   inspect(g[0].at(0).to_int(), content="55296") // 0xD800
-  inspect(g[1].to_string(), content="A")
+  inspect(g[1].to_owned(), content="A")
 }
 
 ///|
@@ -2034,7 +2040,7 @@ test "graphemes: lone low surrogate followed by ASCII" {
   inspect(g.length(), content="2")
   inspect(g[0].length(), content="1")
   inspect(g[0].at(0).to_int(), content="56320") // 0xDC00
-  inspect(g[1].to_string(), content="A")
+  inspect(g[1].to_owned(), content="A")
 }
 
 ///|
