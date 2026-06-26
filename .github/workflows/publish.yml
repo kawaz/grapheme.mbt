@@ -1,33 +1,150 @@
 name: Publish
 
+# moon.mod の version 行が main で変わったら mooncakes.io publish + GitHub Release を作成。
+# canonical: kawaz/kuu.mbt の release.yml (= VERSION + paths trigger 型) を MoonBit 公開
+# ライブラリ向けに 1 source-of-truth (= moon.mod のみ) に圧縮した形。
+#
+# 流れ:
+#   1. check-version  — moon.mod の version > 既存最新 tag か bump-semver で検証
+#   2. publish        — moon publish で mooncakes.io にアップロード
+#   3. release        — gh release create v${VERSION} で tag + GH Release を自動作成
+
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [main]
+    paths:
+      - "moon.mod"
 
 permissions:
   contents: read
 
 jobs:
-  publish:
+  check-version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.current }}
+      changed: ${{ steps.version.outputs.changed }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install MoonBit CLI
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # bump-semver vcs get latest-tag で全 tag が必要
+
+      - name: Install bump-semver
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
-          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
-      - name: Moon update
-        run: moon update
-      - name: Moon check
-        run: moon check --deny-warn
-      - name: Moon test
-        run: moon test --target all
-      - name: Publish
+          set -euo pipefail
+          LATEST=$(gh release list --repo kawaz/bump-semver --limit 1 --json tagName -q '.[0].tagName' | sed 's/^v//')
+          if [ -z "$LATEST" ]; then
+            echo "::error::Could not fetch bump-semver latest release"
+            exit 1
+          fi
+          curl -fsSL --retry 5 --retry-delay 2 --max-time 60 \
+            "https://github.com/kawaz/bump-semver/releases/download/v${LATEST}/bump-semver-linux-amd64" \
+            -o /usr/local/bin/bump-semver
+          chmod +x /usr/local/bin/bump-semver
+          bump-semver --version
+
+      - name: Check version change
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
+          set -euo pipefail
+          CURRENT_VERSION=$(grep '^version = ' moon.mod | sed -E 's/^version = "(.*)"$/\1/')
+          echo "current=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
+
+          # placeholder version はスキップ
+          if [ -z "$CURRENT_VERSION" ] || [ "$CURRENT_VERSION" = "0.0.0" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Placeholder version (${CURRENT_VERSION:-empty}); skipping release."
+            exit 0
+          fi
+
+          # semver 形式の検証
+          if ! bump-semver get "$CURRENT_VERSION" -qq; then
+            echo "::error::Invalid moon.mod version: ${CURRENT_VERSION}"
+            exit 1
+          fi
+
+          # 既存 tag より大きいか検証
+          set +e
+          LATEST=$(bump-semver vcs get latest-tag --include-prerelease --vcs git 2>/dev/null)
+          LATEST_EXIT=$?
+          set -e
+          if [ "$LATEST_EXIT" -ne 0 ]; then
+            echo "vcs get latest-tag exited ${LATEST_EXIT} (no SemVer tags yet); assuming first release"
+          else
+            set +e
+            bump-semver compare gt "$CURRENT_VERSION" "$LATEST"
+            CMP_EXIT=$?
+            set -e
+            case "$CMP_EXIT" in
+              0) ;;  # current > latest tag: release 続行
+              1)
+                echo "changed=false" >> "$GITHUB_OUTPUT"
+                echo "Version v${CURRENT_VERSION} is not greater than latest tag ${LATEST}; skipping release."
+                exit 0
+                ;;
+              *)
+                echo "::error::Unexpected exit code from bump-semver compare: ${CMP_EXIT}"
+                exit 1
+                ;;
+            esac
+          fi
+
+          # gh release 既存確認 (compare で通っても念のため)
+          if gh release view "v${CURRENT_VERSION}" --repo "$REPO" >/dev/null 2>&1; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Version unchanged: v${CURRENT_VERSION} already released"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "New version detected: v${CURRENT_VERSION}"
+          fi
+
+  publish:
+    needs: check-version
+    if: needs.check-version.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: chawyehsu/setup-moonup@v1
+      - run: moon update
+      - run: moon check --deny-warn
+      - run: moon test --target all
+
+      - name: Publish to mooncakes.io
+        env:
+          MOONCAKES_TOKEN: ${{ secrets.MOONCAKES_TOKEN }}
+        run: |
+          set -euo pipefail
           trap 'rm -f ~/.moon/credentials.json' EXIT
           echo "$MOONCAKES_TOKEN" > ~/.moon/credentials.json
           moon publish
+
+  release:
+    needs: [check-version, publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Create GitHub Release with tag
         env:
-          MOONCAKES_TOKEN: ${{ secrets.MOONCAKES_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.check-version.outputs.version }}
+          COMMIT_SHA: ${{ github.sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh release create "v${VERSION}" \
+            --repo "$REPO" \
+            --title "v${VERSION}" \
+            --target "$COMMIT_SHA" \
+            --generate-notes

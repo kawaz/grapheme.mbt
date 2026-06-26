@@ -23,9 +23,18 @@ canonical) に揃える。
 - 現象: `moon fmt` を初回実行した瞬間に `moon.mod.json` が消えて
   `moon.mod` (TOML-like) が生まれた。justfile が `jq -r '.version'
   moon.mod.json` に依存していて即死した。
-- 解決: justfile を `awk -F'"' '/^version[[:space:]]*=/ { print $2;
-  exit }' moon.mod` に書き換え。新形式は厳密 TOML ではないため
-  `tomllib` でパース不可、awk の単純抽出が一番安定。
+- 解決: `bump-semver get` に `--define-rule` + `--version-regex` で
+  カスタムソースを定義する経路があったのでそれを使用:
+  ```
+  bump-semver get moon.mod --define-rule moon.mod --format text \
+    --version-regex 'version = "(.+)"' -qq
+  ```
+  awk 抽出も動くが、bump-semver 経由なら mismatch 検出 (= 将来 VERSION
+  ファイルと併用するとき) も同じ仕組みに乗る。
+- 上流フィードバック: `bump-semver` は `moon.mod` を basename 自動検出
+  対象としていない (= 「unsupported file: moon.mod」hint が出る)。
+  TOML-like だが厳密 TOML ではないため auto-detect には工夫要。
+  kawaz/bump-semver に issue 起票候補。
 
 ### 2. `impl ... with output()` → `impl ... with fn output()`
 
@@ -70,6 +79,70 @@ awk '/╭─\[/ { match($0, /lib(_wbtest)?\.mbt:[0-9]+/); if (RSTART) loc=substr
 moon fmt --check && moon check --deny-warn && moon test
 ```
 
+## 続き: justfile / publish.yml を kawaz canonical pattern に置換 (DR-0002)
+
+最初に書いた justfile は前リビジョンのカスタム release flow を引き継いで
+`[confirm] release:` 形式 / `version :=` just 変数依存 / `jq -r '.version'
+moon.mod.json` ベースで、kawaz/* リポ群の canonical pattern (bump-semver vcs
++ sync/promote/ensure-clean/check-on-default-branch/check-version-bumped/
+`push` gate stack + `[hint] gh-monitor:watch-workflow ...`) から大きく逸脱
+していた。kuu.mbt / timespec.mbt / bump-semver / claude-cmux-msg / claude-
+plugin-reference / claude-push-guard / claude-nandakke / claude-gh-monitor
+など 10 件横断で確認した canonical pattern に揃え直し。
+
+主な差分:
+
+- `default: list` (= `@just --list --unsorted`) で recipe 一覧を先頭に
+- `[confirm] release:` 廃止 → `push:` gate stack で代替 (= `check-on-default-
+  branch ci check-translations check-version-bumped` → `bump-semver vcs push
+  --branch main --jj-bookmark-auto-advance` → `[hint] gh-monitor` echo)。
+  tag は `publish.yml` が打つ (release-flow-awareness 準拠)
+- just 変数撤廃 (= shell 内の `{{ }}` クオート問題回避、canonical でも禁則)
+- `sync` / `promote` / `ensure-clean` / `check-on-default-branch` を追加 (DR-0038
+  dogfood)
+- `check-translation-freshness` / `_check-translation-headers` を追加 (README +
+  docs/DESIGN を対象)
+- `check-version-bumped` を `bump-semver vcs diff -q main@origin -- <paths>` +
+  rc case 分岐 + `bump-semver compare gt` で実装 (テストファイルは exclude)
+- `bump-version level="patch":` で moon.mod の version を直接 bump + Release
+  commit (custom rule `--define-rule moon.mod --format text --version-regex
+  'version = "(.+)"'` 経由)。`on-success-release` recipe 追加
+- `publish.yml`: `on: push: tags: 'v*'` 廃止 → `on: push: branches:[main],
+  paths:[moon.mod]` トリガに変更。workflow 内で moon.mod の version > 既存
+  tag を bump-semver で verify → `moon publish` → `gh release create v${VERSION}`
+  で tag + GH Release 自動作成。tag を人/AI が打つ経路を完全に閉じる
+- `ci.yml`: lint matrix を `moon fmt --check` + `moon check --deny-warn` に集約、
+  test matrix は `native / wasm-gc / wasm / js` の 4 target
+
+### 上流フィードバック (= dogfooding-feedback-upstream)
+
+- bump-semver: moon.mod (TOML-like 専用記法) を basename auto-detect 対象に
+  追加してほしい (= `--define-rule` の長い呪文を justfile 4 箇所で繰り返す
+  事態を避けたい)。kawaz/bump-semver に
+  `docs/issue/2026-06-26-moon-mod-autodetect.md` 起票済み
+- 設計判断記録は [DR-0002-justfile-canonical-alignment](../decisions/DR-0002-justfile-canonical-alignment.md)
+
+## ふりかえり
+
+最初に「awk で moon.mod 読めばいい」「bump-semver は moon.mod 未サポート」と
+ヘルプを見ずに断定して、`bump-semver get --define-rule` の存在を見逃したのが
+最大のミス。kawaz の指摘で `bump-semver get --help` → `bump-semver patch --help`
+を確認して custom rule 経路が判明した。
+
+その後 justfile を canonical pattern に揃え直す段でも、kawaz が「10 件くらい
+見て回ってこい」と言うまで MoonBit リポ (kuu.mbt / timespec.mbt) しか参照
+していなかった。それらは canonical 化が遅れている過渡期リポなので、もっと
+成熟した kawaz リポ (bump-semver / claude-plugin-reference / claude-cmux-msg
+等) を読まないと canonical pattern は掴めなかった。
+
+教訓 (= 個人 rule に反映候補):
+
+1. **CLI 機能の限界を語る前に、該当 subcommand のヘルプを必ず実行する**
+2. **kawaz canonical pattern を取りに行くときは、特定言語の最新リポではなく、
+   bump-semver canonical を中心に複数言語 (Go / TS / shell / MoonBit / Python)
+   を横断的に読む**
+
 ## 関連
 
 - [DR-0001-moonbit-new-syntax-migration](../decisions/DR-0001-moonbit-new-syntax-migration.md)
+- [DR-0002-justfile-canonical-alignment](../decisions/DR-0002-justfile-canonical-alignment.md)

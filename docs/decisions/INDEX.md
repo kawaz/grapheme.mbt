@@ -5,6 +5,10 @@
 - [DR-0001-moonbit-new-syntax-migration](./DR-0001-moonbit-new-syntax-migration.md) —
   MoonBit 0.1.20260618 系の破壊的変更 (moon.mod 新形式、`fn` 必須化、
   StringView::to_owned、@debug.debug_inspect) への追従方針
+- [DR-0002-justfile-canonical-alignment](./DR-0002-justfile-canonical-alignment.md) —
+  justfile を kawaz canonical pattern (bump-semver vcs 委譲 + gate stack +
+  workflow が tag を打つ release flow) に揃え、publish.yml を tag-trigger 型から
+  moon.mod paths-trigger 型に置換
 
 ## Archived
 
