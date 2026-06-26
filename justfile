@@ -23,24 +23,28 @@ set unstable
 # 詳細: https://just.systems/man/en/sigils.html
 set guards
 
-# `set shell` の `-c` 直後の command string に `die` helper を仕込んでおき、
-# `line="$1"; shift; eval "$line"` で recipe 行を実行する。これで全 recipe 行で
-# Perl 風の `cmd || die "msg"` が使える。
-#   - `die` は `return 1` (= `exit 1` ではない) で、`die ... || true` のような
-#     subshell 不要の吸収パスも壊さない
-#   - メッセージ出力は `printf '%s\n'` (= `echo` の `-n`/`-e` オプション解釈
-#     による事故を避ける)
-#   - `shift` 後 `$@` で recipe 行以降の引数が見える形を維持 (= 将来 just が
-#     追加 positional を渡す可能性に備えた semantic)
-set shell := ["bash", "-euo", "pipefail", "-c", 'die() { printf "%s\n" "$*" >&2; return 1; }; line="$1"; shift; eval "$line"', "--"]
+# `set shell` と `set script-interpreter` の両方に `die` helper を仕込み、全
+# recipe で Perl 風の `cmd || die "msg"` を使えるようにする。外側 `bash -c` で
+# `exec bash -euo pipefail -c "..." -- "$@"` する 2 段構造で、`set shell` と
+# `set script-interpreter` の外側 spec を揃えてある (= 内側 -c command だけが
+# line-recipe / script-recipe で異なる)。
+#
+# 共通の die 定義:
+#   - `return 1` (= `exit 1` ではない) なので `die ... || true` の吸収が壊れない
+#   - `printf "%s\n"` (= `echo` の `-n`/`-e` 解釈による事故回避)
+#
+# 引数の渡り方 (`set positional-arguments` 有効時):
+#   set shell:               $1=recipe行, $2=recipe名, $3+=recipe引数 → shift 2
+#   set script-interpreter:  $1=temp_file, $2+=recipe引数             → shift 1
+# shift 後は recipe 内で `$1`/`$@` から正しく recipe 引数が見える。
+#
+# `[script("bash")]` や `#!/usr/bin/env bash` shebang recipe は script-interpreter
+# を経由しないので die は効かない (= 既知制約)。
+#
+# 詳細: https://just.systems/man/en/settings.html
+set shell := ["bash", "-c", 'exec bash -euo pipefail -c "die() { printf \"%s\n\" \"\$*\" >&2; return 1; }; line=\"\$1\"; shift 2; eval \"\$line\"" -- "$@"', "--"]
 
-# `[script]` recipe でも `die` helper を使えるようにする。just は `[script]`
-# body を temp file に書いて `<script-interpreter ...> <temp_file>` で起動する
-# (= 末尾に temp file path を append) ので、`-c` の command で `die` を定義
-# してから `source "$1"` で body を取り込む。`_helper-wrap` は `$0` を埋める
-# placeholder。`[script("bash")]` や `#!/usr/bin/env bash` shebang recipe は
-# script-interpreter を経由しないので die は効かない (= 既知制約)。
-set script-interpreter := ["bash", "-euo", "pipefail", "-c", 'die() { printf "%s\n" "$*" >&2; return 1; }; source "$1"', "_helper-wrap"]
+set script-interpreter := ["bash", "-c", 'exec bash -euo pipefail -c "die() { printf \"%s\n\" \"\$*\" >&2; return 1; }; file=\"\$1\"; shift; source \"\$file\"" -- "$@"', "--"]
 
 set positional-arguments
 
