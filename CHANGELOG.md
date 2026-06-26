@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.10.4] - 2026-06-26
+
+### Changed
+- justfile fully realigned to kawaz canonical pattern (bump-semver vcs delegation, `sync`/`promote`/`ensure-clean`/`check-on-default-branch`/`check-translations`/`check-version-bumped` gate stack, `bump-version`/`version`/`push`/`on-success-release` recipes). just variables removed; `set unstable`/`set guards` enabled for `?test` guard syntax
+- `.github/workflows/publish.yml` switched from tag-trigger (`on: push: tags: 'v*'`) to paths-trigger (`on: push: branches:[main], paths:[moon.mod]`). Workflow now verifies the bumped version vs the latest tag with bump-semver, runs `moon publish`, then `gh release create v${VERSION} --generate-notes` so the tag *and* GitHub Release are created by CI — humans/AI never tag manually
+- `.github/workflows/ci.yml`: matrix tightened to `native / wasm-gc / wasm / js`, lint job separated from test
+- `docs/decisions/DR-0002-justfile-canonical-alignment.md` records the realignment rationale
+
 ## [0.10.3] - 2026-06-26
 
 ### Changed
@@ -114,7 +122,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `rev_iter`, `iter2`
 - 1,093 official UAX #29 test cases passing
 
-[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.3...HEAD
+[Unreleased]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.4...HEAD
+[0.10.4]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.3...v0.10.4
 [0.10.3]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.2...v0.10.3
 [0.10.2]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/kawaz/grapheme.mbt/compare/v0.10.0...v0.10.1
