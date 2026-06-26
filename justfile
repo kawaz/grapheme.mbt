@@ -34,7 +34,13 @@ set guards
 #     追加 positional を渡す可能性に備えた semantic)
 set shell := ["bash", "-euo", "pipefail", "-c", 'die() { printf "%s\n" "$*" >&2; return 1; }; line="$1"; shift; eval "$line"', "--"]
 
-set script-interpreter := ["bash", "-euo", "pipefail"]
+# `[script]` recipe でも `die` helper を使えるようにする。just は `[script]`
+# body を temp file に書いて `<script-interpreter ...> <temp_file>` で起動する
+# (= 末尾に temp file path を append) ので、`-c` の command で `die` を定義
+# してから `source "$1"` で body を取り込む。`_helper-wrap` は `$0` を埋める
+# placeholder。`[script("bash")]` や `#!/usr/bin/env bash` shebang recipe は
+# script-interpreter を経由しないので die は効かない (= 既知制約)。
+set script-interpreter := ["bash", "-euo", "pipefail", "-c", 'die() { printf "%s\n" "$*" >&2; return 1; }; source "$1"', "_helper-wrap"]
 
 set positional-arguments
 
