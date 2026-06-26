@@ -22,26 +22,31 @@ set script-interpreter := ["bash", "-euo", "pipefail"]
 
 set positional-arguments
 
-# default: list
-default: list
+# default: lint + test (= 開発中 `just` 一発で回る、timespec.mbt 流儀)
+default: lint test
 
 # show the recipe list
 list:
     @just --list --unsorted
 
-# ---------- atomic (lint / test / coverage) ----------
+# === Lint ===
 
-# Format code (auto-fix)
-fmt:
-    moon fmt
+# Format check + type check (warnings as errors) を 1 つに集約
+lint: fmt-check check
 
 # Format check only (no modification)
 fmt-check:
     moon fmt --check
 
-# Type check (warnings as errors)
+# Format code (auto-fix)
+fmt:
+    moon fmt
+
+# Type check with warnings as errors
 check:
     moon check --deny-warn
+
+# === Test ===
 
 # Run tests (native target)
 test:
@@ -55,6 +60,8 @@ test-all:
 test-update:
     moon test --update
 
+# === Utilities ===
+
 # Generate type definition files (.mbti)
 info:
     moon info
@@ -67,6 +74,8 @@ clean:
 bench:
     moon bench
 
+# === Coverage ===
+
 # Coverage summary
 coverage:
     moon coverage analyze -- -f summary
@@ -75,10 +84,12 @@ coverage:
 coverage-html:
     moon coverage analyze -- -f html
 
-# CI single entry: fmt-check + check + info + test
-ci: fmt-check check info test
+# === CI ===
 
-# ---------- code generation ----------
+# CI single entry: lint + test + info (mbti drift 検出含む)
+ci: lint test info
+
+# === Code generation ===
 
 # Regenerate GCB tables from Unicode data
 gen-tables:
@@ -93,7 +104,9 @@ gen-tests:
 # Regenerate all generated files
 gen: gen-tables gen-tests
 
-# ---------- gates (push の内部) ----------
+# === Push / Release flow (bump-semver canonical 模倣) ===
+
+# --- gates (push の内部) ---
 
 [private]
 ensure-clean:
@@ -147,17 +160,16 @@ _check-version-bumped *target_paths:
       1) ;;
       *) echo "ERROR: bump-semver vcs diff failed (rc=$rc). main@origin が track されていない可能性。先に 'jj git fetch' を試してください" >&2; exit 1 ;;
     esac
-    new=$(bump-semver get moon.mod --quiet)
-    # main@origin に moon.mod が無い (= 初回 release) は stderr で報告される。
-    # 上の `2>/dev/null` で握りつつ `|| echo "0.0.0"` で fallback。
-    old=$(bump-semver get 'vcs:main@origin:moon.mod' --quiet 2>/dev/null || echo "0.0.0")
-    # compare gt は true/false の exit code 判定が用途で、stdout/stderr 共に
-    # 不要。`-qq` (= --quiet-all) で error も silence する。
-    bump-semver compare gt "$new" "$old" -qq && exit 0
-    echo "ERROR: product code が変わってるが version 未 bump (now=${new} origin=${old})。\"just bump-version\" を実行してください" >&2
+    # bump-semver は第 1 引数の moon.mod を流用して vcs:main@origin:moon.mod を
+    # 解決する (= sibling file 自動解決)。get + compare の 2 段呼びより簡素。
+    # ただし vcs error 時に compare gt が exit 0 で返る場合があるため、上の
+    # case 分岐で rc=2/3 を先に拒否しておくことが防御として必要 (= timespec.mbt
+    # との相互評価で確認した bump-semver の挙動)。
+    bump-semver compare gt moon.mod vcs:main@origin -qq && exit 0
+    echo "ERROR: product code が変わってるが moon.mod の version が main@origin より上がっていません。\"just bump-version\" を実行してください" >&2
     exit 1
 
-# ---------- release flow ----------
+# --- release flow ---
 
 # moon.mod の version を bump (default: patch) して Release commit
 [script]
