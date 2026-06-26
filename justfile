@@ -17,9 +17,9 @@
 # 詳細: https://just.systems/man/en/settings.html#unstable1310
 set unstable
 
-# recipe 行頭の `?` sigil を guard として有効化。`?! cmd` (= 直後に `! cmd`) で
-# bash の論理否定と組み合わせ、「コマンドが成功なら early return / 失敗なら本体
-# 続行」の逆向き guard が書ける (= `_check-version-bumped` 参照)。
+# recipe 行頭の `?` sigil を guard として有効化。`? ! cmd` で bash の論理否定
+# と組み合わせ、「コマンドが成功なら early return / 失敗なら本体続行」の
+# 逆向き guard が書ける (= `_check-version-bumped` 参照)。
 # 詳細: https://just.systems/man/en/sigils.html
 set guards
 
