@@ -1,6 +1,6 @@
-English | [日本語](DESIGN-ja.md)
-
 # grapheme Design
+
+> English | [日本語](./DESIGN-ja.md)
 
 ## Purpose
 
@@ -337,9 +337,9 @@ to `src/uax29_test.mbt`. Each test verifies grapheme cluster boundary positions.
 // Example: ÷ 0020 ÷ 0020 ÷  ->  split into " " and " "
 test "UAX29/001: ÷ [0.2] SPACE ÷ [999.0] SPACE ÷ [0.3]" {
   let g = @lib.graphemes("\u{0020}\u{0020}")
-  inspect!(g.length(), content="2")
-  inspect!(g[0].to_string(), content="\u{0020}")
-  inspect!(g[1].to_string(), content="\u{0020}")
+  inspect(g.length(), content="2")
+  inspect(g[0].to_owned(), content="\u{0020}")
+  inspect(g[1].to_owned(), content="\u{0020}")
 }
 ```
 

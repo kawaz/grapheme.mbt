@@ -1,6 +1,6 @@
-[English](README.md) | 日本語
-
 # grapheme
+
+> [English](./README.md) | 日本語
 
 [![CI](https://github.com/kawaz/grapheme.mbt/actions/workflows/ci.yml/badge.svg)](https://github.com/kawaz/grapheme.mbt/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -41,17 +41,6 @@ import {
 }
 ```
 
-<details>
-<summary>JSON 形式（moon.pkg.json）の場合</summary>
-
-```json
-{
-  "import": ["kawaz/grapheme"]
-}
-```
-
-</details>
-
 ## Usage
 
 ```moonbit
@@ -62,8 +51,8 @@ println(family.length())  // 1
 // 分割・アクセス・スライス
 let view = @grapheme.graphemes("Hello🇯🇵World")
 println(view.length())  // 11 (H,e,l,l,o,🇯🇵,W,o,r,l,d)
-println(view[5].to_string())  // "🇯🇵"
-println(view[1:3].to_string())  // "el" (スライス)
+println(view[5].to_owned())  // "🇯🇵"
+println(view[1:3].to_string())  // "el" (スライス — GraphemeView::to_string)
 
 // イテレーション
 for cluster in view {
