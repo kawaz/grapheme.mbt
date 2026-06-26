@@ -147,27 +147,12 @@ _check-translation-headers name:
 check-version-bumped: (_check-version-bumped "src/" "moon.mod" "src/moon.pkg")
 
 [private]
-[script]
 _check-version-bumped *target_paths:
-    rc=0
-    bump-semver vcs diff -q main@origin -- "$@" \
-        --excludes 'glob:src/**/*_wbtest.mbt' \
-        --excludes 'glob:src/**/*_wbbench.mbt' \
-        --excludes 'glob:src/**/*_test.mbt' \
-        || rc=$?
-    case "$rc" in
-      0) exit 0 ;;
-      1) ;;
-      *) echo "ERROR: bump-semver vcs diff failed (rc=$rc). main@origin が track されていない可能性。先に 'jj git fetch' を試してください" >&2; exit 1 ;;
-    esac
-    # bump-semver は第 1 引数の moon.mod を流用して vcs:main@origin:moon.mod を
-    # 解決する (= sibling file 自動解決)。get + compare の 2 段呼びより簡素。
-    # ただし vcs error 時に compare gt が exit 0 で返る場合があるため、上の
-    # case 分岐で rc=2/3 を先に拒否しておくことが防御として必要 (= timespec.mbt
-    # との相互評価で確認した bump-semver の挙動)。
-    bump-semver compare gt moon.mod vcs:main@origin -qq && exit 0
-    echo "ERROR: product code が変わってるが moon.mod の version が main@origin より上がっていません。\"just bump-version\" を実行してください" >&2
-    exit 1
+    # ?! guard: vcs diff -q が rc=0 (= no diff) を返すと ! 反転で rc=1 になり、
+    # recipe を success として早期 return。diff があれば本体に進んで version
+    # bump が必要かを compare gt で検証する。`[script]` 不要、2 行で完結。
+    ?! bump-semver vcs diff -q main@origin -- {{ target_paths }} --excludes 'glob:src/**/*_wbtest.mbt' --excludes 'glob:src/**/*_wbbench.mbt' --excludes 'glob:src/**/*_test.mbt'
+    bump-semver compare gt moon.mod vcs:main@origin -qq || { echo 'ERROR: product code が変わってるが moon.mod の version が main@origin より上がっていません。"just bump-version" を実行してください' >&2; exit 1; }
 
 # --- release flow ---
 
