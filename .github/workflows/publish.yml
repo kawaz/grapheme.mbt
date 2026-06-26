@@ -54,7 +54,7 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          CURRENT_VERSION=$(bump-semver get moon.mod -qq)
+          CURRENT_VERSION=$(bump-semver get moon.mod --quiet)
           echo "current=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
 
           # placeholder version はスキップ

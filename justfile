@@ -147,8 +147,12 @@ _check-version-bumped *target_paths:
       1) ;;
       *) echo "ERROR: bump-semver vcs diff failed (rc=$rc). main@origin が track されていない可能性。先に 'jj git fetch' を試してください" >&2; exit 1 ;;
     esac
-    new=$(bump-semver get moon.mod -qq)
-    old=$(bump-semver get 'vcs:main@origin:moon.mod' -qq 2>/dev/null || echo "0.0.0")
+    new=$(bump-semver get moon.mod --quiet)
+    # main@origin に moon.mod が無い (= 初回 release) は stderr で報告される。
+    # 上の `2>/dev/null` で握りつつ `|| echo "0.0.0"` で fallback。
+    old=$(bump-semver get 'vcs:main@origin:moon.mod' --quiet 2>/dev/null || echo "0.0.0")
+    # compare gt は true/false の exit code 判定が用途で、stdout/stderr 共に
+    # 不要。`-qq` (= --quiet-all) で error も silence する。
     bump-semver compare gt "$new" "$old" -qq && exit 0
     echo "ERROR: product code が変わってるが version 未 bump (now=${new} origin=${old})。\"just bump-version\" を実行してください" >&2
     exit 1
@@ -159,11 +163,11 @@ _check-version-bumped *target_paths:
 [script]
 bump-version level="patch": ensure-clean
     bump-semver "$1" moon.mod --write --quiet
-    bump-semver vcs commit -m "Release v$(bump-semver get moon.mod -qq)" moon.mod
+    bump-semver vcs commit -m "Release v$(bump-semver get moon.mod --quiet)" moon.mod
 
 # 現在の version を表示
 version:
-    @bump-semver get moon.mod -qq
+    @bump-semver get moon.mod --quiet
 
 # push to origin/main with canonical gates
 push: check-on-default-branch ci check-translations check-version-bumped
@@ -172,4 +176,4 @@ push: check-on-default-branch ci check-translations check-version-bumped
 
 # publish.yml が success になった時のフォローアクション
 on-success-release:
-    @echo "Released v$(bump-semver get moon.mod -qq) to mooncakes.io"
+    @echo "Released v$(bump-semver get moon.mod --quiet) to mooncakes.io"
