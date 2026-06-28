@@ -20,8 +20,9 @@ keywords = [
 
 description = "Unicode grapheme cluster segmentation library for MoonBit (UAX #29)"
 
+source = "src"
+
 options(
-  source: "src",
   exclude: [
     "docs",
     "tools",
