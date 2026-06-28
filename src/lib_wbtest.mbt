@@ -96,49 +96,100 @@ test "graphemes: SpacingMark Devanagari" {
 }
 
 ///|
-// Flag: JP flag (RI+RI) -> 1 cluster
+// Input: two Regional Indicators forming the Japanese flag — U+1F1EF (RI 'J')
+// followed by U+1F1F5 (RI 'P'). Expected: a single cluster whose content is the
+// full RI pair, because GB12/GB13 binds an even count of RIs together.
+// Asserting both length() AND content guards against a regression that collapses
+// the count correctly but truncates / re-encodes the cluster string.
+// DR-0004 — segmenter state parity (GB12/GB13).
 test "graphemes: flag JP" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}")
   inspect(g.length(), content="1")
+  inspect(g[0].to_owned(), content="\u{1F1EF}\u{1F1F5}")
 }
 
 ///|
-// Two flags: JP+US (RI RI RI RI) -> 2 clusters
+// Input: four Regional Indicators encoding two consecutive flags — JP
+// (U+1F1EF U+1F1F5) immediately followed by US (U+1F1FA U+1F1F8). Expected:
+// exactly two clusters, the first being the JP RI pair and the second being the
+// US RI pair — GB12/GB13 splits RI runs on even-count boundaries, so the
+// fourth RI MUST start a new cluster pair, not extend the first one.
+// Asserting per-cluster content prevents a regression that gets the count right
+// but mis-routes RI bytes between the two cluster strings.
+// DR-0004 — segmenter state parity (GB12/GB13).
 test "graphemes: two flags JP+US" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}\u{1F1F8}")
   inspect(g.length(), content="2")
+  inspect(g[0].to_owned(), content="\u{1F1EF}\u{1F1F5}")
+  inspect(g[1].to_owned(), content="\u{1F1FA}\u{1F1F8}")
 }
 
 ///|
-// Emoji ZWJ sequence: family emoji -> 1 cluster
+// Input: a ZWJ-joined family emoji — Man (U+1F468) · ZWJ (U+200D) · Woman
+// (U+1F469) · ZWJ · Girl (U+1F467) · ZWJ · Boy (U+1F466). Expected: exactly
+// one cluster whose content equals the FULL 7-codepoint sequence. GB11 binds
+// EP × (Extend|ZWJ)* × ZWJ × EP across the chain, so every codepoint MUST be
+// folded into the single cluster string (not silently dropped or split between
+// clusters). Length-only assert would miss a regression that emits 1 cluster
+// but loses the trailing Boy or one of the ZWJs.
+// DR-0004 — segmenter state parity (GB11 emoji ZWJ).
 test "graphemes: family emoji ZWJ" {
-  // Man U+1F468, ZWJ U+200D, Woman U+1F469, ZWJ, Girl U+1F467, ZWJ, Boy U+1F466
   let g = graphemes(
     "\u{1F468}\u{200D}\u{1F469}\u{200D}\u{1F467}\u{200D}\u{1F466}",
   )
   inspect(g.length(), content="1")
+  inspect(
+    g[0].to_owned(),
+    content="\u{1F468}\u{200D}\u{1F469}\u{200D}\u{1F467}\u{200D}\u{1F466}",
+  )
 }
 
 ///|
-// InCB Conjunct: Devanagari ka + virama + ka (Consonant + Virama + Consonant) -> 1 cluster
+// Input: a minimal Devanagari InCB conjunct — ka (U+0915, InCB_Consonant) +
+// virama (U+094D, InCB_Linker which is also Extend) + ka (U+0915,
+// InCB_Consonant). Expected: ONE cluster containing all three codepoints,
+// because GB9c forbids breaking between a Consonant and a following Consonant
+// when a Linker has appeared since the last Consonant. Pinning the cluster
+// CONTENT (not just the count) prevents a regression where the Linker is
+// dropped on output or where the trailing Consonant is split out while the
+// length still reads 1 due to a stale state flag.
+// DR-0004 — segmenter state parity (GB9c InCB).
 test "graphemes: InCB Conjunct" {
-  // ka U+0915 (InCB_Consonant), virama U+094D (Virama = InCB Linker + Extend), ka U+0915
   let g = graphemes("\u{0915}\u{094D}\u{0915}")
   inspect(g.length(), content="1")
+  inspect(g[0].to_owned(), content="\u{0915}\u{094D}\u{0915}")
 }
 
 ///|
-// RI x3: JP flag + isolated RI -> 2 clusters ([RI RI] [RI])
+// Input: three Regional Indicators — JP (U+1F1EF U+1F1F5) followed by a lone
+// RI 'U' (U+1F1FA). Expected: two clusters — the JP pair, then a singleton
+// RI. GB12/GB13 only binds an even-count RI run, so an odd trailing RI MUST
+// stand alone (it is NOT silently glued to the previous pair). Pinning the
+// per-cluster strings catches a regression that bundles the trailing RI into
+// the first cluster while still reporting length=2 somehow.
+// DR-0004 — segmenter state parity (GB12/GB13 odd-count RI).
 test "graphemes: RI x3" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}")
   inspect(g.length(), content="2")
+  inspect(g[0].to_owned(), content="\u{1F1EF}\u{1F1F5}")
+  inspect(g[1].to_owned(), content="\u{1F1FA}")
 }
 
 ///|
-// RI x5: JP+US flags + isolated RI -> 3 clusters ([RI RI] [RI RI] [RI])
+// Input: five Regional Indicators — JP (U+1F1EF U+1F1F5), US (U+1F1FA
+// U+1F1F8), then a lone trailing RI 'A' (U+1F1E6). Expected: three clusters —
+// JP pair, US pair, lone RI. This is the multi-pair extension of "RI x3":
+// GB12/GB13 must reset its parity state at every pair boundary so the fifth
+// RI ends up alone, NOT extending US. Pinning per-cluster content prevents a
+// regression where parity slips and the trailing RI gets absorbed into the
+// previous flag string while the count still reads 3.
+// DR-0004 — segmenter state parity (GB12/GB13 multi-pair RI).
 test "graphemes: RI x5" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}\u{1F1F8}\u{1F1E6}")
   inspect(g.length(), content="3")
+  inspect(g[0].to_owned(), content="\u{1F1EF}\u{1F1F5}")
+  inspect(g[1].to_owned(), content="\u{1F1FA}\u{1F1F8}")
+  inspect(g[2].to_owned(), content="\u{1F1E6}")
 }
 
 // ============================================================
@@ -146,12 +197,24 @@ test "graphemes: RI x5" {
 // ============================================================
 
 ///|
+// Input: a 3-cluster ASCII view "ABC" indexed at i=0. Expected: the StringView
+// returned by op_get(0) equals "A", the first cluster. This pins the head-of-view
+// boundary contract of op_get: the i=0 slot MUST be the cluster starting at
+// boundaries[0] (which by invariant is offset 0 in the source string), not
+// boundaries[1]. A regression that off-by-ones the index-to-boundary mapping
+// (e.g. returning the cluster at boundaries[i+1..i+2]) would surface here as "B".
 test "graphemes: op_get first index" {
   let g = graphemes("ABC")
   inspect(g[0].to_owned(), content="A")
 }
 
 ///|
+// Input: the same 3-cluster ASCII view "ABC" indexed at i=length()-1=2.
+// Expected: op_get(length()-1) equals "C", the last cluster. This pins the
+// tail-of-view boundary: the highest valid index MUST resolve to the cluster
+// whose end equals the source's byte length, i.e. boundaries[length()] is the
+// end-of-string sentinel. A regression that treats length() as inclusive
+// (off-by-one at the tail) would either panic here or return an empty view.
 test "graphemes: op_get last index" {
   let g = graphemes("ABC")
   inspect(g[g.length() - 1].to_owned(), content="C")
@@ -214,6 +277,13 @@ test "graphemes: length of family emoji" {
 // ============================================================
 
 ///|
+// Input: an empty GraphemeView built from "" and iterated via iter().
+// Expected: zero iterations occur (count stays 0). This pins the empty-view
+// termination contract of GraphemeView::iter — a view with length()==0 MUST
+// produce no elements and exit cleanly, rather than yielding a phantom empty
+// cluster or looping. The counter sentinel guards against a regression where
+// an off-by-one in the iterator's `i < length()` check yields one bogus item
+// at i=0 on an empty view.
 test "graphemes: iter empty produces no elements" {
   let g = graphemes("")
   let mut count = 0
@@ -224,6 +294,15 @@ test "graphemes: iter empty produces no elements" {
 }
 
 ///|
+// Input: "A" + U+1F600 (😀, a single-cluster surrogate-pair emoji) + "B",
+// iterated via iter() and collected into an Array[String]. Expected: exactly
+// three elements in iteration order — "A", "😀", "B". This pins three facets
+// of the iter contract at once: (1) iter visits ALL clusters of the view —
+// length matches length(); (2) the visit order is left-to-right by source
+// byte offset — matches op_get(i) for i=0..length()-1; (3) each yielded
+// StringView spans the full cluster including non-BMP codepoints, so the
+// emoji is not split across two iterations. A regression that drops the
+// trailing "B" or splits the surrogate pair would surface here.
 test "graphemes: iter collects all clusters" {
   let g = graphemes("A\u{1F600}B")
   let collected : Array[String] = []
@@ -576,6 +655,13 @@ test "GraphemeView: rev_iter" {
 // ============================================================
 
 ///|
+// Input: two independently constructed GraphemeView values both built from the
+// same source string "Hello". Expected: a == b returns true. This pins the
+// reflexive/value-identity facet of Eq for GraphemeView — equality MUST be
+// content-based, not identity/pointer-based, so two views over equal cluster
+// sequences MUST compare equal even though they are distinct heap objects.
+// A regression that compares by underlying String reference identity would
+// fail here.
 test "GraphemeView: Eq same string" {
   let a = graphemes("Hello")
   let b = graphemes("Hello")
@@ -583,6 +669,11 @@ test "GraphemeView: Eq same string" {
 }
 
 ///|
+// Input: two GraphemeView values of identical length (5) but differing cluster
+// content — "Hello" vs "World". Expected: a == b returns false. This pins the
+// content-discrimination facet of Eq: equality MUST NOT be reduced to a
+// length-only check; the per-cluster sequence must be compared. A regression
+// that short-circuits on matching length() and returns true would fail here.
 test "GraphemeView: Eq different string" {
   let a = graphemes("Hello")
   let b = graphemes("World")
@@ -590,6 +681,12 @@ test "GraphemeView: Eq different string" {
 }
 
 ///|
+// Input: two GraphemeView values where one is a strict prefix of the other —
+// "AB" (length 2) and "ABC" (length 3). Expected: a == b returns false. This
+// pins the length-discrimination facet of Eq: differing length() MUST always
+// imply inequality, with no false-positive from matching the shared prefix.
+// A regression that stops comparison at min(len(a), len(b)) without checking
+// the remaining tail would incorrectly return true here.
 test "GraphemeView: Eq different length" {
   let a = graphemes("AB")
   let b = graphemes("ABC")
@@ -597,6 +694,11 @@ test "GraphemeView: Eq different length" {
 }
 
 ///|
+// Input: two empty GraphemeView values built from "". Expected: a == b returns
+// true. This pins the zero-length boundary of Eq — two views with length()==0
+// MUST compare equal (the empty cluster sequence is uniquely equal to itself).
+// A regression that special-cases empty inputs and returns false (e.g. via a
+// null-check fallthrough) would fail here.
 test "GraphemeView: Eq empty" {
   let a = graphemes("")
   let b = graphemes("")
@@ -604,6 +706,14 @@ test "GraphemeView: Eq empty" {
 }
 
 ///|
+// Input: a sliced view `graphemes("ABCDE")[1:3]` (clusters B, C) compared to
+// a freshly-built view `graphemes("BC")`. Expected: a == b returns true. This
+// pins the slice-equivalence facet of Eq: a slice MUST behave as a view over
+// its own cluster range, equal in value to a fresh view built from the same
+// clusters even though its backing source string and starting boundary offset
+// differ. A regression where Eq compares raw source offsets (not the projected
+// cluster sequence) would fail here, because a's boundaries are anchored in
+// "ABCDE" while b's are anchored in "BC".
 test "GraphemeView: Eq sliced" {
   let a = graphemes("ABCDE")[1:3] // B, C
   let b = graphemes("BC")
@@ -615,6 +725,15 @@ test "GraphemeView: Eq sliced" {
 // ============================================================
 
 ///|
+// Input: two independently constructed GraphemeView values from the same
+// source string "Hello", whose Eq comparison would yield true (per the Eq
+// "same string" case above). Expected: a.hash() equals b.hash(). This pins
+// the Hash–Eq consistency contract: if a == b then hash(a) MUST equal
+// hash(b), which is the precondition for using GraphemeView as a key in any
+// hash-based collection (Map, Set). A regression where Hash mixes in
+// implementation-internal state (e.g. backing String identity, slice offset,
+// or boundary array address) instead of the projected cluster sequence
+// would break this invariant and cause silent lookup failures in HashMap.
 test "GraphemeView: Hash consistency with Eq" {
   let a = graphemes("Hello")
   let b = graphemes("Hello")
@@ -623,12 +742,20 @@ test "GraphemeView: Hash consistency with Eq" {
 }
 
 ///|
+// Input: a GraphemeView is stored as the KEY of a Map[GraphemeView, Int],
+// then retrieved by a freshly built GraphemeView equal to the original.
+// Expected: the lookup with the equal-but-distinct view succeeds and returns
+// the stored value, which exercises GraphemeView::Hash + GraphemeView::Eq
+// together (Map dispatch needs both: hash to find the bucket, eq to confirm
+// the key inside the bucket). This is the contract under test — that two
+// views considered equal by Eq must land in the same Map slot.
+// DR-0004 — segmenter state parity (Eq + Hash composed for Map dispatch).
 test "GraphemeView: Hash in HashMap" {
-  let map : Map[String, Int] = {}
-  // GraphemeView を文字列キーとして使う例（直接キーにはしないが、hash は使える）
-  let g = graphemes("Hello🌍")
-  map[g.to_string()] = g.length()
-  inspect(map["Hello🌍"], content="6")
+  let map : Map[GraphemeView, Int] = {}
+  let key = graphemes("Hello🌍")
+  map[key] = key.length()
+  let lookup_key = graphemes("Hello🌍")
+  inspect(map[lookup_key], content="6")
 }
 
 // ============================================================
@@ -1053,14 +1180,6 @@ test "Hash: empty views have same hash" {
   inspect(a.hash() == b.hash(), content="true")
 }
 
-///|
-test "Hash: different content likely different hash" {
-  let a = graphemes("Hello")
-  let b = graphemes("World")
-  // Not strictly guaranteed, but highly likely for different strings
-  inspect(a.hash() != b.hash(), content="true")
-}
-
 // ============================================================
 // Z. Show boundary tests
 // ============================================================
@@ -1120,8 +1239,17 @@ test "to_string: full slice equals original" {
 // ============================================================
 
 ///|
+// Input: a base 'a' followed by 100 combining acute accents (U+0301 × 100).
+// Expected: exactly ONE cluster whose content is the FULL 101-codepoint
+// string (the base plus all 100 combining marks, in order). GB9 binds Any ×
+// Extend without limit, so the segmenter MUST keep extending the same cluster
+// for every Extend. Pinning the cluster STRING (not just count==1 and the
+// view-level to_string() invariant, which compares whole views) catches a
+// regression where the per-cluster boundary is correct but the cluster's own
+// to_owned() truncates / loses combining marks past some internal buffer
+// length.
+// DR-0004 — segmenter state parity (GB9 long Extend run).
 test "graphemes: very long combining mark sequence (100 marks)" {
-  // 1 base character + 100 combining marks = 1 cluster
   let buf = StringBuilder::new()
   buf.write_char('a')
   for i = 0; i < 100; i = i + 1 {
@@ -1130,7 +1258,9 @@ test "graphemes: very long combining mark sequence (100 marks)" {
   let s = buf.to_string()
   let g = graphemes(s)
   inspect(g.length(), content="1")
-  // Concatenation invariant
+  // The single cluster must contain the full base+100-marks string.
+  inspect(g[0].to_owned() == s, content="true")
+  // View-level concatenation invariant (separate contract).
   inspect(g.to_string() == s, content="true")
 }
 
@@ -1223,38 +1353,70 @@ test "graphemes: multiple Prepend characters" {
 }
 
 ///|
+// Input: Hangul jamo sequence Leading (U+1100) · Vowel (U+1161) · Trailing
+// (U+11A8). Expected: one cluster containing all three jamo, because GB6 binds
+// L × V and GB7 binds V × T. Pinning the cluster content prevents a regression
+// where a length-only check passes but one of the jamo is dropped or pushed
+// into a separate cluster.
+// DR-0004 — segmenter state parity (GB6/GB7/GB8 Hangul).
 test "graphemes: Hangul L V T sequence" {
-  // L (U+1100) + V (U+1161) + T (U+11A8) = 1 cluster (GB6 + GB7/GB8)
   let g = graphemes("\u{1100}\u{1161}\u{11A8}")
   inspect(g.length(), content="1")
+  inspect(g[0].to_owned(), content="\u{1100}\u{1161}\u{11A8}")
 }
 
 ///|
+// Input: precomposed Hangul LV syllable (U+AC00, "가") followed by a Trailing
+// jamo (U+11A8). Expected: one cluster fusing LV and T, because GB8 binds
+// (LV|LVT) × T even when the LV part is a precomposed syllable. Pinning the
+// cluster content guards against the regression where the trailing jamo is
+// silently emitted as its own cluster while length somehow stays at 1.
+// DR-0004 — segmenter state parity (GB8 LV+T fusion).
 test "graphemes: Hangul LV + T" {
-  // LV syllable (U+AC00) + T (U+11A8) = 1 cluster (GB8)
   let g = graphemes("\u{AC00}\u{11A8}")
   inspect(g.length(), content="1")
+  inspect(g[0].to_owned(), content="\u{AC00}\u{11A8}")
 }
 
 ///|
+// Input: a single precomposed Hangul LVT syllable (U+AC01, "각"). Expected:
+// one cluster whose content is exactly that codepoint. This pins the trivial
+// case so a regression that misclassifies LVT as something needing further
+// state would be caught immediately.
+// DR-0004 — segmenter state parity (Hangul LVT classification).
 test "graphemes: Hangul LVT alone" {
-  // LVT syllable (U+AC01) = 1 cluster
   let g = graphemes("\u{AC01}")
   inspect(g.length(), content="1")
+  inspect(g[0].to_owned(), content="\u{AC01}")
 }
 
 ///|
+// Input: Leading jamo (U+1100) followed by a precomposed LV syllable (U+AC00)
+// followed by a Trailing jamo (U+11A8). Expected: ONE cluster containing the
+// full three-codepoint run. GB6 lets L × LV (because LV starts with V-class
+// semantics) and GB8 then binds LV × T. Pinning the cluster content prevents
+// a regression where the boundary between L and the precomposed LV is mis-
+// handled while the count stays right by accident.
+// DR-0004 — segmenter state parity (GB6 L+LV, GB8 LV+T).
 test "graphemes: Hangul L + LV + T" {
-  // L + LV + T: GB6 (L × LV), then (LV+T merged as LVT×T) via GB7/GB8 = 1 cluster
   let g = graphemes("\u{1100}\u{AC00}\u{11A8}")
   inspect(g.length(), content="1")
+  inspect(g[0].to_owned(), content="\u{1100}\u{AC00}\u{11A8}")
 }
 
 ///|
+// Input: two adjacent precomposed Hangul syllables — LV (U+AC00) immediately
+// followed by LVT (U+AC01). Expected: TWO clusters, each containing exactly
+// one syllable. There is NO Hangul rule that joins LV × LVT (only L/V/T or
+// LV/LVT followed by V/T), so this pair MUST break. Pinning per-cluster
+// content prevents a regression that erroneously fuses the two syllables into
+// one (length 1) or that splits the bytes oddly across the boundary.
+// DR-0004 — segmenter state parity (Hangul no-rule pair must break).
 test "graphemes: Hangul two syllables" {
-  // LV (U+AC00) + LVT (U+AC01) = 2 clusters (no rule joins LV+LVT without L/V/T)
   let g = graphemes("\u{AC00}\u{AC01}")
   inspect(g.length(), content="2")
+  inspect(g[0].to_owned(), content="\u{AC00}")
+  inspect(g[1].to_owned(), content="\u{AC01}")
 }
 
 ///|
@@ -1273,10 +1435,19 @@ test "graphemes: ZWJ between non-emoji creates boundary" {
 }
 
 ///|
+// Input: a Devanagari triple conjunct — ka (U+0915) · virama (U+094D) · ka ·
+// virama · ka. Expected: ONE cluster containing the full five-codepoint run.
+// GB9c chains InCB indefinitely as long as each Consonant→Consonant transition
+// has a Linker in between, so the second virama MUST also be absorbed and the
+// third ka MUST NOT start a new cluster. Pinning the cluster content prevents
+// a regression where state is reset after the first conjunct and the trailing
+// "virama+ka" leaks out as additional clusters while length looks plausible
+// (e.g. some refactor reads length from a stale running counter).
+// DR-0004 — segmenter state parity (GB9c InCB chaining).
 test "graphemes: InCB triple conjunct" {
-  // ka + virama + ka + virama + ka = 1 cluster (GB9c chains)
   let g = graphemes("\u{0915}\u{094D}\u{0915}\u{094D}\u{0915}")
   inspect(g.length(), content="1")
+  inspect(g[0].to_owned(), content="\u{0915}\u{094D}\u{0915}\u{094D}\u{0915}")
 }
 
 ///|
@@ -1467,6 +1638,14 @@ test "graphemes: concatenation invariant for special codepoints" {
 }
 
 ///|
+// Input: a base 'a' followed by 50 combining acute accents (U+0301 × 50).
+// Expected: iterating the view's clusters and concatenating their owned
+// strings yields exactly the original input — i.e. graphemes() is a
+// loss-less partition. Additionally pin cluster COUNT == 1 and cluster
+// CONTENT == full input, so a regression where the partition is loss-less
+// but emits the 50 marks as separate clusters (length grows, but concat
+// invariant holds) is also caught.
+// DR-0004 — segmenter state parity (concat invariant + single-cluster Extend run).
 test "graphemes: concatenation invariant for long combining marks" {
   let buf = StringBuilder::new()
   buf.write_char('a')
@@ -1475,6 +1654,8 @@ test "graphemes: concatenation invariant for long combining marks" {
   }
   let input = buf.to_string()
   let g = graphemes(input)
+  inspect(g.length(), content="1")
+  inspect(g[0].to_owned() == input, content="true")
   let buf2 = StringBuilder::new()
   for cluster in g.iter() {
     buf2.write_string(cluster.to_owned())
@@ -1807,28 +1988,6 @@ test "grapheme_iter: matches graphemes() count and content" {
 // AO. Regional Indicator (RI) extended parity tests (GB12/13)
 
 ///|
-// 3 RI code points: 🇯🇵 + lone RI → 2 clusters (pair + lone)
-test "graphemes: 3 RI code points (pair + lone)" {
-  // JP(RI+RI) + lone A(RI) → 2 clusters
-  let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1E6}")
-  inspect(g.length(), content="2")
-}
-
-///|
-// 4 RI code points: 🇯🇵🇺🇸 → 2 clusters (pair + pair)
-test "graphemes: 4 RI code points (2 flags)" {
-  let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}\u{1F1F8}")
-  inspect(g.length(), content="2")
-}
-
-///|
-// 5 RI code points: 🇯🇵🇺🇸 + lone RI → 3 clusters
-test "graphemes: 5 RI code points (2 pairs + lone)" {
-  let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}\u{1F1F8}\u{1F1E6}")
-  inspect(g.length(), content="3")
-}
-
-///|
 // 6 RI code points: 🇯🇵🇺🇸🇫🇷 → 3 clusters
 test "graphemes: 6 RI code points (3 flags)" {
   let g = graphemes("\u{1F1EF}\u{1F1F5}\u{1F1FA}\u{1F1F8}\u{1F1EB}\u{1F1F7}")
@@ -1856,14 +2015,6 @@ test "graphemes: 8 RI code points (4 flags)" {
 // AP. Skin tone modifier tests (Extend after Extended_Pictographic)
 
 ///|
-// EP + skin tone modifier → 1 cluster (skin tone is Extend)
-test "graphemes: emoji with skin tone" {
-  // Waving hand U+1F44B + skin tone medium U+1F3FD
-  let g = graphemes("\u{1F44B}\u{1F3FD}")
-  inspect(g.length(), content="1")
-}
-
-///|
 // Two emoji with different skin tones → 2 clusters
 test "graphemes: two emoji with different skin tones" {
   // Waving hand + light + thumbs up + dark
@@ -1880,14 +2031,6 @@ test "graphemes: emoji with skin tone and combining mark" {
 }
 
 // AQ. InCB state deep nesting tests (GB9c)
-
-///|
-// Consonant + Linker + Consonant + Linker + Consonant → 1 cluster (deep chain)
-test "graphemes: InCB deep chain (C+L+C+L+C)" {
-  // ka + virama + ka + virama + ka
-  let g = graphemes("\u{0915}\u{094D}\u{0915}\u{094D}\u{0915}")
-  inspect(g.length(), content="1")
-}
 
 ///|
 // Consonant + Extend + Linker + Extend + Consonant → 1 cluster
