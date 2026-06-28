@@ -5,15 +5,9 @@
 # 分岐の手書きを撲滅する。release は moon.mod の version 行を trigger とする
 # publish.yml が tag + GH Release + mooncakes.io publish を一括で行う
 # (release-flow-awareness 準拠、tag は workflow が打つ — 人/AI は触らない)。
-#
-# 言語差分:
-#   - lint/test = moon fmt --check / moon check --deny-warn / moon test
-#   - source-of-truth = moon.mod (TOML-like 専用記法、bump-semver v0.41.0+ で
-#     basename auto-detect 対応済み、`bump-semver get/patch moon.mod` で動く)
-#   - bump-trigger = src/ + moon.mod + src/moon.pkg、テストファイルは除外
 
-# `set guards` (= recipe 行頭の `?` sigil で「コマンドが exit 1 なら recipe 全体を
-# success として早期 return」) を有効化するために必要な unstable flag。
+# `set guards` (recipe 行頭の `?` sigil で「コマンドが exit 1 なら recipe 全体を
+# success として早期 return」) を有効化するための unstable flag。
 # 詳細: https://just.systems/man/en/settings.html#unstable1310
 set unstable
 
@@ -23,32 +17,13 @@ set unstable
 # 詳細: https://just.systems/man/en/sigils.html
 set guards
 
-# `set shell` と `set script-interpreter` の両方に `die` helper を仕込み、全
-# recipe で Perl 風の `cmd || die "msg"` を使えるようにする。外側 `bash -c` で
-# `exec bash -euo pipefail -c "..." -- "$@"` する 2 段構造で、`set shell` と
-# `set script-interpreter` の外側 spec を揃えてある (= 内側 -c command だけが
-# line-recipe / script-recipe で異なる)。
-#
-# 共通の die 定義:
-#   - `return 1` (= `exit 1` ではない) なので `die ... || true` の吸収が壊れない
-#   - `printf "%s\n"` (= `echo` の `-n`/`-e` 解釈による事故回避)
-#
-# 引数の渡り方 (`set positional-arguments` 有効時):
-#   set shell:               $1=recipe行, $2=recipe名, $3+=recipe引数 → shift 2
-#   set script-interpreter:  $1=temp_file, $2+=recipe引数             → shift 1
-# shift 後は recipe 内で `$1`/`$@` から正しく recipe 引数が見える。
-#
-# `[script("bash")]` や `#!/usr/bin/env bash` shebang recipe は script-interpreter
-# を経由しないので die は効かない (= 既知制約)。
-#
-# 詳細: https://just.systems/man/en/settings.html
-set shell := ["bash", "-c", 'exec bash -euo pipefail -c "die() { printf \"%s\n\" \"\$*\" >&2; return 1; }; line=\"\$1\"; shift 2; eval \"\$line\"" -- "$@"', "--"]
+set shell := ["bash", "-euo", "pipefail", "-c"]
 
-set script-interpreter := ["bash", "-c", 'exec bash -euo pipefail -c "die() { printf \"%s\n\" \"\$*\" >&2; return 1; }; file=\"\$1\"; shift; source \"\$file\"" -- "$@"', "--"]
+set script-interpreter := ["bash", "-euo", "pipefail"]
 
 set positional-arguments
 
-# default: lint + test (= 開発中 `just` 一発で回る、timespec.mbt 流儀)
+# default: lint + test (= 開発中 `just` 一発で回る)
 default: lint test
 
 # show the recipe list
@@ -163,14 +138,21 @@ _check-translation-headers name:
     head -5 {{ name }}-ja.md | grep -qF "> [English](./{{ file_name(name) }}.md) | 日本語"
     head -5 {{ name }}.md    | grep -qF "> English | [日本語](./{{ file_name(name) }}-ja.md)"
 
-# product code (src/ + moon.mod + src/moon.pkg) に変更があれば version bump 必須
-check-version-bumped: (_check-version-bumped "src/" "moon.mod" "src/moon.pkg")
+# mooncakes.io publish に含まれる公開対象に diff があれば version bump が必須
+check-version-bumped: (_check-version-bumped \
+    "src/lib.mbt" \
+    "src/segmenter.mbt" \
+    "src/gcb.mbt" \
+    "src/gcb_table.mbt" \
+    "src/pkg.generated.mbti" \
+    "src/moon.pkg" \
+    "moon.mod")
 
 [private]
 _check-version-bumped *target_paths:
-    # `?` sigil + `! cmd` (bash の論理否定) で「no diff なら早期 return、diff
-    # なら本体続行」を実装。詳細: https://just.systems/man/en/sigils.html
-    ? ! bump-semver vcs diff -q main@origin -- {{ target_paths }} --excludes 'glob:src/**/*_wbtest.mbt' --excludes 'glob:src/**/*_wbbench.mbt' --excludes 'glob:src/**/*_test.mbt'
+    # `?` sigil + `! cmd` で「diff なし = 早期 return、diff あり = 本体続行」。
+    # 詳細: https://just.systems/man/en/sigils.html
+    ? ! bump-semver vcs diff -q main@origin -- {{ target_paths }}
     bump-semver compare gt moon.mod vcs:main@origin
 
 # --- release flow ---
