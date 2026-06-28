@@ -142,7 +142,86 @@ plugin-reference / claude-push-guard / claude-nandakke / claude-gh-monitor
    bump-semver canonical を中心に複数言語 (Go / TS / shell / MoonBit / Python)
    を横断的に読む**
 
+## 続き 2: `?` sigil / die helper の試行と canonical 形への着地 (2026-06-27〜28)
+
+DR-0002 で canonical 形に揃えた justfile を、`?` sigil と inline die helper で
+更に簡素化できないか試行した経緯。最終的に die helper は撤回、`?` sigil は
+維持、`no-historical-noise` rule に従い除外列挙を include 列挙に置き換え。
+
+### `?` sigil による `_check-version-bumped` 簡素化 (採用)
+
+just 1.47.0+ の `?` sigil (`set guards` + `set unstable` 必須、
+<https://just.systems/man/en/sigils.html>) と bash の `!` 論理否定を組合せて
+`? ! cmd` 構文を使うと、「`vcs diff -q` が rc=0 (no diff) なら早期 return、
+rc=1 (diff) なら本体続行」を 2 行で書ける:
+
+```just
+[private]
+_check-version-bumped *target_paths:
+    ? ! bump-semver vcs diff -q main@origin -- {{ target_paths }}
+    bump-semver compare gt moon.mod vcs:main@origin
+```
+
+`[script]` decorator + rc case 分岐の 22 行を 4 行に圧縮。仕様: `?` sigil は
+exit 0 で本体続行、exit 1 で recipe を success として早期 return、それ以外は
+予約済み (= 使うな)。bash の `!` は 0/1 反転なので `?` の予約に触れない。
+
+### inline die helper の試行と撤回
+
+`cmd || die "msg"` を Perl 風に書きたい誘惑から、`set shell` の `-c` 直後の
+command string に die 関数を仕込む experiment を試した:
+
+```just
+# 試行 (= 後に撤回した形)
+set shell := ["bash", "-c", 'exec bash -euo pipefail -c "die() { printf \"%s\n\" \"\$*\" >&2; return 1; }; line=\"\$1\"; shift 2; eval \"\$line\"" -- "$@"', "--"]
+```
+
+- 動作はする (= 全 recipe で `cmd || die "msg"` が使える)
+- `set positional-arguments` 有効時の引数渡しが特殊 (= shell の場合
+  `$1=recipe行, $2=recipe名, $3+=args`、script-interpreter は `$1=temp_file,
+  $2+=args`)、自前 `-c <cmd>` を入れる代償として `shift` 回数を調整する必要
+
+bump-semver / timespec の両 peer に提案 → **両 peer 不採用方向**:
+- 利用側 justfile に汎用 helper を仕込むのは対症療法、根治は bump-semver
+  subcommand 側の stderr 強化が筋
+- canonical 見本効果 (= 「読み手が真似しやすい」) を escape 地獄が損なう
+- `[script("bash")]` / shebang 自前指定 recipe で die が効かない carve-out が
+  恣意的
+
+kawaz が standalone な `die(1)` バイナリを公開 (= `kawaz/die`, `brew install
+kawaz/tap/die`)、grapheme.mbt は inline 仕掛けを撤回して **外部コマンド `die
+-- "msg"` を素朴に呼ぶ形**に転換。`set shell` は canonical 形
+(`["bash", "-euo", "pipefail", "-c"]`) に戻り、bump-semver / kuu /
+timespec と完全に揃った。
+
+### no-historical-noise rule 反映 (= 除外列挙の禁止)
+
+`_check-version-bumped` の `bump-semver vcs diff` で「test ファイルを除外」
+していた `--excludes 'glob:src/**/*_wbtest.mbt'` 等の **除外列挙** を撤廃。
+rule の「拾うべきものを網羅すれば、それ以外は自動的に拾われない (= 包含側で
+書け)」に従い、publish 対象の include 列挙に切替:
+
+```just
+check-version-bumped: (_check-version-bumped \
+    "src/lib.mbt" "src/segmenter.mbt" "src/gcb.mbt" "src/gcb_table.mbt" \
+    "src/pkg.generated.mbti" "src/moon.pkg" "moon.mod")
+```
+
+### 教訓 (= 個人 rule への結晶化候補)
+
+3. **対症療法 (= 利用側の boilerplate 追加) より根治 (= 上流コマンドの
+   stderr 強化、独立 CLI 提供) を選ぶ**。今回は kawaz が `die(1)` を独立
+   CLI 化することで「全 justfile で素朴に使える」を実現、利用側 justfile を
+   汚さない解に着地した
+4. **canonical pattern の試行段階は仮実装と revert を恐れずやる**。両 peer
+   と 1〜3 ターンで提案 → 評価 → 撤回まで回せたのは cmux-msg の peer
+   レビューがあったから。試行記録は journal に「採用 / 撤回 / 着地」の流れ
+   で残す
+
 ## 関連
 
 - [DR-0001-moonbit-new-syntax-migration](../decisions/DR-0001-moonbit-new-syntax-migration.md)
 - [DR-0002-justfile-canonical-alignment](../decisions/DR-0002-justfile-canonical-alignment.md)
+- 上流: <https://github.com/kawaz/die> — standalone `die(1)` バイナリ
+- 上流: <https://just.systems/man/en/sigils.html> — `?` sigil 仕様
+- 個人 rule: `no-historical-noise.md` — 除外列挙の禁止
