@@ -138,15 +138,14 @@ _check-translation-headers name:
     head -5 {{ name }}-ja.md | grep -qF "> [English](./{{ file_name(name) }}.md) | 日本語"
     head -5 {{ name }}.md    | grep -qF "> English | [日本語](./{{ file_name(name) }}-ja.md)"
 
-# mooncakes.io publish に含まれる公開対象に diff があれば version bump が必須
+# mooncakes.io publish される production code に diff があれば version bump が必須
 check-version-bumped: (_check-version-bumped \
     "src/lib.mbt" \
     "src/segmenter.mbt" \
     "src/gcb.mbt" \
     "src/gcb_table.mbt" \
     "src/pkg.generated.mbti" \
-    "src/moon.pkg" \
-    "moon.mod")
+    "src/moon.pkg")
 
 [private]
 _check-version-bumped *target_paths:
