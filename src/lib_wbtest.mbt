@@ -1,3 +1,32 @@
+// ============================================================================
+// Test scope for this file (lib_wbtest.mbt)
+// ----------------------------------------------------------------------------
+// In scope — behaviours exercised here:
+//   - GraphemeView public API surface: length, op_get, get, is_empty,
+//     to_string, op_as_view, iter, iter2, rev_iter, grapheme_indices.
+//   - Trait behaviours implemented on GraphemeView: Eq, Hash, Show.
+//   - grapheme_iter() API — the lazy iterator path, including its boundary
+//     and termination behaviour without materialising the full view.
+//   - GraphemeView invariants: boundary indices are monotonic and aligned to
+//     cluster_start/cluster_end, slicing by index returns the expected
+//     cluster as a StringView.
+//   - Lone surrogate handling at the public API level (input strings that
+//     contain unpaired UTF-16 surrogate code units must be segmented without
+//     panicking, following the policy fixed for this crate).
+//
+// Not applicable here — covered in sibling test files instead:
+//   - UAX #29 GB1-GB13 grapheme cluster boundary rule coverage is exercised
+//     against the official Unicode corpus and via the iterator entry points
+//     in src/uax29_test.mbt and src/uax29_iter_test.mbt; do not duplicate
+//     rule-by-rule cases here.
+//   - Internal segmenter cell coverage (check_boundary, next_emoji_state,
+//     next_incb_state state transitions) lives in src/segmenter_wbtest.mbt.
+//   - gcb_category lookup edge cases and the Plane 14 tag ordering are
+//     covered by src/gcb_wbtest.mbt and src/plane14_tags_test.mbt.
+//
+// Scope/NA split: DR-0007 — docs/decisions/DR-0007-test-scope-split.md
+// ============================================================================
+
 ///|
 test "graphemes: ASCII string" {
   let g = graphemes("hello")
@@ -2056,4 +2085,142 @@ test "graphemes: two consecutive high surrogates" {
   inspect(g.length(), content="2")
   inspect(g[0].at(0).to_int(), content="55296") // 0xD800
   inspect(g[1].at(0).to_int(), content="55297") // 0xD801
+}
+
+// ============================================================
+// Z. Invariants from DR-0003 / DR-0004 / DR-0006
+// ============================================================
+
+///|
+test "GB2 sentinel: boundaries[last] == source.length() for ASCII" {
+  // ASCII string "abc" must produce 3 single-codepoint clusters and a
+  // terminating end-sentinel at offset 3 (= source.length()). This pins
+  // UAX #29 GB2 (Any ÷ eot) plus the +1 offset advancement for BMP-only
+  // input — a regression here corrupts every multi-cluster boundary
+  // because every downstream offset (op_get range, grapheme_indices end,
+  // to_string slice) is computed from the same boundaries array.
+  // (DR-0003 — UAX #29 corpus coverage strategy)
+  let g = graphemes("abc")
+  let pairs : Array[(Int, Int)] = []
+  for entry in g.grapheme_indices() {
+    pairs.push((entry.0, entry.1))
+  }
+  // Last pair's end offset is the GB2 end-sentinel.
+  assert_eq(pairs[pairs.length() - 1].1, 3)
+  assert_eq(pairs[pairs.length() - 1].1, "abc".length())
+}
+
+///|
+test "GB2 sentinel: surrogate pair advances +2" {
+  // U+1F600 GRINNING FACE lives on the Supplementary Multilingual Plane,
+  // so in MoonBit's UTF-16 String it occupies 2 code units. The end
+  // sentinel — and therefore the per-cluster end offset for this single
+  // cluster — must be 2, not 1. If the offset advancement code path
+  // mistakenly increments by 1 for non-BMP code points, every offset for
+  // any non-BMP content (emoji, CJK Extension B+, math symbols, ...)
+  // collapses, breaking slice indexing and to_string roundtripping.
+  // (DR-0003 — UAX #29 corpus coverage strategy)
+  let g = graphemes("\u{1F600}")
+  let pairs : Array[(Int, Int)] = []
+  for entry in g.grapheme_indices() {
+    pairs.push((entry.0, entry.1))
+  }
+  assert_eq(pairs.length(), 1)
+  assert_eq(pairs[0].0, 0)
+  assert_eq(pairs[0].1, 2)
+}
+
+///|
+test "op_as_view zero-copy: sliced view grapheme_indices refer to original source" {
+  // op_as_view (g[i:j]) shares the underlying boundaries array with the
+  // parent view rather than recomputing offsets from 0. Consumers rely on
+  // this contract to compute substring positions in the original source
+  // from a sliced view (e.g. "find the byte range of the 6th cluster in
+  // the original string"). If a future change re-bases the offsets to 0
+  // for the sliced view, this contract silently breaks and downstream
+  // string slicing produces wrong substrings.
+  // (DR-0003 — UAX #29 corpus coverage strategy)
+  let g = graphemes("Hello\u{1F1EF}\u{1F1F5}World")
+  let sliced = g[5:7] // 🇯🇵 and W (or 🇯🇵 and "W"? cluster 5=flag, cluster 6=W)
+  let pairs : Array[(Int, Int)] = []
+  for entry in sliced.grapheme_indices() {
+    pairs.push((entry.0, entry.1))
+  }
+  // Every offset in the sliced view must still refer to the ORIGINAL
+  // source position. Cluster 5 (the flag) starts at code-unit offset 5
+  // in "Hello🇯🇵World"; offsets here MUST NOT be re-based to 0.
+  for entry in pairs {
+    assert_eq(entry.0 >= 5, true)
+    assert_eq(entry.1 >= 5, true)
+  }
+}
+
+///|
+test "grapheme_iter exhaustion is stable: None then None" {
+  // Iterator contract: once an iterator yields None, every subsequent
+  // .next() call must keep yielding None. A buggy state machine that
+  // re-emits the last cluster — or wraps around — would surprise callers
+  // who use the standard "while it.next() is Some(x) { ... }" loop and
+  // could produce infinite loops in downstream code. This test pins the
+  // `done` flag latching in grapheme_iter().
+  // (DR-0004 — segmenter state parity)
+  let it = grapheme_iter("ab")
+  // Consume the two clusters.
+  let _ = it.next()
+  let _ = it.next()
+  // Now the iterator must be permanently exhausted.
+  @debug.debug_inspect(it.next(), content="None")
+  @debug.debug_inspect(it.next(), content="None")
+}
+
+///|
+test "grapheme_iter parity with graphemes() on a SMP input" {
+  // DR-0004 contract: the lazy iterator path (grapheme_iter) and the
+  // eager view path (graphemes().iter()) must yield identical cluster
+  // sequences for every input. This is a sample spot-check on an input
+  // mixing ASCII with a supplementary-plane emoji (which exercises the
+  // surrogate-pair advancement on both paths). Full UAX #29 corpus
+  // parity is asserted elsewhere by the generated uax29_iter_test.mbt;
+  // this case acts as a hand-written regression anchor that fails fast
+  // if the two paths diverge.
+  // (DR-0004 — segmenter state parity)
+  let input = "A\u{1F600}B"
+  let view_collected : Array[String] = []
+  for cluster in graphemes(input).iter() {
+    view_collected.push(cluster.to_owned())
+  }
+  let iter_collected : Array[String] = []
+  for cluster in grapheme_iter(input) {
+    iter_collected.push(cluster.to_owned())
+  }
+  assert_eq(view_collected.length(), iter_collected.length())
+  for i in 0..<view_collected.length() {
+    assert_eq(view_collected[i], iter_collected[i])
+  }
+}
+
+///|
+test "lone high surrogate at end of string: one extra cluster" {
+  // Lenient lone-surrogate policy: an unpaired high surrogate at the end
+  // of the string (no following low surrogate) must be passed through as
+  // its own cluster — never panic, never replaced silently with U+FFFD.
+  // Also the +1 offset advancement applies (a lone surrogate occupies 1
+  // UTF-16 code unit), so the GB2 end-sentinel for "A" + lone-high must
+  // land at offset 2. A regression here would either crash on malformed
+  // UTF-16 or merge the lone surrogate into the preceding cluster.
+  // (DR-0006 — lone surrogate policy)
+  let s = String::from_array(['A', (0xD800).unsafe_to_char()])
+  let g = graphemes(s)
+  assert_eq(g.length(), 2)
+  // The final cluster is exactly the lone high surrogate (1 code unit,
+  // value 0xD800 = 55296).
+  let last = g[1]
+  assert_eq(last.length(), 1)
+  assert_eq(last.at(0).to_int(), 55296)
+  // The GB2 end-sentinel is the source length (= 2).
+  let pairs : Array[(Int, Int)] = []
+  for entry in g.grapheme_indices() {
+    pairs.push((entry.0, entry.1))
+  }
+  assert_eq(pairs[pairs.length() - 1].1, 2)
 }
